@@ -1,0 +1,35 @@
+{
+  "name": "gpt-realtime-voice-test-harness",
+  "version": "1.0.0",
+  "description": "Localhost GPT-Realtime voice testing harness for speech-in/speech-out validation with Swedish conversation support",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "echo 'Manual browser testing - see quickstart.md for validation scenarios'",
+    "setup": "cp .env.example .env && echo 'Environment file created. Please edit .env with your OpenAI API key.'",
+    "validate": "node -e \"require('dotenv').config(); if(!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.includes('your-openai-api-key-here')) { console.error('❌ Please set OPENAI_API_KEY in .env file'); process.exit(1); } else { console.log('✅ Environment configuration looks good'); }\""
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "openai": "^4.20.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "openai",
+    "realtime",
+    "voice",
+    "webrtc",
+    "swedish",
+    "testing",
+    "localhost"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

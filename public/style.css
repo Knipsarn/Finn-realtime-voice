@@ -1,0 +1,359 @@
+/**
+ * GPT-Realtime Voice Test Harness Styles
+ * Minimal styling for Swedish voice conversation testing
+ */
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    color: #2c5aa0;
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Main content */
+main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 20px;
+    grid-template-areas: 
+        "controls status"
+        "controls transcript"
+        "controls transcript"
+        "controls audio";
+}
+
+/* Controls sidebar */
+.controls {
+    grid-area: controls;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.config-section h3 {
+    color: #2c5aa0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.config-group {
+    margin-bottom: 15px;
+}
+
+.config-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+.config-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+}
+
+.config-group select:focus {
+    outline: none;
+    border-color: #2c5aa0;
+    box-shadow: 0 0 0 2px rgba(44, 90, 160, 0.2);
+}
+
+/* Button styles */
+.btn {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn.primary {
+    background: #2c5aa0;
+    color: white;
+}
+
+.btn.primary:hover:not(:disabled) {
+    background: #1e3f73;
+}
+
+.btn.secondary {
+    background: #e9ecef;
+    color: #495057;
+    border: 1px solid #dee2e6;
+}
+
+.btn.secondary:hover:not(:disabled) {
+    background: #dee2e6;
+}
+
+.session-controls {
+    margin: 20px 0;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.audio-controls {
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* Status section */
+.status-section {
+    grid-area: status;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.status-section h3 {
+    color: #2c5aa0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.status-item .label {
+    font-weight: 500;
+    color: #555;
+}
+
+.status-item .value {
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+.value.connected {
+    background: #d4edda;
+    color: #155724;
+}
+
+.value.connecting {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.value.disconnected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.value.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.value.active {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.value.muted {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+/* Transcript section */
+.transcript-section {
+    grid-area: transcript;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.transcript-section h3 {
+    color: #2c5aa0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.transcript-box {
+    flex: 1;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 15px;
+    background: #fafafa;
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    word-wrap: break-word;
+}
+
+.message.user {
+    background: #e3f2fd;
+    border-left: 3px solid #2196f3;
+}
+
+.message.assistant {
+    background: #f3e5f5;
+    border-left: 3px solid #9c27b0;
+}
+
+.message.system {
+    background: #e8f5e8;
+    border-left: 3px solid #4caf50;
+    font-style: italic;
+    color: #666;
+}
+
+.message.error {
+    background: #ffebee;
+    border-left: 3px solid #f44336;
+    color: #c62828;
+}
+
+/* Audio section */
+.audio-section {
+    grid-area: audio;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+footer {
+    margin-top: 20px;
+    padding: 15px;
+    text-align: center;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.performance-metrics {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "controls"
+            "status"
+            "transcript"
+            "audio";
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .performance-metrics {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus states for accessibility */
+select:focus,
+button:focus {
+    outline: 2px solid #2c5aa0;
+    outline-offset: 2px;
+}
+
+/* Swedish flag colors accent (optional) */
+.swedish-accent {
+    border-left: 4px solid #006aa7;
+    background: linear-gradient(90deg, #006aa7 0%, #fecc00 50%, #006aa7 100%);
+    background-size: 100% 4px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}

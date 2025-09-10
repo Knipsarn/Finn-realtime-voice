@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-Realtime Voice Test Harness</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GPT-Realtime Voice Test Harness</h1>
+            <p>Swedish Voice Conversation Testing - Production Ready (gpt-realtime)</p>
+        </header>
+
+        <main>
+            <div class="controls">
+                <div class="config-section">
+                    <h3>Configuration</h3>
+                    
+                    <div class="config-group">
+                        <label for="voice-select">Voice:</label>
+                        <select id="voice-select">
+                            <option value="alloy" selected>Alloy</option>
+                            <option value="echo">Echo</option>
+                            <option value="fable">Fable</option>
+                            <option value="onyx">Onyx</option>
+                            <option value="nova">Nova</option>
+                            <option value="shimmer">Shimmer</option>
+                            <option value="cedar">Cedar (NEW)</option>
+                            <option value="marin">Marin (NEW)</option>
+                        </select>
+                    </div>
+
+                    <div class="config-group">
+                        <label for="locale-select">Locale:</label>
+                        <select id="locale-select">
+                            <option value="sv-SE" selected>Swedish (sv-SE)</option>
+                            <option value="en-US">English (en-US)</option>
+                        </select>
+                    </div>
+
+                    <div class="config-group">
+                        <label for="style-select">Style:</label>
+                        <select id="style-select">
+                            <option value="concise" selected>Concise</option>
+                            <option value="verbose">Verbose</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="session-controls">
+                    <button id="connect-btn" class="btn primary">Connect</button>
+                    <button id="disconnect-btn" class="btn secondary" disabled>Disconnect</button>
+                </div>
+
+                <div class="audio-controls">
+                    <button id="mute-btn" class="btn secondary" disabled>Mute</button>
+                    <button id="unmute-btn" class="btn secondary" disabled>Unmute</button>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <h3>Status</h3>
+                <div id="connection-status" class="status-item">
+                    <span class="label">Connection:</span>
+                    <span class="value" id="connection-value">Disconnected</span>
+                </div>
+                <div id="audio-status" class="status-item">
+                    <span class="label">Audio:</span>
+                    <span class="value" id="audio-value">Inactive</span>
+                </div>
+                <div id="latency-status" class="status-item">
+                    <span class="label">Latency:</span>
+                    <span class="value" id="latency-value">-</span>
+                </div>
+            </div>
+
+            <div class="transcript-section">
+                <h3>Conversation</h3>
+                <div id="transcript" class="transcript-box">
+                    <p class="system-message">Click "Connect" to start voice conversation...</p>
+                </div>
+            </div>
+
+            <div class="audio-section">
+                <audio id="audio-output" autoplay style="width: 100%; margin-top: 10px;"></audio>
+                <p><em>WebRTC Audio Stream - Audio will play automatically</em></p>
+            </div>
+        </main>
+
+        <footer>
+            <div class="performance-metrics">
+                <span id="session-info"></span>
+                <span id="performance-info"></span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
