@@ -5,7 +5,7 @@
 
 import { WebSocketServer } from 'ws';
 import OpenAI from 'openai';
-import { OpenAIRealtimeWebSocket } from 'openai/beta/realtime/websocket';
+import { RealtimeClient } from '@openai/realtime-api-beta';
 import database from './database.js';
 
 class TelnyxGPTGateway {
@@ -108,7 +108,10 @@ class TelnyxGPTGateway {
                 if (callData.gptClient) {
                     const audioData = this.transcodeToGPT(message.media.payload);
                     if (audioData) {
-                        await callData.gptClient.appendInputAudio(audioData);
+                        // Convert base64 to Int16Array as required by RealtimeClient
+                        const buffer = Buffer.from(audioData, 'base64');
+                        const int16Array = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.length / 2);
+                        callData.gptClient.appendInputAudio(int16Array);
                     }
                 }
                 break;
@@ -122,14 +125,14 @@ class TelnyxGPTGateway {
 
     async initializeGPTSession(callData) {
         try {
-            // Initialize OpenAI Realtime WebSocket connection
-            callData.gptClient = new OpenAIRealtimeWebSocket({
+            // Initialize RealtimeClient from beta library
+            callData.gptClient = new RealtimeClient({
                 apiKey: process.env.OPENAI_API_KEY,
-                model: 'gpt-realtime'
+                dangerouslyAllowAPIKeyInBrowser: false
             });
 
             // Configure session
-            await callData.gptClient.updateSession({
+            callData.gptClient.updateSession({
                 voice: callData.agent.voice,
                 instructions: callData.agent.prompt,
                 input_audio_format: 'pcm16',
@@ -148,21 +151,26 @@ class TelnyxGPTGateway {
             });
 
             // Set up event handlers
-            callData.gptClient.on('response.audio.delta', (event) => {
-                // Forward audio response back to Telnyx
-                this.streamGPTAudioToTelnyx(callData, event.delta);
+            callData.gptClient.on('conversation.updated', (event) => {
+                // Handle conversation updates
+                console.log('Conversation updated:', event);
             });
 
-            callData.gptClient.on('response.text.delta', (event) => {
-                console.log('GPT speaking:', event.delta);
+            callData.gptClient.on('conversation.item.appended', (event) => {
+                if (event.item.type === 'message' && event.item.role === 'assistant') {
+                    console.log('GPT response:', event.item.content);
+                }
             });
 
-            callData.gptClient.on('input_audio_buffer.speech_started', () => {
-                console.log('User started speaking');
-            });
-
-            callData.gptClient.on('input_audio_buffer.speech_stopped', () => {
-                console.log('User stopped speaking');
+            callData.gptClient.on('conversation.item.completed', (event) => {
+                if (event.item.type === 'message' && event.item.role === 'assistant' && event.item.content) {
+                    // Handle audio content
+                    for (const content of event.item.content) {
+                        if (content.type === 'audio') {
+                            this.streamGPTAudioToTelnyx(callData, content.audio);
+                        }
+                    }
+                }
             });
 
             callData.gptClient.on('error', (error) => {
@@ -173,7 +181,7 @@ class TelnyxGPTGateway {
             await callData.gptClient.connect();
 
             // Send initial greeting
-            await callData.gptClient.sendUserMessageContent([{
+            callData.gptClient.sendUserMessageContent([{
                 type: 'input_text',
                 text: this.getGreeting(callData.agent)
             }]);
@@ -382,7 +390,11 @@ class TelnyxGPTGateway {
 
     cleanup(callData) {
         if (callData.gptClient) {
-            callData.gptClient.disconnect();
+            try {
+                callData.gptClient.disconnect();
+            } catch (error) {
+                console.error('Error disconnecting GPT client:', error);
+            }
         }
         if (callData.streamId) {
             this.activeCalls.delete(callData.streamId);
