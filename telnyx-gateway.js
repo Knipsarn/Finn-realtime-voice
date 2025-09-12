@@ -285,15 +285,21 @@ class TelnyxGPTGateway {
                 }
             });
 
+            // CORRECT: Listen to streaming audio deltas for real-time playback
+            callData.gptClient.on('conversation.updated', ({ item, delta }) => {
+                if (delta?.audio) {
+                    console.log('Streaming GPT audio delta to Telnyx, samples:', delta.audio.length);
+                    // Convert Int16Array to base64 for streamGPTAudioToTelnyx
+                    const audioBuffer = Buffer.from(delta.audio.buffer, delta.audio.byteOffset, delta.audio.byteLength);
+                    const base64Audio = audioBuffer.toString('base64');
+                    this.streamGPTAudioToTelnyx(callData, base64Audio);
+                }
+            });
+            
+            // Keep item completion for logging
             callData.gptClient.on('conversation.item.completed', (event) => {
-                if (event.item.type === 'message' && event.item.role === 'assistant' && event.item.content) {
-                    // Handle audio content
-                    for (const content of event.item.content) {
-                        if (content.type === 'audio') {
-                            console.log('Streaming GPT audio response to Telnyx');
-                            this.streamGPTAudioToTelnyx(callData, content.audio);
-                        }
-                    }
+                if (event.item.type === 'message' && event.item.role === 'assistant') {
+                    console.log('GPT response completed:', event.item.id);
                 }
             });
 
@@ -501,34 +507,49 @@ class TelnyxGPTGateway {
 
     streamGPTAudioToTelnyx(callData, audioDelta) {
         try {
-            // audioDelta is base64-encoded PCM16 audio from GPT
-            if (!audioDelta || !callData.ws) return;
+            // audioDelta is base64-encoded PCM16 audio from GPT (24kHz, 1 channel)
+            if (!audioDelta || !callData.ws) {
+                console.error('Missing audio data or WebSocket connection');
+                return;
+            }
             
-            // Decode GPT's PCM16 audio
+            console.log('Processing GPT audio chunk, base64 length:', audioDelta.length);
+            
+            // Decode GPT's PCM16 audio from base64
             const pcm16Buffer = Buffer.from(audioDelta, 'base64');
+            console.log('Decoded PCM16 buffer size:', pcm16Buffer.length, 'bytes');
             
             // Downsample from 24kHz to 8kHz for Telnyx
             const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
+            console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
             
             // Convert PCM16 to PCMU (μ-law)
             const pcmuBuffer = this.pcm16ToPcmu(downsampledBuffer);
+            console.log('PCMU buffer size:', pcmuBuffer.length, 'bytes');
             
             // Create RTP header and payload
             const rtpPacket = this.createRtpPacket(pcmuBuffer);
+            console.log('RTP packet size:', rtpPacket.length, 'bytes');
             
             // Send to Telnyx WebSocket
-            callData.ws.send(JSON.stringify({
+            const message = {
                 event: 'media',
                 stream_id: callData.streamId,
                 media: {
                     payload: rtpPacket.toString('base64')
                 }
-            }));
+            };
             
-            console.log(`Sent GPT audio to Telnyx: ${pcmuBuffer.length} bytes`);
+            callData.ws.send(JSON.stringify(message));
+            
+            console.log(`✅ Sent GPT audio to Telnyx: ${pcmuBuffer.length} PCMU bytes, RTP packet: ${rtpPacket.length} bytes`);
             
         } catch (error) {
-            console.error('Error streaming GPT audio to Telnyx:', error);
+            console.error('=== GPT AUDIO STREAMING ERROR ===');
+            console.error('Error details:', error.message);
+            console.error('Stack trace:', error.stack);
+            console.error('Audio delta length:', audioDelta?.length || 'undefined');
+            console.error('WebSocket state:', callData.ws?.readyState || 'undefined');
         }
     }
 
