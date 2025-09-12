@@ -432,7 +432,7 @@ app.post('/api/telnyx/voice', async (req, res) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    client_state: callId.toString(),
+                    client_state: Buffer.from(callId.toString()).toString('base64'),
                     stream_url: `wss://${req.get('host')}/api/telnyx/stream`,
                     stream_track: 'both_tracks',
                     stream_bidirectional_mode: 'rtp'
