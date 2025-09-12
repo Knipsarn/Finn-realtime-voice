@@ -5,6 +5,7 @@
 
 import { WebSocketServer } from 'ws';
 import OpenAI from 'openai';
+import { OpenAIRealtimeWebSocket } from 'openai/beta/realtime/websocket';
 import database from './database.js';
 
 class TelnyxGPTGateway {
@@ -50,14 +51,12 @@ class TelnyxGPTGateway {
 
     async handleTelnyxConnection(ws, req) {
         let callData = {
+            ws: ws,
             callControlId: null,
             streamId: null,
             agentId: null,
             agent: null,
-            gptSession: null,
-            peerConnection: null,
-            dataChannel: null,
-            audioContext: null,
+            gptClient: null,
             startTime: Date.now()
         };
 
@@ -106,13 +105,10 @@ class TelnyxGPTGateway {
 
             case 'media':
                 // Transcode and forward audio to GPT-Realtime
-                if (callData.dataChannel && callData.dataChannel.readyState === 'open') {
+                if (callData.gptClient) {
                     const audioData = this.transcodeToGPT(message.media.payload);
                     if (audioData) {
-                        callData.dataChannel.send(JSON.stringify({
-                            type: 'input_audio_buffer.append',
-                            audio: audioData
-                        }));
+                        await callData.gptClient.appendInputAudio(audioData);
                     }
                 }
                 break;
@@ -126,9 +122,14 @@ class TelnyxGPTGateway {
 
     async initializeGPTSession(callData) {
         try {
-            // Create ephemeral session
-            const sessionResponse = await this.openai.beta.realtime.sessions.create({
-                model: 'gpt-realtime',
+            // Initialize OpenAI Realtime WebSocket connection
+            callData.gptClient = new OpenAIRealtimeWebSocket({
+                apiKey: process.env.OPENAI_API_KEY,
+                model: 'gpt-realtime'
+            });
+
+            // Configure session
+            await callData.gptClient.updateSession({
                 voice: callData.agent.voice,
                 instructions: callData.agent.prompt,
                 input_audio_format: 'pcm16',
@@ -146,74 +147,36 @@ class TelnyxGPTGateway {
                 max_response_output_tokens: 4096
             });
 
-            // Initialize WebRTC connection
-            callData.peerConnection = new RTCPeerConnection({
-                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+            // Set up event handlers
+            callData.gptClient.on('response.audio.delta', (event) => {
+                // Forward audio response back to Telnyx
+                this.streamGPTAudioToTelnyx(callData, event.delta);
             });
 
-            callData.dataChannel = callData.peerConnection.createDataChannel('oai-events', {
-                ordered: true
+            callData.gptClient.on('response.text.delta', (event) => {
+                console.log('GPT speaking:', event.delta);
             });
 
-            callData.dataChannel.onopen = () => {
-                console.log('GPT-Realtime data channel opened');
-                // Send initial conversation trigger
-                callData.dataChannel.send(JSON.stringify({
-                    type: 'conversation.item.create',
-                    item: {
-                        type: 'message',
-                        role: 'assistant',
-                        content: [{
-                            type: 'text',
-                            text: this.getGreeting(callData.agent)
-                        }]
-                    }
-                }));
-
-                callData.dataChannel.send(JSON.stringify({
-                    type: 'response.create'
-                }));
-            };
-
-            callData.dataChannel.onmessage = (event) => {
-                try {
-                    const gptMessage = JSON.parse(event.data);
-                    this.handleGPTMessage(callData, gptMessage);
-                } catch (error) {
-                    console.error('Error parsing GPT message:', error);
-                }
-            };
-
-            // Handle audio from GPT
-            callData.peerConnection.ontrack = (event) => {
-                console.log('Received GPT audio track');
-                // Convert PCM16 audio to RTP/PCMU and send to Telnyx
-                this.streamGPTAudioToTelnyx(callData, event.streams[0]);
-            };
-
-            // Create WebRTC offer
-            const offer = await callData.peerConnection.createOffer();
-            await callData.peerConnection.setLocalDescription(offer);
-
-            // Send to OpenAI
-            const response = await fetch('https://api.openai.com/v1/realtime', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${sessionResponse.client_secret.value}`,
-                    'Content-Type': 'application/sdp'
-                },
-                body: offer.sdp
+            callData.gptClient.on('input_audio_buffer.speech_started', () => {
+                console.log('User started speaking');
             });
 
-            if (!response.ok) {
-                throw new Error(`WebRTC negotiation failed: ${response.status}`);
-            }
-
-            const answerSdp = await response.text();
-            await callData.peerConnection.setRemoteDescription({
-                type: 'answer',
-                sdp: answerSdp
+            callData.gptClient.on('input_audio_buffer.speech_stopped', () => {
+                console.log('User stopped speaking');
             });
+
+            callData.gptClient.on('error', (error) => {
+                console.error('GPT error:', error);
+            });
+
+            // Connect to OpenAI
+            await callData.gptClient.connect();
+
+            // Send initial greeting
+            await callData.gptClient.sendUserMessageContent([{
+                type: 'input_text',
+                text: this.getGreeting(callData.agent)
+            }]);
 
             console.log('GPT-Realtime connection established for stream', callData.streamId);
 
@@ -290,29 +253,115 @@ class TelnyxGPTGateway {
         return outputSamples.buffer;
     }
 
-    streamGPTAudioToTelnyx(callData, audioStream) {
-        // TODO: Implement PCM16 → RTP/PCMU transcoding and WebSocket send to Telnyx
-        console.log('GPT audio received - would transcode back to RTP/PCMU for Telnyx');
+    downsampleAudio(pcm16Buffer, fromRate, toRate) {
+        const ratio = fromRate / toRate;
+        const inputSamples = new Int16Array(pcm16Buffer);
+        const outputLength = Math.floor(inputSamples.length / ratio);
+        const outputSamples = new Int16Array(outputLength);
+        
+        for (let i = 0; i < outputLength; i++) {
+            const srcIndex = Math.floor(i * ratio);
+            outputSamples[i] = inputSamples[srcIndex] || 0;
+        }
+        
+        return outputSamples.buffer;
     }
 
-    handleGPTMessage(callData, message) {
-        console.log('GPT message:', message.type);
+    pcm16ToPcmu(pcm16Buffer) {
+        const BIAS = 0x84;
+        const CLIP = 8159;
+        const pcmSamples = new Int16Array(pcm16Buffer);
+        const pcmuBuffer = Buffer.alloc(pcmSamples.length);
         
-        switch (message.type) {
-            case 'response.audio_transcript.delta':
-                console.log('GPT speaking:', message.delta);
-                break;
-            case 'input_audio_buffer.speech_started':
-                console.log('User started speaking');
-                break;
-            case 'input_audio_buffer.speech_stopped':
-                console.log('User stopped speaking');
-                break;
-            case 'error':
-                console.error('GPT error:', message.error);
-                break;
+        for (let i = 0; i < pcmSamples.length; i++) {
+            let sample = Math.max(-CLIP, Math.min(CLIP, pcmSamples[i]));
+            const sign = (sample < 0) ? 0x80 : 0x00;
+            if (sample < 0) sample = -sample;
+            sample += BIAS;
+            
+            let exponent = 0;
+            if (sample >= 256) {
+                exponent = 1;
+                sample >>= 1;
+            }
+            if (sample >= 256) {
+                exponent = 2;
+                sample >>= 1;
+            }
+            if (sample >= 256) {
+                exponent = 3;
+                sample >>= 1;
+            }
+            if (sample >= 256) {
+                exponent = 4;
+                sample >>= 1;
+            }
+            if (sample >= 256) {
+                exponent = 5;
+                sample >>= 1;
+            }
+            if (sample >= 256) {
+                exponent = 6;
+                sample >>= 1;
+            }
+            if (sample >= 256) {
+                exponent = 7;
+                sample >>= 1;
+            }
+            
+            const mantissa = (sample >> 4) & 0x0F;
+            pcmuBuffer[i] = sign | (exponent << 4) | mantissa;
+        }
+        
+        return pcmuBuffer;
+    }
+
+    createRtpPacket(payloadBuffer) {
+        // Create minimal RTP header (12 bytes)
+        const rtpHeader = Buffer.alloc(12);
+        rtpHeader[0] = 0x80; // Version 2, no padding, no extension, no CSRC
+        rtpHeader[1] = 0x00; // PCMU payload type
+        // Sequence number and timestamp would be managed properly in production
+        rtpHeader.writeUInt16BE(Math.floor(Math.random() * 65536), 2); // Random sequence
+        rtpHeader.writeUInt32BE(Date.now(), 4); // Simple timestamp
+        rtpHeader.writeUInt32BE(0x12345678, 8); // SSRC identifier
+        
+        return Buffer.concat([rtpHeader, payloadBuffer]);
+    }
+
+    streamGPTAudioToTelnyx(callData, audioDelta) {
+        try {
+            // audioDelta is base64-encoded PCM16 audio from GPT
+            if (!audioDelta || !callData.ws) return;
+            
+            // Decode GPT's PCM16 audio
+            const pcm16Buffer = Buffer.from(audioDelta, 'base64');
+            
+            // Downsample from 24kHz to 8kHz for Telnyx
+            const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
+            
+            // Convert PCM16 to PCMU (μ-law)
+            const pcmuBuffer = this.pcm16ToPcmu(downsampledBuffer);
+            
+            // Create RTP header and payload
+            const rtpPacket = this.createRtpPacket(pcmuBuffer);
+            
+            // Send to Telnyx WebSocket
+            callData.ws.send(JSON.stringify({
+                event: 'media',
+                stream_id: callData.streamId,
+                media: {
+                    payload: rtpPacket.toString('base64')
+                }
+            }));
+            
+            console.log(`Sent GPT audio to Telnyx: ${pcmuBuffer.length} bytes`);
+            
+        } catch (error) {
+            console.error('Error streaming GPT audio to Telnyx:', error);
         }
     }
+
 
     getGreeting(agent) {
         // Determine greeting based on agent locale/language
@@ -332,11 +381,8 @@ class TelnyxGPTGateway {
     }
 
     cleanup(callData) {
-        if (callData.dataChannel) {
-            callData.dataChannel.close();
-        }
-        if (callData.peerConnection) {
-            callData.peerConnection.close();
+        if (callData.gptClient) {
+            callData.gptClient.disconnect();
         }
         if (callData.streamId) {
             this.activeCalls.delete(callData.streamId);
