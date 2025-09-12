@@ -498,8 +498,9 @@ class TelnyxGPTGateway {
         rtpHeader[0] = 0x80; // Version 2, no padding, no extension, no CSRC
         rtpHeader[1] = 0x00; // PCMU payload type
         
-        // FIXED: Use proper 32-bit RTP timestamp (not Unix timestamp)
-        const rtpTimestamp = (Date.now() * 8) & 0xFFFFFFFF; // Convert to 8kHz samples, mask to 32-bit
+        // FIXED: Use proper RTP timestamp calculation for 8kHz audio
+        const now = Date.now();
+        const rtpTimestamp = Math.floor((now % 536870912) * 8); // Proper 32-bit RTP timestamp for 8kHz
         const sequenceNumber = Math.floor(Math.random() * 65536);
         
         rtpHeader.writeUInt16BE(sequenceNumber, 2); // Sequence number
