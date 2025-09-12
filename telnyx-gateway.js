@@ -496,6 +496,19 @@ class TelnyxGPTGateway {
         return pcmaBuffer;
     }
 
+    generateTestAudio(samples, frequency, sampleRate) {
+        // Generate a sine wave for testing
+        const buffer = Buffer.alloc(samples * 2); // 16-bit samples
+        const amplitude = 8000; // Moderate volume
+        
+        for (let i = 0; i < samples; i++) {
+            const sample = Math.sin(2 * Math.PI * frequency * i / sampleRate) * amplitude;
+            buffer.writeInt16LE(Math.round(sample), i * 2);
+        }
+        
+        return buffer;
+    }
+
     createRtpPacket(payloadBuffer, callData) {
         // Create minimal RTP header (12 bytes)
         const rtpHeader = Buffer.alloc(12);
@@ -557,7 +570,46 @@ class TelnyxGPTGateway {
             
             callData.ws.send(JSON.stringify(message));
             
+            // DEBUGGING: Log audio data characteristics
+            const pcm16Samples = new Int16Array(pcm16Buffer);
+            const pcm16Stats = {
+                min: Math.min(...pcm16Samples),
+                max: Math.max(...pcm16Samples),
+                avg: pcm16Samples.reduce((a, b) => a + b, 0) / pcm16Samples.length,
+                zeros: pcm16Samples.filter(s => s === 0).length
+            };
+            
+            const downsampledSamples = new Int16Array(downsampledBuffer);
+            const downsampledStats = {
+                min: Math.min(...downsampledSamples),
+                max: Math.max(...downsampledSamples),
+                avg: downsampledSamples.reduce((a, b) => a + b, 0) / downsampledSamples.length,
+                zeros: downsampledSamples.filter(s => s === 0).length
+            };
+            
+            console.log(`📊 AUDIO ANALYSIS:`);
+            console.log(`   GPT PCM16: min=${pcm16Stats.min}, max=${pcm16Stats.max}, avg=${pcm16Stats.avg.toFixed(0)}, zeros=${pcm16Stats.zeros}/${pcm16Samples.length}`);
+            console.log(`   Downsampled: min=${downsampledStats.min}, max=${downsampledStats.max}, avg=${downsampledStats.avg.toFixed(0)}, zeros=${downsampledStats.zeros}/${downsampledSamples.length}`);
+            console.log(`   PCMA bytes: [${Array.from(pcmaBuffer.slice(0, 10)).map(b => `0x${b.toString(16).padStart(2, '0')}`).join(', ')}...] (first 10)`);
+            
             console.log(`✅ Sent GPT audio to Telnyx: ${pcmaBuffer.length} PCMA bytes, RTP packet: ${rtpPacket.length} bytes`);
+            
+            // EXPERIMENTAL: Inject test sine wave every 10th packet to verify pipeline
+            if (callData.rtpSequence % 10 === 0) {
+                console.log(`🧪 INJECTING TEST SINE WAVE PACKET`);
+                const testBuffer = this.generateTestAudio(4000, 440, 8000); // 0.5sec 440Hz sine at 8kHz
+                const testPcma = this.pcm16ToPcma(testBuffer);
+                const testRtp = this.createRtpPacket(testPcma, callData);
+                
+                const testMessage = {
+                    event: 'media',
+                    stream_id: callData.streamId,
+                    media: { payload: testRtp.toString('base64') }
+                };
+                
+                callData.ws.send(JSON.stringify(testMessage));
+                console.log(`🧪 Sent test sine wave: ${testPcma.length} bytes`);
+            }
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
