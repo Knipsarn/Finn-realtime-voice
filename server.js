@@ -8,8 +8,12 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createServer } from 'http';
 import OpenAI from 'openai';
 import 'dotenv/config';
+import database from './database.js';
+import TwilioGPTGateway from './twilio-gateway.js';
+import TelnyxGPTGateway from './telnyx-gateway.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,6 +25,9 @@ const PORT = process.env.PORT || 3010;
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
+
+// Initialize database
+await database.initialize();
 
 // Middleware
 app.use(cors());
@@ -81,6 +88,160 @@ app.get('/api/config', (req, res) => {
         version: '1.0.0',
         timestamp: new Date().toISOString()
     });
+});
+
+// Agent Management API Endpoints
+
+// GET /api/agents - List all agents
+app.get('/api/agents', async (req, res) => {
+    try {
+        const agents = await database.getAllAgents();
+        res.json({
+            success: true,
+            agents,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error fetching agents:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch agents',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
+
+// POST /api/agents - Create new agent
+app.post('/api/agents', async (req, res) => {
+    try {
+        const { prompt, voice } = req.body;
+        
+        if (!prompt || !voice) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required parameters: prompt and voice are required'
+            });
+        }
+
+        const agentId = await database.createAgent(prompt, voice);
+        const agent = await database.getAgent(agentId);
+        
+        res.json({
+            success: true,
+            agent,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error creating agent:', error);
+        res.status(400).json({
+            success: false,
+            error: error.message || 'Failed to create agent'
+        });
+    }
+});
+
+// GET /api/agents/:id - Get specific agent
+app.get('/api/agents/:id', async (req, res) => {
+    try {
+        const agent = await database.getAgent(req.params.id);
+        if (!agent) {
+            return res.status(404).json({
+                success: false,
+                error: 'Agent not found'
+            });
+        }
+        
+        res.json({
+            success: true,
+            agent,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error fetching agent:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch agent'
+        });
+    }
+});
+
+// PUT /api/agents/:id - Update agent
+app.put('/api/agents/:id', async (req, res) => {
+    try {
+        const { prompt, voice } = req.body;
+        
+        if (!prompt || !voice) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required parameters: prompt and voice are required'
+            });
+        }
+
+        const success = await database.updateAgent(req.params.id, prompt, voice);
+        if (!success) {
+            return res.status(404).json({
+                success: false,
+                error: 'Agent not found'
+            });
+        }
+
+        const agent = await database.getAgent(req.params.id);
+        res.json({
+            success: true,
+            agent,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error updating agent:', error);
+        res.status(400).json({
+            success: false,
+            error: error.message || 'Failed to update agent'
+        });
+    }
+});
+
+// GET /api/calls - List recent calls
+app.get('/api/calls', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 50;
+        const calls = await database.getRecentCalls(limit);
+        res.json({
+            success: true,
+            calls,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error fetching calls:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch calls'
+        });
+    }
+});
+
+// GET /api/calls/:id - Get specific call
+app.get('/api/calls/:id', async (req, res) => {
+    try {
+        const call = await database.getCall(req.params.id);
+        if (!call) {
+            return res.status(404).json({
+                success: false,
+                error: 'Call not found'
+            });
+        }
+        
+        res.json({
+            success: true,
+            call,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error fetching call:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch call'
+        });
+    }
 });
 
 // T016: POST /api/session - Create OpenAI Realtime session with ephemeral token
@@ -192,22 +353,140 @@ app.post('/api/session', async (req, res) => {
     }
 });
 
+// Twilio Voice Webhook - Incoming Call Handler
+app.post('/api/twilio/voice', async (req, res) => {
+    try {
+        console.log('Incoming call from:', req.body.From, 'to:', req.body.To);
+        
+        // Create call record in database
+        const agents = await database.getAllAgents();
+        const defaultAgent = agents[0]; // Use first agent as default
+        
+        if (!defaultAgent) {
+            console.error('No agents configured');
+            return res.status(500).send('<Response><Say>No agents configured</Say></Response>');
+        }
+
+        const callId = await database.createCall(defaultAgent.id, req.body.From, req.body.To);
+        console.log(`Created call record ${callId} using agent ${defaultAgent.id}`);
+
+        // Return TwiML to connect to our WebSocket stream
+        const streamUrl = `wss://${req.get('host')}/api/twilio/stream`;
+        
+        const twimlResponse = `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Connect>
+        <Stream url="${streamUrl}">
+            <Parameter name="callId" value="${callId}" />
+            <Parameter name="agentId" value="${defaultAgent.id}" />
+        </Stream>
+    </Connect>
+</Response>`;
+
+        res.type('text/xml');
+        res.send(twimlResponse);
+        
+    } catch (error) {
+        console.error('Twilio webhook error:', error);
+        res.status(500).send('<Response><Say>Internal server error</Say></Response>');
+    }
+});
+
+// Telnyx Voice Webhook - Incoming Call Handler
+app.post('/api/telnyx/voice', async (req, res) => {
+    try {
+        const event = req.body.data;
+        console.log('Telnyx webhook received:', event.event_type);
+        
+        if (event.event_type === 'call.initiated') {
+            const payload = event.payload;
+            console.log('Incoming call from:', payload.from, 'to:', payload.to);
+            
+            // Create call record in database
+            const agents = await database.getAllAgents();
+            const defaultAgent = agents[0]; // Use first agent as default
+            
+            if (!defaultAgent) {
+                console.error('No agents configured');
+                return res.status(500).json({ 
+                    data: { 
+                        command: 'hangup',
+                        call_control_id: payload.call_control_id 
+                    }
+                });
+            }
+
+            const callId = await database.createCall(defaultAgent.id, payload.from, payload.to);
+            console.log(`Created call record ${callId} using agent ${defaultAgent.id}`);
+
+            // Answer the call and start media streaming
+            const streamUrl = `wss://${req.get('host')}/api/telnyx/stream`;
+            
+            const response = {
+                data: [
+                    {
+                        command: 'answer',
+                        call_control_id: payload.call_control_id
+                    },
+                    {
+                        command: 'streaming_start',
+                        call_control_id: payload.call_control_id,
+                        stream_url: streamUrl,
+                        stream_track: 'both_tracks',
+                        stream_bidirectional_mode: 'rtp'
+                    }
+                ]
+            };
+            
+            res.json(response);
+        } else {
+            // Acknowledge other events
+            res.status(200).json({});
+        }
+        
+    } catch (error) {
+        console.error('Telnyx webhook error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ 
         status: 'ok', 
-        service: 'gpt-realtime-voice-test-harness',
+        service: 'gpt-realtime-voice-test-harness-twilio',
         openai_configured: !!process.env.OPENAI_API_KEY,
+        database_connected: !!database.db,
+        twilio_configured: !!(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN),
         timestamp: new Date().toISOString()
     });
 });
 
+// Graceful shutdown
+process.on('SIGINT', () => {
+    console.log('Shutting down server...');
+    database.close();
+    process.exit(0);
+});
+
+// Create HTTP server and initialize gateways
+const httpServer = createServer(app);
+const twilioGateway = new TwilioGPTGateway(httpServer);
+const telnyxGateway = new TelnyxGPTGateway(httpServer);
+
 // Start server
-app.listen(PORT, () => {
-    console.log(`GPT-Realtime Voice Test Harness running on http://localhost:${PORT}`);
+httpServer.listen(PORT, () => {
+    console.log(`Twilio GPT-Realtime Gateway running on http://localhost:${PORT}`);
     console.log('Static client available at GET /');
     console.log('API endpoints:');
     console.log('  GET /health - Service health check');
-    console.log('  GET /api/config - Configuration presets (pending T015)');
-    console.log('  POST /api/session - Session creation (pending T016)');
+    console.log('  GET /api/config - Configuration presets');
+    console.log('  POST /api/session - GPT-Realtime session creation');
+    console.log('  POST /api/twilio/voice - Twilio voice webhook');
+    console.log('  WS /api/twilio/stream - Twilio media stream handler');
+    console.log('  POST /api/telnyx/voice - Telnyx voice webhook');
+    console.log('  WS /api/telnyx/stream - Telnyx media stream handler');
+    console.log('  GET /api/agents - List agents');
+    console.log('  POST /api/agents - Create agent');
+    console.log('  GET /api/calls - List calls');
 });

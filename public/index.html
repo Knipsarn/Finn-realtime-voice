@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPT-Realtime Voice Test Harness</title>
+    <title>Twilio GPT-Realtime Gateway</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>GPT-Realtime Voice Test Harness</h1>
-            <p>Swedish Voice Conversation Testing - Production Ready (gpt-realtime)</p>
+            <h1>Twilio GPT-Realtime Gateway</h1>
+            <p>System Prompt Testing + Voice Agent</p>
         </header>
 
         <main>
             <div class="controls">
                 <div class="config-section">
-                    <h3>Configuration</h3>
+                    <h3>Agent Configuration</h3>
+                    
+                    <div class="config-group">
+                        <label for="system-prompt">System Prompt:</label>
+                        <textarea id="system-prompt" rows="4" placeholder="Enter your system prompt here...">Du är en hjälpsam AI-assistent som talar svenska. Svara naturligt och använd svenska konversationsmönster. Var kortfattad om inte användaren ber om detaljerad information.</textarea>
+                    </div>
                     
                     <div class="config-group">
                         <label for="voice-select">Voice:</label>
@@ -37,14 +42,6 @@
                         <select id="locale-select">
                             <option value="sv-SE" selected>Swedish (sv-SE)</option>
                             <option value="en-US">English (en-US)</option>
-                        </select>
-                    </div>
-
-                    <div class="config-group">
-                        <label for="style-select">Style:</label>
-                        <select id="style-select">
-                            <option value="concise" selected>Concise</option>
-                            <option value="verbose">Verbose</option>
                         </select>
                     </div>
                 </div>

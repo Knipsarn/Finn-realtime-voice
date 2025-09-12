@@ -3,7 +3,19 @@
     "allow": [
       "Bash(scripts/create-new-feature.sh:*)",
       "Bash(scripts/setup-plan.sh:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "WebSearch",
+      "WebFetch(domain:platform.openai.com)",
+      "WebFetch(domain:webrtchacks.com)",
+      "Bash(scripts/update-agent-context.sh:*)",
+      "Bash(scripts/check-task-prerequisites.sh:*)",
+      "Bash(npm install)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(start http://localhost:3000)",
+      "Bash(taskkill:*)"
     ],
     "deny": [],
     "ask": []

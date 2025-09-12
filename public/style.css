@@ -88,16 +88,24 @@ main {
     color: #555;
 }
 
-.config-group select {
+.config-group select,
+.config-group textarea {
     width: 100%;
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background: white;
     font-size: 14px;
+    font-family: inherit;
 }
 
-.config-group select:focus {
+.config-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.config-group select:focus,
+.config-group textarea:focus {
     outline: none;
     border-color: #2c5aa0;
     box-shadow: 0 0 0 2px rgba(44, 90, 160, 0.2);

@@ -28,9 +28,9 @@ class RealtimeVoiceClient {
             disconnectBtn: document.getElementById('disconnect-btn'),
             muteBtn: document.getElementById('mute-btn'),
             unmuteBtn: document.getElementById('unmute-btn'),
+            systemPrompt: document.getElementById('system-prompt'),
             voiceSelect: document.getElementById('voice-select'),
             localeSelect: document.getElementById('locale-select'),
-            styleSelect: document.getElementById('style-select'),
             connectionValue: document.getElementById('connection-value'),
             audioValue: document.getElementById('audio-value'),
             latencyValue: document.getElementById('latency-value'),
@@ -72,8 +72,7 @@ class RealtimeVoiceClient {
                 body: JSON.stringify({
                     voice: this.elements.voiceSelect.value,
                     locale: this.elements.localeSelect.value,
-                    style: this.elements.styleSelect.value,
-                    instructions: this.getInstructions(),
+                    instructions: this.elements.systemPrompt.value.trim() || this.getInstructions(),
                     firstLine: this.getFirstLine()
                 })
             });
@@ -401,9 +400,9 @@ class RealtimeVoiceClient {
         this.elements.muteBtn.disabled = !this.isConnected || this.isMuted;
         this.elements.unmuteBtn.disabled = !this.isConnected || !this.isMuted;
         
+        this.elements.systemPrompt.disabled = this.isConnected;
         this.elements.voiceSelect.disabled = this.isConnected;
         this.elements.localeSelect.disabled = this.isConnected;
-        this.elements.styleSelect.disabled = this.isConnected;
     }
 
     updateStatus(connectionStatus, connectionClass, type = 'connection') {
