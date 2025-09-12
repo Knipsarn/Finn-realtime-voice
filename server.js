@@ -493,13 +493,7 @@ process.on('SIGINT', () => {
 // Create HTTP server and initialize gateways
 const httpServer = createServer(app);
 
-// Add upgrade event listener for WebSocket connections
-httpServer.on('upgrade', (request, socket, head) => {
-    console.log('HTTP UPGRADE REQUEST RECEIVED');
-    console.log('URL:', request.url);
-    console.log('Headers:', request.headers);
-    console.log('Method:', request.method);
-});
+// WebSocket upgrade handling is done by the WebSocket servers
 
 const twilioGateway = new TwilioGPTGateway(httpServer);
 const telnyxGateway = new TelnyxGPTGateway(httpServer);
