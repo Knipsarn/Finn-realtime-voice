@@ -497,10 +497,16 @@ class TelnyxGPTGateway {
         const rtpHeader = Buffer.alloc(12);
         rtpHeader[0] = 0x80; // Version 2, no padding, no extension, no CSRC
         rtpHeader[1] = 0x00; // PCMU payload type
-        // Sequence number and timestamp would be managed properly in production
-        rtpHeader.writeUInt16BE(Math.floor(Math.random() * 65536), 2); // Random sequence
-        rtpHeader.writeUInt32BE(Date.now(), 4); // Simple timestamp
+        
+        // FIXED: Use proper 32-bit RTP timestamp (not Unix timestamp)
+        const rtpTimestamp = (Date.now() * 8) & 0xFFFFFFFF; // Convert to 8kHz samples, mask to 32-bit
+        const sequenceNumber = Math.floor(Math.random() * 65536);
+        
+        rtpHeader.writeUInt16BE(sequenceNumber, 2); // Sequence number
+        rtpHeader.writeUInt32BE(rtpTimestamp, 4); // 32-bit RTP timestamp
         rtpHeader.writeUInt32BE(0x12345678, 8); // SSRC identifier
+        
+        console.log(`RTP: seq=${sequenceNumber}, timestamp=${rtpTimestamp}, payload=${payloadBuffer.length}bytes`);
         
         return Buffer.concat([rtpHeader, payloadBuffer]);
     }
