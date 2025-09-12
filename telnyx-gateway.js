@@ -489,7 +489,7 @@ class TelnyxGPTGateway {
         return pcmaBuffer;
     }
 
-    createRtpPacket(payloadBuffer) {
+    createRtpPacket(payloadBuffer, callData) {
         // Create minimal RTP header (12 bytes)
         const rtpHeader = Buffer.alloc(12);
         rtpHeader[0] = 0x80; // Version 2, no padding, no extension, no CSRC
@@ -535,7 +535,7 @@ class TelnyxGPTGateway {
             console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
             
             // Create RTP header and payload
-            const rtpPacket = this.createRtpPacket(pcmaBuffer);
+            const rtpPacket = this.createRtpPacket(pcmaBuffer, callData);
             console.log('RTP packet size:', rtpPacket.length, 'bytes');
             
             // Send to Telnyx WebSocket
