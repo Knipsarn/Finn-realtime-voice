@@ -4,15 +4,13 @@
  */
 
 import { WebSocketServer } from 'ws';
-import OpenAI from 'openai';
-import { RealtimeClient } from '@openai/realtime-api-beta';
+import WebSocket from 'ws';
 import database from './database.js';
 
 class TelnyxGPTGateway {
     constructor(server) {
         this.server = server;
-        this.openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-        this.activeCalls = new Map(); // callId -> { ws, gptConnection, agent }
+        this.activeCalls = new Map(); // callId -> { ws, gptWebSocket, agent }
         
         this.initializeWebSocketServer();
     }
@@ -56,7 +54,7 @@ class TelnyxGPTGateway {
             streamId: null,
             agentId: null,
             agent: null,
-            gptClient: null,
+            gptWebSocket: null,
             gptConnecting: true, // Set to true immediately to buffer early audio
             audioBuffer: [], // Buffer audio packets during connection
             startTime: Date.now()
@@ -147,7 +145,7 @@ class TelnyxGPTGateway {
 
             case 'media':
                 // CRITICAL: Handle audio during connection establishment
-                if (!callData.gptClient) {
+                if (!callData.gptWebSocket) {
                     if (callData.gptConnecting) {
                         // Buffer audio during connection
                         callData.audioBuffer.push(message.media.payload);
@@ -156,13 +154,13 @@ class TelnyxGPTGateway {
                         }
                         return;
                     } else {
-                        console.error('=== AUDIO PROCESSING ERROR: No GPT client and not connecting ===');
+                        console.error('=== AUDIO PROCESSING ERROR: No GPT WebSocket and not connecting ===');
                         console.error('Stream ID:', callData.streamId);
                         return;
                     }
                 }
                 
-                if (!callData.gptClient.isConnected()) {
+                if (callData.gptWebSocket.readyState !== WebSocket.OPEN) {
                     if (callData.gptConnecting) {
                         // Still connecting - buffer audio
                         callData.audioBuffer.push(message.media.payload);
@@ -171,9 +169,9 @@ class TelnyxGPTGateway {
                         }
                         return;
                     } else {
-                        console.error('=== AUDIO PROCESSING ERROR: GPT client not connected ===');
+                        console.error('=== AUDIO PROCESSING ERROR: GPT WebSocket not open ===');
                         console.error('Stream ID:', callData.streamId);
-                        console.error('Connection state:', callData.gptClient.isConnected());
+                        console.error('Connection state:', callData.gptWebSocket.readyState);
                         return;
                     }
                 }
@@ -185,7 +183,7 @@ class TelnyxGPTGateway {
                     console.error('=== AUDIO PROCESSING ERROR ===');
                     console.error('Stream ID:', callData.streamId);
                     console.error('Error message:', error.message);
-                    console.error('GPT connection state:', callData.gptClient ? callData.gptClient.isConnected() : 'null');
+                    console.error('GPT connection state:', callData.gptWebSocket ? callData.gptWebSocket.readyState : 'null');
                 }
                 break;
 
@@ -349,21 +347,23 @@ class TelnyxGPTGateway {
     }
 
     processAudioPacket(callData, audioPayload) {
-        // Transcode and forward audio to GPT-Realtime
+        // Transcode and forward audio to GPT-Realtime via WebSocket
         const audioData = this.transcodeToGPT(audioPayload);
-        if (audioData) {
-            // Convert base64 to Int16Array as required by RealtimeClient
-            const buffer = Buffer.from(audioData, 'base64');
-            const int16Array = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.length / 2);
-            
-            // Append audio to GPT client
-            callData.gptClient.appendInputAudio(int16Array);
+        if (audioData && callData.gptWebSocket && callData.gptWebSocket.readyState === WebSocket.OPEN) {
+            // Send audio via WebSocket (will be implemented in Task 3.2)
+            this.appendAudioToOpenAI(callData, audioData);
             
             // Debug audio flow (log 1% of packets to avoid spam)
             if (Math.random() < 0.01) {
-                console.log(`Audio forwarded to GPT: ${int16Array.length} samples`);
+                console.log(`Audio forwarded to GPT via WebSocket: ${audioData.length} bytes`);
             }
         }
+    }
+
+    // Placeholder for Task 3.2 - will implement proper audio batching
+    appendAudioToOpenAI(callData, base64Audio) {
+        // TODO: Implement in Task 3.2
+        console.log('TODO: appendAudioToOpenAI - will batch and send audio to OpenAI WebSocket');
     }
 
     transcodeToGPT(base64RtpAudio) {
@@ -575,11 +575,11 @@ class TelnyxGPTGateway {
     }
 
     cleanup(callData) {
-        if (callData.gptClient) {
+        if (callData.gptWebSocket) {
             try {
-                callData.gptClient.disconnect();
+                callData.gptWebSocket.close();
             } catch (error) {
-                console.error('Error disconnecting GPT client:', error);
+                console.error('Error closing GPT WebSocket:', error);
             }
         }
         if (callData.streamId) {
