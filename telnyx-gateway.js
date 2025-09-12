@@ -19,30 +19,26 @@ class TelnyxGPTGateway {
     initializeWebSocketServer() {
         this.wss = new WebSocketServer({ 
             server: this.server,
-            path: '/api/telnyx/stream',
-            handleProtocols: (protocols, req) => {
-                console.log('=== WEBSOCKET PROTOCOL NEGOTIATION ===');
-                console.log('Protocols:', protocols);
-                
-                // Per ws library docs: protocols is a Set
-                if (protocols.has('telnyx-media-stream')) {
-                    console.log('Selected: telnyx-media-stream');
-                    return 'telnyx-media-stream';
-                }
-                
-                // Default: return first protocol or false
-                const firstProtocol = protocols.values().next().value;
-                console.log('Selected:', firstProtocol || 'none');
-                return firstProtocol || false;
-            }
+            path: '/api/telnyx/stream'
         });
 
         this.wss.on('connection', (ws, req) => {
-            console.log('=== TELNYX WEBSOCKET CONNECTION ===');
+            console.log('=== TELNYX WEBSOCKET CONNECTION SUCCESSFUL ===');
             console.log('WebSocket connected from:', req.socket.remoteAddress);
             console.log('Protocol:', ws.protocol);
             console.log('Headers:', JSON.stringify(req.headers, null, 2));
             this.handleTelnyxConnection(ws, req);
+        });
+        
+        this.wss.on('error', (error) => {
+            console.error('=== WEBSOCKET SERVER ERROR ===');
+            console.error('Error:', error);
+        });
+        
+        this.wss.on('headers', (headers, req) => {
+            console.log('=== WEBSOCKET HEADERS EVENT ===');
+            console.log('Headers being sent:', headers);
+            console.log('Request URL:', req.url);
         });
         
         this.wss.on('error', (error) => {
