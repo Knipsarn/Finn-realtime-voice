@@ -462,7 +462,12 @@ app.get('/api/telnyx/stream', (req, res) => {
     res.json({ 
         error: 'This is a WebSocket endpoint', 
         upgrade_required: true,
-        websocket_url: 'wss://web-production-b99cf.up.railway.app/api/telnyx/stream'
+        websocket_url: 'wss://web-production-b99cf.up.railway.app/api/telnyx/stream',
+        server_info: {
+            port: PORT,
+            host: req.get('host'),
+            headers: req.headers
+        }
     });
 });
 
@@ -487,6 +492,15 @@ process.on('SIGINT', () => {
 
 // Create HTTP server and initialize gateways
 const httpServer = createServer(app);
+
+// Add upgrade event listener for WebSocket connections
+httpServer.on('upgrade', (request, socket, head) => {
+    console.log('HTTP UPGRADE REQUEST RECEIVED');
+    console.log('URL:', request.url);
+    console.log('Headers:', request.headers);
+    console.log('Method:', request.method);
+});
+
 const twilioGateway = new TwilioGPTGateway(httpServer);
 const telnyxGateway = new TelnyxGPTGateway(httpServer);
 
