@@ -1,0 +1,313 @@
+2025-09-12T14:39:09.810275438Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T14:39:09.810283579Z [inf]  Raw body: {
+2025-09-12T14:39:09.810288318Z [inf]    "data": {
+2025-09-12T14:39:09.810293446Z [inf]      "event_type": "call.initiated",
+2025-09-12T14:39:09.810297857Z [inf]      "id": "17886e39-334a-4c4f-9fd8-9abd0bb5901a",
+2025-09-12T14:39:09.810302545Z [inf]      "occurred_at": "2025-09-12T14:39:04.702387Z",
+2025-09-12T14:39:09.810306833Z [inf]      "payload": {
+2025-09-12T14:39:09.810310876Z [inf]        "call_control_id": "v3:ZFXIQTCiqjSqj0Ul3-qNN1U2uxFirnhwr5_E5bSDZYQXHFvBsNXP6A",
+2025-09-12T14:39:09.810315473Z [inf]        "call_leg_id": "3b39ca1c-8fe6-11f0-afe0-02420a1f2170",
+2025-09-12T14:39:09.810319832Z [inf]        "call_session_id": "3b39ba5e-8fe6-11f0-a5c0-02420a1f2170",
+2025-09-12T14:39:09.810324405Z [inf]        "caller_id_name": "+46723161614",
+2025-09-12T14:39:09.810328814Z [inf]        "calling_party_type": "pstn",
+2025-09-12T14:39:09.810333689Z [inf]        "client_state": null,
+2025-09-12T14:39:09.810337643Z [inf]        "connection_codecs": "PCMA,PCMU",
+2025-09-12T14:39:09.810342693Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T14:39:09.810347110Z [inf]        "custom_headers": [
+2025-09-12T14:39:09.810351692Z [inf]          {
+2025-09-12T14:39:09.810356515Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T14:39:09.810360757Z [inf]            "value": "icid-value=3044ca82-7256-103e-00-00-00-10-6b-03-d5-04"
+2025-09-12T14:39:09.810365073Z [inf]          },
+2025-09-12T14:39:09.810369706Z [inf]          {
+2025-09-12T14:39:09.810373790Z [inf]            "name": "P-Early-Media",
+2025-09-12T14:39:09.810377948Z [inf]            "value": "supported"
+2025-09-12T14:39:09.810381944Z [inf]          }
+2025-09-12T14:39:09.810386079Z [inf]        ],
+2025-09-12T14:39:09.810390113Z [inf]        "direction": "incoming",
+2025-09-12T14:39:09.810394167Z [inf]        "from": "+46723161614",
+2025-09-12T14:39:09.810398199Z [inf]        "from_sip_uri": "+46723161614@57.67.212.40",
+2025-09-12T14:39:09.810402224Z [inf]        "offered_codecs": "PCMA,PCMU,G729",
+2025-09-12T14:39:09.810406498Z [inf]        "start_time": "2025-09-12T14:39:04.702387Z",
+2025-09-12T14:39:09.810411020Z [inf]        "state": "parked",
+2025-09-12T14:39:09.810415041Z [inf]        "tags": [
+2025-09-12T14:39:09.810419463Z [inf]          "gpt-realtime"
+2025-09-12T14:39:09.810423724Z [inf]        ],
+2025-09-12T14:39:09.810428579Z [inf]        "to": "+46105200937",
+2025-09-12T14:39:09.810432786Z [inf]        "to_sip_uri": "+46105200937;phone-context=ims.mnc002.mcc240.3gppnetwork.org@185.246.41.140"
+2025-09-12T14:39:09.810437054Z [inf]      },
+2025-09-12T14:39:09.810441181Z [inf]      "record_type": "event"
+2025-09-12T14:39:09.810445303Z [inf]    },
+2025-09-12T14:39:09.810449404Z [inf]    "meta": {
+2025-09-12T14:39:09.810453529Z [inf]      "attempt": 1,
+2025-09-12T14:39:09.810457693Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T14:39:09.810462116Z [inf]    }
+2025-09-12T14:39:09.810466266Z [inf]  }
+2025-09-12T14:39:09.810470233Z [inf]  Headers: {
+2025-09-12T14:39:09.810474510Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:09.810478418Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T14:39:09.810482774Z [inf]    "content-length": "1386",
+2025-09-12T14:39:09.810487154Z [inf]    "content-type": "application/json",
+2025-09-12T14:39:09.810491223Z [inf]    "telnyx-signature-ed25519": "Qlz3Wiq5JH4a02Z1uqf+rTgf28ZajZiljpCfgsdwZ+doWj7f1BO3Thy6YUQmInY8W2RZru+0r4R14vpUUHv4Bg==",
+2025-09-12T14:39:09.810495154Z [inf]    "telnyx-timestamp": "1757687944",
+2025-09-12T14:39:09.810499464Z [inf]    "webhook-id": "17886e39-334a-4c4f-9fd8-9abd0bb5901a",
+2025-09-12T14:39:09.810503862Z [inf]    "webhook-signature": "Qlz3Wiq5JH4a02Z1uqf+rTgf28ZajZiljpCfgsdwZ+doWj7f1BO3Thy6YUQmInY8W2RZru+0r4R14vpUUHv4Bg==",
+2025-09-12T14:39:09.810508441Z [inf]    "webhook-timestamp": "1757687944",
+2025-09-12T14:39:09.810513539Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T14:39:09.810517612Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:09.810521942Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T14:39:09.810526413Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T14:39:09.810530735Z [inf]    "x-railway-request-id": "Xf-HVmAQTlibXEVnYqdHTg",
+2025-09-12T14:39:09.810536667Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T14:39:09.810547184Z [inf]    "x-request-start": "1757687945001",
+2025-09-12T14:39:09.810551595Z [inf]    "accept-encoding": "gzip"
+2025-09-12T14:39:09.810556373Z [inf]  }
+2025-09-12T14:39:09.810560675Z [inf]  Event type: call.initiated
+2025-09-12T14:39:09.810565581Z [inf]  Incoming call from: +46723161614 to: +46105200937
+2025-09-12T14:39:09.810571754Z [inf]  Created call record 1 using agent 1
+2025-09-12T14:39:09.810576580Z [inf]  Call answered and streaming started
+2025-09-12T14:39:09.810581534Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T14:39:09.810585783Z [inf]  Raw body: {
+2025-09-12T14:39:09.810589944Z [inf]    "data": {
+2025-09-12T14:39:09.810594115Z [inf]      "event_type": "call.answered",
+2025-09-12T14:39:09.810598895Z [inf]      "id": "7f05ecd5-f931-44f8-8da3-5ed1ede9a80d",
+2025-09-12T14:39:09.810603464Z [inf]      "occurred_at": "2025-09-12T14:39:05.562386Z",
+2025-09-12T14:39:09.810608019Z [inf]      "payload": {
+2025-09-12T14:39:09.810613881Z [inf]        "call_control_id": "v3:ZFXIQTCiqjSqj0Ul3-qNN1U2uxFirnhwr5_E5bSDZYQXHFvBsNXP6A",
+2025-09-12T14:39:09.810618190Z [inf]        "call_leg_id": "3b39ca1c-8fe6-11f0-afe0-02420a1f2170",
+2025-09-12T14:39:09.810623601Z [inf]        "call_session_id": "3b39ba5e-8fe6-11f0-a5c0-02420a1f2170",
+2025-09-12T14:39:09.811281862Z [inf]        "calling_party_type": "pstn",
+2025-09-12T14:39:09.811292876Z [inf]        "client_state": "MQ==",
+2025-09-12T14:39:09.811301009Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T14:39:09.811307884Z [inf]        "custom_headers": [
+2025-09-12T14:39:09.811313908Z [inf]          {
+2025-09-12T14:39:09.811319990Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T14:39:09.811327119Z [inf]            "value": "icid-value=3044ca82-7256-103e-00-00-00-10-6b-03-d5-04"
+2025-09-12T14:39:09.811334322Z [inf]          },
+2025-09-12T14:39:09.811340579Z [inf]          {
+2025-09-12T14:39:09.811346447Z [inf]            "name": "P-Early-Media",
+2025-09-12T14:39:09.811352653Z [inf]            "value": "supported"
+2025-09-12T14:39:09.811358751Z [inf]          }
+2025-09-12T14:39:09.811364678Z [inf]        ],
+2025-09-12T14:39:09.811370821Z [inf]        "from": "+46723161614",
+2025-09-12T14:39:09.811377390Z [inf]        "start_time": "2025-09-12T14:39:04.702387Z",
+2025-09-12T14:39:09.811382813Z [inf]        "tags": [
+2025-09-12T14:39:09.811389034Z [inf]          "gpt-realtime"
+2025-09-12T14:39:09.811395459Z [inf]        ],
+2025-09-12T14:39:09.811401387Z [inf]        "to": "+46105200937"
+2025-09-12T14:39:09.811407307Z [inf]      },
+2025-09-12T14:39:09.811413777Z [inf]      "record_type": "event"
+2025-09-12T14:39:09.811420363Z [inf]    },
+2025-09-12T14:39:09.811425960Z [inf]    "meta": {
+2025-09-12T14:39:09.811432483Z [inf]      "attempt": 1,
+2025-09-12T14:39:09.811438281Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T14:39:09.811444093Z [inf]    }
+2025-09-12T14:39:09.811449956Z [inf]  }
+2025-09-12T14:39:09.811455840Z [inf]  Headers: {
+2025-09-12T14:39:09.811463349Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:09.811469335Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T14:39:09.811474875Z [inf]    "content-length": "1059",
+2025-09-12T14:39:09.811481192Z [inf]    "content-type": "application/json",
+2025-09-12T14:39:09.811487990Z [inf]    "telnyx-signature-ed25519": "9lk3k4kqli/qd1TJrxmeFoC38otl2gVv1g1qyBWUWRBMhIuVo2dNJk/quC3D3PWZoSt1XVKzeFAvrMRw//pmDw==",
+2025-09-12T14:39:09.811493779Z [inf]    "telnyx-timestamp": "1757687945",
+2025-09-12T14:39:09.811500249Z [inf]    "webhook-id": "7f05ecd5-f931-44f8-8da3-5ed1ede9a80d",
+2025-09-12T14:39:09.811506237Z [inf]    "webhook-signature": "9lk3k4kqli/qd1TJrxmeFoC38otl2gVv1g1qyBWUWRBMhIuVo2dNJk/quC3D3PWZoSt1XVKzeFAvrMRw//pmDw==",
+2025-09-12T14:39:09.811511148Z [inf]    "webhook-timestamp": "1757687945",
+2025-09-12T14:39:09.811516285Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T14:39:09.811521510Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:09.811526402Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T14:39:09.811532077Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T14:39:09.811537496Z [inf]    "x-railway-request-id": "dHEIu4qGQcqpygrYm3z_FQ",
+2025-09-12T14:39:09.811543750Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T14:39:09.811549657Z [inf]    "x-request-start": "1757687945659",
+2025-09-12T14:39:09.811555651Z [inf]    "accept-encoding": "gzip"
+2025-09-12T14:39:09.811561636Z [inf]  }
+2025-09-12T14:39:09.811567624Z [inf]  Event type: call.answered
+2025-09-12T14:39:09.811573445Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T14:39:09.812469943Z [inf]  Raw body: {
+2025-09-12T14:39:09.812478031Z [inf]    "data": {
+2025-09-12T14:39:09.812484713Z [inf]      "event_type": "streaming.failed",
+2025-09-12T14:39:09.812490663Z [inf]      "id": "d7ad54a1-9e2c-45e7-8d92-eed532534a3b",
+2025-09-12T14:39:09.812496615Z [inf]      "occurred_at": "2025-09-12T14:39:05.944291Z",
+2025-09-12T14:39:09.812502577Z [inf]      "payload": {
+2025-09-12T14:39:09.812508780Z [inf]        "call_control_id": "v3:ZFXIQTCiqjSqj0Ul3-qNN1U2uxFirnhwr5_E5bSDZYQXHFvBsNXP6A",
+2025-09-12T14:39:09.812517958Z [inf]        "call_leg_id": "3b39ca1c-8fe6-11f0-afe0-02420a1f2170",
+2025-09-12T14:39:09.812523736Z [inf]        "call_session_id": "3b39ba5e-8fe6-11f0-a5c0-02420a1f2170",
+2025-09-12T14:39:09.812530110Z [inf]        "calling_party_type": "pstn",
+2025-09-12T14:39:09.812536321Z [inf]        "client_state": "MQ==",
+2025-09-12T14:39:09.812542379Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T14:39:09.812548274Z [inf]        "failure_reason": "connection_failed",
+2025-09-12T14:39:09.812554267Z [inf]        "stream_id": "e660bdd1-bc50-4b5e-a446-24f66d9e7813",
+2025-09-12T14:39:09.812559564Z [inf]        "stream_params": {
+2025-09-12T14:39:09.812564791Z [inf]          "stream_track": "both_tracks",
+2025-09-12T14:39:09.812571842Z [inf]          "stream_url": "wss://web-production-b99cf.up.railway.app/api/telnyx/stream"
+2025-09-12T14:39:09.812578087Z [inf]        },
+2025-09-12T14:39:09.812582982Z [inf]        "stream_type": "websocket"
+2025-09-12T14:39:09.812588284Z [inf]      },
+2025-09-12T14:39:09.812593438Z [inf]      "record_type": "event"
+2025-09-12T14:39:09.812598212Z [inf]    },
+2025-09-12T14:39:09.812602786Z [inf]    "meta": {
+2025-09-12T14:39:09.812608147Z [inf]      "attempt": 1,
+2025-09-12T14:39:09.812613358Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T14:39:09.812620712Z [inf]    }
+2025-09-12T14:39:09.812627184Z [inf]  }
+2025-09-12T14:39:09.812633449Z [inf]  Headers: {
+2025-09-12T14:39:09.812639299Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:09.812645170Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T14:39:09.812651220Z [inf]    "content-length": "944",
+2025-09-12T14:39:09.812657129Z [inf]    "content-type": "application/json",
+2025-09-12T14:39:09.812663086Z [inf]    "telnyx-signature-ed25519": "wQE0CcAQ7AvL4MTVnRo31xQ24nHXLE9i3YX+IcvccCCNjctUSxk/kZeQCU8Fiz3L8HPrW+KGYeQhovwDWz9tAg==",
+2025-09-12T14:39:09.812672247Z [inf]    "telnyx-timestamp": "1757687945",
+2025-09-12T14:39:09.812678395Z [inf]    "webhook-id": "d7ad54a1-9e2c-45e7-8d92-eed532534a3b",
+2025-09-12T14:39:09.812684204Z [inf]    "webhook-signature": "wQE0CcAQ7AvL4MTVnRo31xQ24nHXLE9i3YX+IcvccCCNjctUSxk/kZeQCU8Fiz3L8HPrW+KGYeQhovwDWz9tAg==",
+2025-09-12T14:39:09.812690390Z [inf]    "webhook-timestamp": "1757687945",
+2025-09-12T14:39:09.812697470Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T14:39:09.812706549Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:09.812712898Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T14:39:09.812718591Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T14:39:09.812724537Z [inf]    "x-railway-request-id": "oJJFI5AIR86f5WIfm3z_FQ",
+2025-09-12T14:39:09.812730962Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T14:39:09.812736778Z [inf]    "x-request-start": "1757687946001",
+2025-09-12T14:39:09.812742743Z [inf]    "accept-encoding": "gzip"
+2025-09-12T14:39:09.812749641Z [inf]  }
+2025-09-12T14:39:09.812755558Z [inf]  Event type: streaming.failed
+2025-09-12T14:39:29.806463092Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T14:39:29.806473600Z [inf]  Raw body: {
+2025-09-12T14:39:29.806479645Z [inf]    "data": {
+2025-09-12T14:39:29.806499217Z [inf]      "event_type": "call.hangup",
+2025-09-12T14:39:29.806505638Z [inf]      "id": "bf72b423-e67b-4ce9-9b23-7bcd405f5aa8",
+2025-09-12T14:39:29.806521019Z [inf]      "occurred_at": "2025-09-12T14:39:24.242390Z",
+2025-09-12T14:39:29.806527257Z [inf]      "payload": {
+2025-09-12T14:39:29.806533724Z [inf]        "call_control_id": "v3:ZFXIQTCiqjSqj0Ul3-qNN1U2uxFirnhwr5_E5bSDZYQXHFvBsNXP6A",
+2025-09-12T14:39:29.806539567Z [inf]        "call_leg_id": "3b39ca1c-8fe6-11f0-afe0-02420a1f2170",
+2025-09-12T14:39:29.806547164Z [inf]        "call_quality_stats": {
+2025-09-12T14:39:29.806553251Z [inf]          "inbound": {
+2025-09-12T14:39:29.806559698Z [inf]            "jitter_max_variance": "0.00",
+2025-09-12T14:39:29.806565998Z [inf]            "jitter_packet_count": "0",
+2025-09-12T14:39:29.806571667Z [inf]            "mos": "4.50",
+2025-09-12T14:39:29.806577454Z [inf]            "packet_count": "912",
+2025-09-12T14:39:29.806585201Z [inf]            "skip_packet_count": "23"
+2025-09-12T14:39:29.806591006Z [inf]          },
+2025-09-12T14:39:29.806598116Z [inf]          "outbound": {
+2025-09-12T14:39:29.806604188Z [inf]            "packet_count": "0",
+2025-09-12T14:39:29.806610714Z [inf]            "skip_packet_count": "0"
+2025-09-12T14:39:29.806617357Z [inf]          }
+2025-09-12T14:39:29.806623145Z [inf]        },
+2025-09-12T14:39:29.806629933Z [inf]        "call_session_id": "3b39ba5e-8fe6-11f0-a5c0-02420a1f2170",
+2025-09-12T14:39:29.806636828Z [inf]        "calling_party_type": "pstn",
+2025-09-12T14:39:29.806652534Z [inf]        "client_state": "MQ==",
+2025-09-12T14:39:29.806660542Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T14:39:29.807013638Z [inf]        "custom_headers": [
+2025-09-12T14:39:29.807030016Z [inf]    }
+2025-09-12T14:39:29.807038624Z [inf]          {
+2025-09-12T14:39:29.807042177Z [inf]  }
+2025-09-12T14:39:29.807055018Z [inf]  Headers: {
+2025-09-12T14:39:29.807055254Z [inf]    "telnyx-signature-ed25519": "6dWFluVnvHBm7oIl+eJGfHmUxd4VQFyxxv4aEx4Cjl7/XowDUdsnWuS50a4armdkXWAsQsFcyRdZ0qUl66h4BA==",
+2025-09-12T14:39:29.807055311Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T14:39:29.807064832Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:29.807072324Z [inf]    "telnyx-timestamp": "1757687964",
+2025-09-12T14:39:29.807074606Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T14:39:29.807075407Z [inf]            "value": "icid-value=3044ca82-7256-103e-00-00-00-10-6b-03-d5-04"
+2025-09-12T14:39:29.807081602Z [inf]    "webhook-id": "bf72b423-e67b-4ce9-9b23-7bcd405f5aa8",
+2025-09-12T14:39:29.807083588Z [inf]    "content-length": "1555",
+2025-09-12T14:39:29.807088539Z [inf]          },
+2025-09-12T14:39:29.807092881Z [inf]    "content-type": "application/json",
+2025-09-12T14:39:29.807101618Z [inf]          {
+2025-09-12T14:39:29.807102168Z [inf]        "call_control_id": "v3:ZFXIQTCiqjSqj0Ul3-qNN1U2uxFirnhwr5_E5bSDZYQXHFvBsNXP6A",
+2025-09-12T14:39:29.807107129Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T14:39:29.807110339Z [inf]        "sip_hangup_cause": "200",
+2025-09-12T14:39:29.807113242Z [inf]        "call_leg_id": "3b39ca1c-8fe6-11f0-afe0-02420a1f2170",
+2025-09-12T14:39:29.807114017Z [inf]            "name": "P-Early-Media",
+2025-09-12T14:39:29.807121076Z [inf]        "start_time": "2025-09-12T14:39:04.702387Z",
+2025-09-12T14:39:29.807122881Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T14:39:29.807124157Z [inf]        "call_session_id": "3b39ba5e-8fe6-11f0-a5c0-02420a1f2170",
+2025-09-12T14:39:29.807127604Z [inf]    "webhook-signature": "6dWFluVnvHBm7oIl+eJGfHmUxd4VQFyxxv4aEx4Cjl7/XowDUdsnWuS50a4armdkXWAsQsFcyRdZ0qUl66h4BA==",
+2025-09-12T14:39:29.807129087Z [inf]            "value": "supported"
+2025-09-12T14:39:29.807132341Z [inf]        "tags": [
+2025-09-12T14:39:29.807137688Z [inf]        "calling_party_type": "pstn",
+2025-09-12T14:39:29.807139155Z [inf]            "cost": "0.0013",
+2025-09-12T14:39:29.807139580Z [inf]    "x-railway-request-id": "IDa9rZ6tTrqOaOiAm3z_FQ",
+2025-09-12T14:39:29.807142653Z [inf]          "gpt-realtime"
+2025-09-12T14:39:29.807143979Z [inf]    "webhook-timestamp": "1757687964",
+2025-09-12T14:39:29.807145201Z [inf]          }
+2025-09-12T14:39:29.807150327Z [inf]        "client_state": "MQ==",
+2025-09-12T14:39:29.807154643Z [inf]            "currency": "USD",
+2025-09-12T14:39:29.807156455Z [inf]        ],
+2025-09-12T14:39:29.807156515Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T14:39:29.807163103Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T14:39:29.807163280Z [inf]        ],
+2025-09-12T14:39:29.807163832Z [inf]            "rate": "0.00200"
+2025-09-12T14:39:29.807170892Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:29.807171318Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T14:39:29.807171539Z [inf]        "to": "+46105200937"
+2025-09-12T14:39:29.807175354Z [inf]        "cost_parts": [
+2025-09-12T14:39:29.807178836Z [inf]            "rate": "0.003200"
+2025-09-12T14:39:29.807181040Z [inf]        "end_time": "2025-09-12T14:39:24.242390Z",
+2025-09-12T14:39:29.807181576Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T14:39:29.807182277Z [inf]          },
+2025-09-12T14:39:29.807183079Z [inf]          {
+2025-09-12T14:39:29.807184498Z [inf]      "record_type": "event"
+2025-09-12T14:39:29.807185916Z [inf]      },
+2025-09-12T14:39:29.807189904Z [inf]    "x-request-start": "1757687964308",
+2025-09-12T14:39:29.807194179Z [inf]          },
+2025-09-12T14:39:29.807198692Z [inf]            "call_part": "call-recording",
+2025-09-12T14:39:29.807199122Z [inf]  }
+2025-09-12T14:39:29.807199201Z [inf]    "content-length": "1347",
+2025-09-12T14:39:29.807199937Z [inf]      "record_type": "event"
+2025-09-12T14:39:29.807201259Z [inf]      "event_type": "call.cost",
+2025-09-12T14:39:29.807202072Z [inf]        "from": "+46723161614",
+2025-09-12T14:39:29.807202660Z [inf]    },
+2025-09-12T14:39:29.807203971Z [inf]            "billed_duration_secs": 24,
+2025-09-12T14:39:29.807207571Z [inf]    "accept-encoding": "gzip"
+2025-09-12T14:39:29.807208804Z [inf]          {
+2025-09-12T14:39:29.807213079Z [inf]  Headers: {
+2025-09-12T14:39:29.807214968Z [inf]            "cost": "0.0006",
+2025-09-12T14:39:29.807215368Z [inf]    },
+2025-09-12T14:39:29.807215978Z [inf]            "billed_duration_secs": 24,
+2025-09-12T14:39:29.807217390Z [inf]            "call_part": "sip-trunking",
+2025-09-12T14:39:29.807220434Z [inf]        "hangup_cause": "normal_clearing",
+2025-09-12T14:39:29.807220788Z [inf]      "id": "afe920d7-28a0-4fd0-b2b0-3d0c0c5c4d46",
+2025-09-12T14:39:29.807225892Z [inf]          }
+2025-09-12T14:39:29.807226040Z [inf]            "billed_duration_secs": 18,
+2025-09-12T14:39:29.807228304Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:29.807228442Z [inf]  }
+2025-09-12T14:39:29.807229960Z [inf]            "call_part": "call-control",
+2025-09-12T14:39:29.807230763Z [inf]            "currency": "USD",
+2025-09-12T14:39:29.807233299Z [inf]    "meta": {
+2025-09-12T14:39:29.807238299Z [inf]        ],
+2025-09-12T14:39:29.807238383Z [inf]      "occurred_at": "2025-09-12T14:39:24.884982Z",
+2025-09-12T14:39:29.807241134Z [inf]        "hangup_source": "caller",
+2025-09-12T14:39:29.807246330Z [inf]    "meta": {
+2025-09-12T14:39:29.807246840Z [inf]        "status": "success",
+2025-09-12T14:39:29.807247424Z [inf]  Event type: call.hangup
+2025-09-12T14:39:29.807247894Z [inf]      "attempt": 1,
+2025-09-12T14:39:29.807249901Z [inf]            "cost": "0.0008",
+2025-09-12T14:39:29.807250700Z [inf]      "payload": {
+2025-09-12T14:39:29.807258813Z [inf]      "attempt": 1,
+2025-09-12T14:39:29.807259053Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T14:39:29.807260852Z [inf]        "total_cost": "0.0027"
+2025-09-12T14:39:29.807263799Z [inf]        "billed_duration_secs": 24,
+2025-09-12T14:39:29.807264561Z [inf]            "currency": "USD",
+2025-09-12T14:39:29.807266333Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T14:39:29.807270988Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T14:39:29.807275595Z [inf]            "rate": "0.00200"
+2025-09-12T14:39:29.807276813Z [inf]        "billing_group_id": null,
+2025-09-12T14:39:29.807279885Z [inf]      },
+2025-09-12T14:39:29.807283897Z [inf]    }
+2025-09-12T14:39:29.807284058Z [inf]  Raw body: {
+2025-09-12T14:39:29.807293100Z [inf]    "data": {
+2025-09-12T14:39:29.808314843Z [inf]    "content-type": "application/json",
+2025-09-12T14:39:29.808324052Z [inf]    "telnyx-signature-ed25519": "4QZiY0V1JDb16d7b7qwIw7t2MUbTX3DQAtP2ytHlTJT0xNosM4WvNk0aWF1tVhw14ytAKkBks3EK09jGL5XzDg==",
+2025-09-12T14:39:29.808330700Z [inf]    "telnyx-timestamp": "1757687964",
+2025-09-12T14:39:29.808337212Z [inf]    "webhook-id": "afe920d7-28a0-4fd0-b2b0-3d0c0c5c4d46",
+2025-09-12T14:39:29.808343506Z [inf]    "webhook-signature": "4QZiY0V1JDb16d7b7qwIw7t2MUbTX3DQAtP2ytHlTJT0xNosM4WvNk0aWF1tVhw14ytAKkBks3EK09jGL5XzDg==",
+2025-09-12T14:39:29.808349647Z [inf]    "webhook-timestamp": "1757687964",
+2025-09-12T14:39:29.808356285Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T14:39:29.808362920Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T14:39:29.808369618Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T14:39:29.808381207Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T14:39:29.808387332Z [inf]    "x-railway-request-id": "00qgxwauQhmwzVfcjUJq2g",
+2025-09-12T14:39:29.808393688Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T14:39:29.808401423Z [inf]    "x-request-start": "1757687965170",
+2025-09-12T14:39:29.808407793Z [inf]    "accept-encoding": "gzip"
+2025-09-12T14:39:29.808413358Z [inf]  }
+2025-09-12T14:39:29.808419957Z [inf]  Event type: call.cost, see logs 

@@ -19,12 +19,24 @@ class TelnyxGPTGateway {
     initializeWebSocketServer() {
         this.wss = new WebSocketServer({ 
             server: this.server,
-            path: '/api/telnyx/stream'
+            path: '/api/telnyx/stream',
+            handleProtocols: (protocols, req) => {
+                console.log('WebSocket protocols requested:', Array.from(protocols));
+                console.log('Request headers:', req.headers);
+                // Accept telnyx-media-stream protocol if requested
+                if (protocols.includes('telnyx-media-stream')) {
+                    console.log('Accepting telnyx-media-stream protocol');
+                    return 'telnyx-media-stream';
+                }
+                // Accept first protocol if telnyx specific not found
+                return protocols[0];
+            }
         });
 
         this.wss.on('connection', (ws, req) => {
             console.log('=== TELNYX WEBSOCKET CONNECTION ===');
             console.log('WebSocket connected from:', req.socket.remoteAddress);
+            console.log('Protocol:', ws.protocol);
             console.log('Headers:', JSON.stringify(req.headers, null, 2));
             this.handleTelnyxConnection(ws, req);
         });
