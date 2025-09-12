@@ -495,7 +495,7 @@ const httpServer = createServer(app);
 
 // WebSocket upgrade handling is done by the WebSocket servers
 
-const twilioGateway = new TwilioGPTGateway(httpServer);
+// Only initialize Telnyx gateway - Twilio conflicts with WebSocket handling
 const telnyxGateway = new TelnyxGPTGateway(httpServer);
 
 // Start server
