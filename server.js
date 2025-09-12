@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import { createServer } from 'http';
 import OpenAI from 'openai';
 import 'dotenv/config';
+import fetch from 'node-fetch';
 import database from './database.js';
 import TwilioGPTGateway from './twilio-gateway.js';
 import TelnyxGPTGateway from './telnyx-gateway.js';
@@ -417,37 +418,34 @@ app.post('/api/telnyx/voice', async (req, res) => {
             
             if (!defaultAgent) {
                 console.error('No agents configured');
-                return res.status(500).json({ 
-                    data: { 
-                        command: 'hangup',
-                        call_control_id: payload.call_control_id 
-                    }
-                });
+                return res.status(200).json({});
             }
 
             const callId = await database.createCall(defaultAgent.id, payload.from, payload.to);
             console.log(`Created call record ${callId} using agent ${defaultAgent.id}`);
 
-            // Answer the call and start media streaming
-            const streamUrl = `wss://${req.get('host')}/api/telnyx/stream`;
+            // Answer the call via Telnyx API
+            const answerResponse = await fetch(`https://api.telnyx.com/v2/calls/${payload.call_control_id}/actions/answer`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${process.env.TELNYX_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    client_state: callId.toString(),
+                    stream_url: `wss://${req.get('host')}/api/telnyx/stream`,
+                    stream_track: 'both_tracks',
+                    stream_bidirectional_mode: 'rtp'
+                })
+            });
+
+            if (!answerResponse.ok) {
+                console.error('Failed to answer call:', await answerResponse.text());
+            } else {
+                console.log('Call answered and streaming started');
+            }
             
-            const response = {
-                data: [
-                    {
-                        command: 'answer',
-                        call_control_id: payload.call_control_id
-                    },
-                    {
-                        command: 'streaming_start',
-                        call_control_id: payload.call_control_id,
-                        stream_url: streamUrl,
-                        stream_track: 'both_tracks',
-                        stream_bidirectional_mode: 'rtp'
-                    }
-                ]
-            };
-            
-            res.json(response);
+            res.status(200).json({});
         } else {
             // Acknowledge other events
             res.status(200).json({});
