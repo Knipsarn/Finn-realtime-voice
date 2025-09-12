@@ -1,721 +1,648 @@
-2025-09-12T17:21:33.000000000Z [inf]  Starting Container
-2025-09-12T17:21:34.529508885Z [err]  (node:1) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
-2025-09-12T17:21:34.529513228Z [err]  (Use `node --trace-deprecation ...` to show where the warning was created)
-2025-09-12T17:21:34.529518315Z [inf]  Connected to SQLite database
-2025-09-12T17:21:34.529523458Z [inf]  Created default Swedish agent
-2025-09-12T17:21:34.529528523Z [inf]  Telnyx WebSocket server initialized on /api/telnyx/stream
-2025-09-12T17:21:34.529533124Z [inf]  Telnyx GPT-Realtime Gateway running on http://0.0.0.0:8080
-2025-09-12T17:21:34.529550456Z [inf]  Static client available at GET /
-2025-09-12T17:21:34.529557512Z [inf]  API endpoints:
-2025-09-12T17:21:34.529563778Z [inf]    GET /health - Service health check
-2025-09-12T17:21:34.529568934Z [inf]    GET /api/config - Configuration presets
-2025-09-12T17:21:34.529574290Z [inf]    POST /api/session - GPT-Realtime session creation
-2025-09-12T17:21:34.529579286Z [inf]    POST /api/twilio/voice - Twilio voice webhook
-2025-09-12T17:21:34.529584312Z [inf]    WS /api/twilio/stream - Twilio media stream handler
-2025-09-12T17:21:34.529591033Z [inf]    POST /api/telnyx/voice - Telnyx voice webhook
-2025-09-12T17:21:34.529596973Z [inf]    WS /api/telnyx/stream - Telnyx media stream handler
-2025-09-12T17:21:34.529603759Z [inf]    GET /api/agents - List agents
-2025-09-12T17:21:34.529607989Z [inf]    POST /api/agents - Create agent
-2025-09-12T17:21:34.529611907Z [inf]    GET /api/calls - List calls
-2025-09-12T17:21:39.000000000Z [inf]  Stopping Container
-2025-09-12T17:22:04.522855971Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T17:22:04.522864738Z [inf]  Raw body: {
-2025-09-12T17:22:04.522872692Z [inf]    "data": {
-2025-09-12T17:22:04.522880319Z [inf]      "event_type": "call.initiated",
-2025-09-12T17:22:04.522888739Z [inf]      "id": "c5fdf16c-eee9-45d2-95d3-2d80ed54ac6e",
-2025-09-12T17:22:04.522896150Z [inf]      "occurred_at": "2025-09-12T17:21:54.822391Z",
-2025-09-12T17:22:04.522903774Z [inf]      "payload": {
-2025-09-12T17:22:04.522911086Z [inf]        "call_control_id": "v3:CvRjl4QeY3RPnUBDzX89XjhumrI5nONc1kElaY555t_2h5tXfoRKpA",
-2025-09-12T17:22:04.522919423Z [inf]        "call_leg_id": "faaa30b0-8ffc-11f0-8c60-02420a1f2170",
-2025-09-12T17:22:04.522930237Z [inf]        "call_session_id": "faaa2750-8ffc-11f0-9ffe-02420a1f2170",
-2025-09-12T17:22:04.522937854Z [inf]        "caller_id_name": "+46723161614",
-2025-09-12T17:22:04.522946035Z [inf]        "calling_party_type": "pstn",
-2025-09-12T17:22:04.522953387Z [inf]        "client_state": null,
-2025-09-12T17:22:04.522960367Z [inf]        "connection_codecs": "PCMA,PCMU",
-2025-09-12T17:22:04.522967903Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T17:22:04.522975261Z [inf]        "custom_headers": [
-2025-09-12T17:22:04.522985184Z [inf]          {
-2025-09-12T17:22:04.522993538Z [inf]            "name": "P-Charging-Vector",
-2025-09-12T17:22:04.523000965Z [inf]            "value": "icid-value=efb47a0a-726c-103e-00-00-00-10-6b-03-d5-04"
-2025-09-12T17:22:04.523008148Z [inf]          },
-2025-09-12T17:22:04.523017544Z [inf]          {
-2025-09-12T17:22:04.523024935Z [inf]            "name": "P-Early-Media",
-2025-09-12T17:22:04.523031420Z [inf]            "value": "supported"
-2025-09-12T17:22:04.523039429Z [inf]          }
-2025-09-12T17:22:04.523046813Z [inf]        ],
-2025-09-12T17:22:04.523054734Z [inf]        "direction": "incoming",
-2025-09-12T17:22:04.523063247Z [inf]        "from": "+46723161614",
-2025-09-12T17:22:04.525482858Z [inf]        "from_sip_uri": "+46723161614@57.67.212.40",
-2025-09-12T17:22:04.525492434Z [inf]        "offered_codecs": "PCMA,PCMU,G729",
-2025-09-12T17:22:04.525500507Z [inf]        "start_time": "2025-09-12T17:21:54.822391Z",
-2025-09-12T17:22:04.525508747Z [inf]        "state": "parked",
-2025-09-12T17:22:04.525518584Z [inf]        "tags": [
-2025-09-12T17:22:04.525527775Z [inf]          "gpt-realtime"
-2025-09-12T17:22:04.525547255Z [inf]        ],
-2025-09-12T17:22:04.525556455Z [inf]        "to": "+46105200937",
-2025-09-12T17:22:04.525564948Z [inf]        "to_sip_uri": "+46105200937;phone-context=ims.mnc002.mcc240.3gppnetwork.org@185.246.41.140"
-2025-09-12T17:22:04.525572414Z [inf]      },
-2025-09-12T17:22:04.525580304Z [inf]      "record_type": "event"
-2025-09-12T17:22:04.525588006Z [inf]    },
-2025-09-12T17:22:04.525598847Z [inf]    "meta": {
-2025-09-12T17:22:04.525605862Z [inf]      "attempt": 1,
-2025-09-12T17:22:04.525611453Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T17:22:04.525618217Z [inf]    }
-2025-09-12T17:22:04.525623939Z [inf]  }
-2025-09-12T17:22:04.525629676Z [inf]  Headers: {
-2025-09-12T17:22:04.525636344Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:04.525642436Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T17:22:04.525647890Z [inf]    "content-length": "1386",
-2025-09-12T17:22:04.525654093Z [inf]    "content-type": "application/json",
-2025-09-12T17:22:04.525659963Z [inf]    "telnyx-signature-ed25519": "c7aiStCpqVBxgLZv4Ps07CNkDr/jnmrd9DhYPGmusVYA7qbQpVtDuDFpb+HyxXhSayEyKoE84cfR5qEkPxhSDQ==",
-2025-09-12T17:22:04.525665378Z [inf]    "telnyx-timestamp": "1757697715",
-2025-09-12T17:22:04.525670921Z [inf]    "webhook-id": "c5fdf16c-eee9-45d2-95d3-2d80ed54ac6e",
-2025-09-12T17:22:04.525676595Z [inf]    "webhook-signature": "c7aiStCpqVBxgLZv4Ps07CNkDr/jnmrd9DhYPGmusVYA7qbQpVtDuDFpb+HyxXhSayEyKoE84cfR5qEkPxhSDQ==",
-2025-09-12T17:22:04.525681755Z [inf]    "webhook-timestamp": "1757697715",
-2025-09-12T17:22:04.525687603Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T17:22:04.525695311Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:04.525700934Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T17:22:04.525707963Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T17:22:04.525714279Z [inf]    "x-railway-request-id": "qFemXSAdQ5GAd_gmrJsmnA",
-2025-09-12T17:22:04.525718752Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T17:22:04.525723777Z [inf]    "x-request-start": "1757697715337",
-2025-09-12T17:22:04.525728613Z [inf]    "accept-encoding": "gzip"
-2025-09-12T17:22:04.525734546Z [inf]  }
-2025-09-12T17:22:04.525739289Z [inf]  Event type: call.initiated
-2025-09-12T17:22:04.525743790Z [inf]  Incoming call from: +46723161614 to: +46105200937
-2025-09-12T17:22:04.525748336Z [inf]  Created call record 1 using agent 1
-2025-09-12T17:22:04.525752691Z [inf]  Call answered and streaming started
-2025-09-12T17:22:04.525758044Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T17:22:04.525765039Z [inf]  Raw body: {
-2025-09-12T17:22:04.525766339Z [inf]        "client_state": "MQ==",
-2025-09-12T17:22:04.525772097Z [inf]    "data": {
-2025-09-12T17:22:04.525774863Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T17:22:04.525781401Z [inf]        "custom_headers": [
-2025-09-12T17:22:04.525781539Z [inf]      "event_type": "call.answered",
-2025-09-12T17:22:04.525787454Z [inf]          {
-2025-09-12T17:22:04.525790987Z [inf]      "id": "3689842c-b5d5-4301-bf34-2c710a1b012d",
-2025-09-12T17:22:04.525793308Z [inf]            "name": "P-Charging-Vector",
-2025-09-12T17:22:04.525798998Z [inf]            "value": "icid-value=efb47a0a-726c-103e-00-00-00-10-6b-03-d5-04"
-2025-09-12T17:22:04.525800472Z [inf]      "occurred_at": "2025-09-12T17:21:55.762392Z",
-2025-09-12T17:22:04.525804477Z [inf]          },
-2025-09-12T17:22:04.525808394Z [inf]      "payload": {
-2025-09-12T17:22:04.525810453Z [inf]          {
-2025-09-12T17:22:04.525816206Z [inf]        "call_control_id": "v3:CvRjl4QeY3RPnUBDzX89XjhumrI5nONc1kElaY555t_2h5tXfoRKpA",
-2025-09-12T17:22:04.525816234Z [inf]            "name": "P-Early-Media",
-2025-09-12T17:22:04.525821470Z [inf]            "value": "supported"
-2025-09-12T17:22:04.525823720Z [inf]        "call_leg_id": "faaa30b0-8ffc-11f0-8c60-02420a1f2170",
-2025-09-12T17:22:04.525829120Z [inf]          }
-2025-09-12T17:22:04.525830829Z [inf]        "call_session_id": "faaa2750-8ffc-11f0-9ffe-02420a1f2170",
-2025-09-12T17:22:04.525835108Z [inf]        ],
-2025-09-12T17:22:04.525838622Z [inf]        "calling_party_type": "pstn",
-2025-09-12T17:22:04.525840092Z [inf]        "from": "+46723161614",
-2025-09-12T17:22:04.525845733Z [inf]        "start_time": "2025-09-12T17:21:54.822391Z",
-2025-09-12T17:22:04.525851057Z [inf]        "tags": [
-2025-09-12T17:22:04.525855598Z [inf]          "gpt-realtime"
-2025-09-12T17:22:04.525859613Z [inf]        ],
-2025-09-12T17:22:04.525864151Z [inf]        "to": "+46105200937"
-2025-09-12T17:22:04.525868171Z [inf]      },
-2025-09-12T17:22:04.525872434Z [inf]      "record_type": "event"
-2025-09-12T17:22:04.525876693Z [inf]    },
-2025-09-12T17:22:04.525881204Z [inf]    "meta": {
-2025-09-12T17:22:04.525886139Z [inf]      "attempt": 1,
-2025-09-12T17:22:04.525890513Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T17:22:04.525895412Z [inf]    }
-2025-09-12T17:22:04.525900166Z [inf]  }
-2025-09-12T17:22:04.525904523Z [inf]  Headers: {
-2025-09-12T17:22:04.525924639Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:04.525929883Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T17:22:04.525934407Z [inf]    "content-length": "1059",
-2025-09-12T17:22:04.525939112Z [inf]    "content-type": "application/json",
-2025-09-12T17:22:04.525944970Z [inf]    "telnyx-signature-ed25519": "gU4YrlOXnUQrXcj81Q9IXbOvVq2UDSrOLJCsjNsLJ1BV0SEjGExJbQRMcJWyBB86KLmM7UPQJ9TUULZd0rRfBA==",
-2025-09-12T17:22:04.525949288Z [inf]    "telnyx-timestamp": "1757697715",
-2025-09-12T17:22:04.525954100Z [inf]    "webhook-id": "3689842c-b5d5-4301-bf34-2c710a1b012d",
-2025-09-12T17:22:04.525960099Z [inf]    "webhook-signature": "gU4YrlOXnUQrXcj81Q9IXbOvVq2UDSrOLJCsjNsLJ1BV0SEjGExJbQRMcJWyBB86KLmM7UPQJ9TUULZd0rRfBA==",
-2025-09-12T17:22:04.525965920Z [inf]    "webhook-timestamp": "1757697715",
-2025-09-12T17:22:04.525970451Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T17:22:04.525974649Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:04.525979027Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T17:22:04.525983505Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T17:22:04.525988281Z [inf]    "x-railway-request-id": "EzXdaB_LQ1qyMdLBrJsmnA",
-2025-09-12T17:22:04.525993091Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T17:22:04.526660625Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.526664372Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.526668449Z [inf]    "x-request-start": "1757697716072",
-2025-09-12T17:22:04.526668807Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.526674887Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.526680395Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.526682806Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.526686225Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.526688848Z [inf]    "accept-encoding": "gzip"
-2025-09-12T17:22:04.526692662Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.526694335Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.526699607Z [inf]  }
-2025-09-12T17:22:04.526700496Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.526701541Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.526706884Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.526709006Z [inf]  Event type: call.answered
-2025-09-12T17:22:04.526712077Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.526718066Z [inf]  === WEBSOCKET HEADERS EVENT ===
-2025-09-12T17:22:04.526718274Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.526726979Z [inf]  Headers being sent: [
-2025-09-12T17:22:04.526731109Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.526733987Z [inf]    'HTTP/1.1 101 Switching Protocols',
-2025-09-12T17:22:04.526737988Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.526741663Z [inf]    'Upgrade: websocket',
-2025-09-12T17:22:04.526744406Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.526750115Z [inf]    'Connection: Upgrade',
-2025-09-12T17:22:04.526750208Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.526757924Z [inf]    'Sec-WebSocket-Accept: nCCO2/F4URHT9Hi0Hb4fo/Ja5FM='
-2025-09-12T17:22:04.526759634Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.526765045Z [inf]  ]
-2025-09-12T17:22:04.526767925Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.526772695Z [inf]  Request URL: /api/telnyx/stream
-2025-09-12T17:22:04.526775772Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.526779909Z [inf]  === TELNYX WEBSOCKET CONNECTION SUCCESSFUL ===
-2025-09-12T17:22:04.526785655Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.526787309Z [inf]  WebSocket connected from: 100.64.0.3
-2025-09-12T17:22:04.526793898Z [inf]  Protocol: 
-2025-09-12T17:22:04.526800735Z [inf]  Headers: {
-2025-09-12T17:22:04.526807421Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:04.526814820Z [inf]    "user-agent": "telnyx-websocket",
-2025-09-12T17:22:04.526820388Z [inf]    "connection": "Upgrade",
-2025-09-12T17:22:04.526825085Z [inf]    "sec-websocket-key": "6gpQT1riBvVWtsQQ8dhccw==",
-2025-09-12T17:22:04.526829718Z [inf]    "sec-websocket-version": "13",
-2025-09-12T17:22:04.526834445Z [inf]    "upgrade": "websocket",
-2025-09-12T17:22:04.526839149Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T17:22:04.526844503Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:04.526850217Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T17:22:04.526854841Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T17:22:04.526859655Z [inf]    "x-railway-request-id": "2EX_4UWRSjCcVoAk5nX1uw",
-2025-09-12T17:22:04.526864090Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T17:22:04.526868383Z [inf]    "x-request-start": "1757697715975",
-2025-09-12T17:22:04.526872814Z [inf]    "accept-encoding": "gzip"
-2025-09-12T17:22:04.526882754Z [inf]  }
-2025-09-12T17:22:04.526887889Z [inf]  Telnyx stream connected, version: 1.0.0
-2025-09-12T17:22:04.526892193Z [inf]  Stream started with ID: 4d483b15-8b47-45c9-b09d-0422723db74a
-2025-09-12T17:22:04.526897085Z [inf]  Media format: { channels: 1, encoding: 'PCMA', sample_rate: 8000 }
-2025-09-12T17:22:04.526902017Z [inf]  Using agent 1: "alloy"
-2025-09-12T17:22:04.526906649Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.526911291Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.526915746Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.526920130Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.526924268Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.526928843Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.526933447Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.526937874Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.526946598Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.526952797Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.526957143Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.526962299Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.526972312Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.526973690Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.526977498Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.526983150Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.526984415Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.526990590Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.526992692Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.526998590Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.527000479Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.527004779Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.527007668Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.527010297Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.527015667Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.527016483Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.527022452Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.527025069Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.527027589Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.527033010Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.527034957Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.527038911Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.527041486Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.527044420Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.527047892Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.527050643Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.527053935Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.527056901Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.527059898Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.527062192Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.527066330Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.527068121Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.527072924Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.527073655Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.527079264Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.527079480Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.527084769Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.527088497Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.527092250Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.527095584Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.527099663Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.527102977Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.527106600Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.527110424Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.527114110Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.527118704Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.527126260Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.527127008Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.527134718Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.527135902Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.527142931Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.527143101Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.527148921Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.527155909Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.527156541Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.527164045Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.527165997Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.527171760Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.527174555Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.527178651Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.527182794Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.527189066Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.527194895Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.527200038Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.527205812Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.527212307Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.527216910Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.527225930Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.527231918Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.527236354Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.527241498Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.527247353Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.527252284Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.527257482Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.527261982Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.527268932Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.527277161Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.527281442Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.527291155Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.527296435Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.527300893Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.527305400Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.527310090Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.527314540Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.527319257Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.527324849Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.527330065Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.527334942Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.527340755Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.527345365Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.527350149Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.527354542Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529118462Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529126698Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529133661Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529140358Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529146808Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529154272Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529160169Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529203177Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529208821Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529214405Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529220670Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529226174Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529234008Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529239888Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529245240Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529249742Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529254944Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529261236Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529267548Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529273040Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529278294Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529283184Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529289148Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529296268Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529302372Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529308760Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529318094Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529325895Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529333194Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529341424Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529348380Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529354398Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529360042Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529366581Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529372091Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529377156Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529382488Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529388042Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529393770Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529400206Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529406056Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529411821Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529417700Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529424543Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529431288Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529437831Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529443743Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529448481Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529452078Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529458867Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529461567Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529469906Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529470911Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529478304Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529481187Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529486385Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529490564Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529496743Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529500699Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529503020Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529513210Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529514729Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529519114Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529523459Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529531631Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529531845Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529533399Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529552576Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529553406Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529560686Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529563036Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529563985Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529565245Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529570725Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529576241Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529576406Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529588263Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529588396Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529588479Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529589455Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529603442Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529604549Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529604652Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529609528Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529613724Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529620120Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529621063Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529621130Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529624643Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529624970Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529634664Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529636677Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529637119Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529637199Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529640817Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529648698Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529649738Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529651153Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529659667Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529660865Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529665173Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529665332Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529669859Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529670996Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529682433Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529682530Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529685941Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529692110Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529694688Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529702129Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529705841Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529711130Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529716392Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529724830Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529727871Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529733832Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529737566Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529742308Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529749736Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529751008Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529760340Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529760684Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529769072Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529771006Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529780007Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529780354Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529789616Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529790028Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529799120Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529805336Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529811554Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529816439Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529821830Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529827441Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529832560Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529837702Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529843578Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529849191Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529853895Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529861737Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529868869Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529876961Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529884152Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529889565Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529895694Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529902298Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529909393Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529915216Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529920178Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529925689Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529931492Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.529937301Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.529943258Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.529949151Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.529954532Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.529959577Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.529964801Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.529972206Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.529977165Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.529982223Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.529988097Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.529994507Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.530001145Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.530009135Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.530017418Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.530022759Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.530027549Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.530032628Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.530038400Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.530044345Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.530050777Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.530055689Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.530061284Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.530067063Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.530072240Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.530077770Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.530082812Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.530088337Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.530094011Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.530100036Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.530106708Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.530113578Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.530119561Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.531860284Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.531866651Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.531871938Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.531877259Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.531882399Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.531888047Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.531893042Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.531908990Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.531915325Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.531920828Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.531925899Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.531930252Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.531935171Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.531940488Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.531945097Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.531949520Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.531954515Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.531959403Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.531964223Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.531969683Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.531974744Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.531979589Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.531984524Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.531989301Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.531993762Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.531998050Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.532002397Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.532007367Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.532012858Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.532017204Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.532021510Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.532025908Z [err]      at Receiver.dataMessage (/app/node_modules/ws/lib/receiver.js:596:14)
-2025-09-12T17:22:04.532030268Z [err]      at Receiver.getData (/app/node_modules/ws/lib/receiver.js:496:10)
-2025-09-12T17:22:04.532035112Z [err]      at Receiver.startLoop (/app/node_modules/ws/lib/receiver.js:167:16)
-2025-09-12T17:22:04.532040044Z [err]  Error handling Telnyx message: Error: RealtimeAPI is not connected
-2025-09-12T17:22:04.532044119Z [err]      at RealtimeAPI.send (file:///app/node_modules/@openai/realtime-api-beta/lib/api.js:191:13)
-2025-09-12T17:22:04.532048529Z [err]      at RealtimeClient.appendInputAudio (file:///app/node_modules/@openai/realtime-api-beta/lib/client.js:577:21)
-2025-09-12T17:22:04.532053373Z [err]      at TelnyxGPTGateway.handleTelnyxMessage (file:///app/telnyx-gateway.js:114:44)
-2025-09-12T17:22:04.532058748Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.532064115Z [err]      at WebSocket.emit (node:events:518:28)
-2025-09-12T17:22:04.532069861Z [err]      at Receiver.receiverOnMessage (/app/node_modules/ws/lib/websocket.js:1220:20)
-2025-09-12T17:22:04.533456868Z [err]      at WebSocket.<anonymous> (file:///app/telnyx-gateway.js:66:28)
-2025-09-12T17:22:04.533489048Z [err]      at Receiver.emit (node:events:518:28)
-2025-09-12T17:22:04.535654053Z [inf]      role: 'assistant',
-2025-09-12T17:22:04.537742595Z [inf]         1528,  1964,  2849,  4014,  4730,  5909,  6490,  7160,  7157,
-2025-09-12T17:22:04.539432915Z [inf]      status: 'in_progress',
-2025-09-12T17:22:19.765884144Z [err]  Railway rate limit of 500 logs/sec reached for replica, update your application to reduce the logging rate. Messages dropped: 1064
-2025-09-12T17:22:24.536763753Z [inf]  Stream 4d483b15-8b47-45c9-b09d-0422723db74a ended by Telnyx
-2025-09-12T17:22:24.536769287Z [inf]  Stream 4d483b15-8b47-45c9-b09d-0422723db74a ended, duration: 19762ms
-2025-09-12T17:22:24.536775285Z [inf]  Telnyx stream closed for call null
-2025-09-12T17:22:24.536779867Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T17:22:24.536783543Z [inf]  Raw body: {
-2025-09-12T17:22:24.536789021Z [inf]    "data": {
-2025-09-12T17:22:24.536796094Z [inf]      "event_type": "streaming.stopped",
-2025-09-12T17:22:24.536801284Z [inf]      "id": "7c746445-44b7-4f3f-b7aa-b8ee7d538ee5",
-2025-09-12T17:22:24.536805389Z [inf]      "occurred_at": "2025-09-12T17:22:15.886804Z",
-2025-09-12T17:22:24.536810499Z [inf]      "payload": {
-2025-09-12T17:22:24.536815712Z [inf]        "call_control_id": "v3:CvRjl4QeY3RPnUBDzX89XjhumrI5nONc1kElaY555t_2h5tXfoRKpA",
-2025-09-12T17:22:24.536820130Z [inf]        "call_leg_id": "faaa30b0-8ffc-11f0-8c60-02420a1f2170",
-2025-09-12T17:22:24.536824865Z [inf]        "call_session_id": "faaa2750-8ffc-11f0-9ffe-02420a1f2170",
-2025-09-12T17:22:24.536829501Z [inf]        "calling_party_type": "pstn",
-2025-09-12T17:22:24.536833787Z [inf]        "client_state": "MQ==",
-2025-09-12T17:22:24.536838030Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T17:22:24.536842502Z [inf]        "stream_id": "4d483b15-8b47-45c9-b09d-0422723db74a",
-2025-09-12T17:22:24.536846976Z [inf]        "stream_params": {
-2025-09-12T17:22:24.536851720Z [inf]          "stream_track": "both",
-2025-09-12T17:22:24.536855768Z [inf]          "stream_url": "wss://web-production-b99cf.up.railway.app/api/telnyx/stream"
-2025-09-12T17:22:24.536860728Z [inf]        },
-2025-09-12T17:22:24.536865729Z [inf]        "stream_type": "websocket"
-2025-09-12T17:22:24.537823538Z [inf]      },
-2025-09-12T17:22:24.537834300Z [inf]    }
-2025-09-12T17:22:24.537835443Z [inf]      "record_type": "event"
-2025-09-12T17:22:24.537844578Z [inf]  }
-2025-09-12T17:22:24.537846950Z [inf]    },
-2025-09-12T17:22:24.537852775Z [inf]  Headers: {
-2025-09-12T17:22:24.537853995Z [inf]    "meta": {
-2025-09-12T17:22:24.537859711Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:24.537861510Z [inf]      "attempt": 1,
-2025-09-12T17:22:24.537866994Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T17:22:24.537867790Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T17:22:24.537873934Z [inf]    "content-length": "893",
-2025-09-12T17:22:24.537879113Z [inf]    "content-type": "application/json",
-2025-09-12T17:22:24.537982483Z [inf]    "telnyx-signature-ed25519": "ZKbtHsF4NB7rpgG3+Gvb2ypvF5c8YIV3a/S2TupIwt+G68ec8SFFhNuY1tA3HWAL63pcP9BJlOE5KUrmkErpBQ==",
-2025-09-12T17:22:24.537987144Z [inf]    "telnyx-timestamp": "1757697735",
-2025-09-12T17:22:24.538000733Z [inf]    "webhook-id": "7c746445-44b7-4f3f-b7aa-b8ee7d538ee5",
-2025-09-12T17:22:24.538004863Z [inf]    "webhook-signature": "ZKbtHsF4NB7rpgG3+Gvb2ypvF5c8YIV3a/S2TupIwt+G68ec8SFFhNuY1tA3HWAL63pcP9BJlOE5KUrmkErpBQ==",
-2025-09-12T17:22:24.538075419Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T17:22:24.538084106Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:24.538090671Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T17:22:24.538098325Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T17:22:24.538100026Z [inf]    "webhook-timestamp": "1757697735",
-2025-09-12T17:22:24.538105216Z [inf]    "x-railway-request-id": "SWHwhisGRfmqFmnfrJsmnA",
-2025-09-12T17:22:24.538112136Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T17:22:24.538119780Z [inf]    "x-request-start": "1757697736190",
-2025-09-12T17:22:24.538128230Z [inf]    "accept-encoding": "gzip"
-2025-09-12T17:22:24.538135043Z [inf]  }
-2025-09-12T17:22:24.538141900Z [inf]  Event type: streaming.stopped
-2025-09-12T17:22:24.538148529Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T17:22:24.538154808Z [inf]  Raw body: {
-2025-09-12T17:22:24.538161329Z [inf]    "data": {
-2025-09-12T17:22:24.538167464Z [inf]      "event_type": "call.hangup",
-2025-09-12T17:22:24.538172214Z [inf]      "id": "83187392-4c79-4c20-8144-e2c7c9b6834d",
-2025-09-12T17:22:24.538176396Z [inf]      "occurred_at": "2025-09-12T17:22:15.842396Z",
-2025-09-12T17:22:24.538182240Z [inf]      "payload": {
-2025-09-12T17:22:24.538187833Z [inf]        "call_control_id": "v3:CvRjl4QeY3RPnUBDzX89XjhumrI5nONc1kElaY555t_2h5tXfoRKpA",
-2025-09-12T17:22:24.538194800Z [inf]        "call_leg_id": "faaa30b0-8ffc-11f0-8c60-02420a1f2170",
-2025-09-12T17:22:24.538199429Z [inf]        "call_quality_stats": {
-2025-09-12T17:22:24.538203769Z [inf]          "inbound": {
-2025-09-12T17:22:24.538208352Z [inf]            "jitter_max_variance": "0.00",
-2025-09-12T17:22:24.538212995Z [inf]            "jitter_packet_count": "0",
-2025-09-12T17:22:24.538218003Z [inf]            "mos": "4.50",
-2025-09-12T17:22:24.538222439Z [inf]            "packet_count": "978",
-2025-09-12T17:22:24.538226893Z [inf]            "skip_packet_count": "29"
-2025-09-12T17:22:24.538231928Z [inf]          },
-2025-09-12T17:22:24.538236027Z [inf]  Event type: call.hangup
-2025-09-12T17:22:24.538238525Z [inf]          "outbound": {
-2025-09-12T17:22:24.538243485Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T17:22:24.538244439Z [inf]            "packet_count": "979",
-2025-09-12T17:22:24.538249729Z [inf]  Raw body: {
-2025-09-12T17:22:24.538251271Z [inf]            "skip_packet_count": "0"
-2025-09-12T17:22:24.538256232Z [inf]    "data": {
-2025-09-12T17:22:24.538257113Z [inf]          }
-2025-09-12T17:22:24.538262447Z [inf]        },
-2025-09-12T17:22:24.538262746Z [inf]      "event_type": "call.cost",
-2025-09-12T17:22:24.538268708Z [inf]      "id": "2332c163-2915-4595-8558-07b5f005b011",
-2025-09-12T17:22:24.538268908Z [inf]        "call_session_id": "faaa2750-8ffc-11f0-9ffe-02420a1f2170",
-2025-09-12T17:22:24.538275470Z [inf]      "occurred_at": "2025-09-12T17:22:16.376575Z",
-2025-09-12T17:22:24.538275898Z [inf]        "calling_party_type": "pstn",
-2025-09-12T17:22:24.538282403Z [inf]        "client_state": "MQ==",
-2025-09-12T17:22:24.538283035Z [inf]      "payload": {
-2025-09-12T17:22:24.538290100Z [inf]        "billed_duration_secs": 24,
-2025-09-12T17:22:24.538290275Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T17:22:24.538296475Z [inf]        "custom_headers": [
-2025-09-12T17:22:24.538297978Z [inf]        "billing_group_id": null,
-2025-09-12T17:22:24.538301786Z [inf]          {
-2025-09-12T17:22:24.538305051Z [inf]        "call_control_id": "v3:CvRjl4QeY3RPnUBDzX89XjhumrI5nONc1kElaY555t_2h5tXfoRKpA",
-2025-09-12T17:22:24.538309213Z [inf]            "name": "P-Charging-Vector",
-2025-09-12T17:22:24.538311776Z [inf]        "call_leg_id": "faaa30b0-8ffc-11f0-8c60-02420a1f2170",
-2025-09-12T17:22:24.538315628Z [inf]            "value": "icid-value=efb47a0a-726c-103e-00-00-00-10-6b-03-d5-04"
-2025-09-12T17:22:24.538318431Z [inf]        "call_session_id": "faaa2750-8ffc-11f0-9ffe-02420a1f2170",
-2025-09-12T17:22:24.538322254Z [inf]          },
-2025-09-12T17:22:24.538325649Z [inf]        "calling_party_type": "pstn",
-2025-09-12T17:22:24.538329623Z [inf]          {
-2025-09-12T17:22:24.538332185Z [inf]        "client_state": "MQ==",
-2025-09-12T17:22:24.538335743Z [inf]            "name": "P-Early-Media",
-2025-09-12T17:22:24.538339428Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T17:22:24.538342204Z [inf]            "value": "supported"
-2025-09-12T17:22:24.538346212Z [inf]        "cost_parts": [
-2025-09-12T17:22:24.538348059Z [inf]          }
-2025-09-12T17:22:24.538353037Z [inf]          {
-2025-09-12T17:22:24.538353413Z [inf]        ],
-2025-09-12T17:22:24.538359362Z [inf]        "end_time": "2025-09-12T17:22:15.842396Z",
-2025-09-12T17:22:24.538360126Z [inf]            "billed_duration_secs": 24,
-2025-09-12T17:22:24.538365973Z [inf]        "from": "+46723161614",
-2025-09-12T17:22:24.538367755Z [inf]            "call_part": "sip-trunking",
-2025-09-12T17:22:24.538372460Z [inf]        "hangup_cause": "normal_clearing",
-2025-09-12T17:22:24.538373929Z [inf]            "cost": "0.0013",
-2025-09-12T17:22:24.538378286Z [inf]        "hangup_source": "caller",
-2025-09-12T17:22:24.538380925Z [inf]            "currency": "USD",
-2025-09-12T17:22:24.538384291Z [inf]        "sip_hangup_cause": "200",
-2025-09-12T17:22:24.538388967Z [inf]            "rate": "0.003200"
-2025-09-12T17:22:24.538389746Z [inf]        "start_time": "2025-09-12T17:21:54.822391Z",
-2025-09-12T17:22:24.538395942Z [inf]        "tags": [
-2025-09-12T17:22:24.538396534Z [inf]          },
-2025-09-12T17:22:24.538402014Z [inf]          "gpt-realtime"
-2025-09-12T17:22:24.538402415Z [inf]          {
-2025-09-12T17:22:24.538408487Z [inf]        ],
-2025-09-12T17:22:24.538410567Z [inf]            "billed_duration_secs": 24,
-2025-09-12T17:22:24.538414025Z [inf]        "to": "+46105200937"
-2025-09-12T17:22:24.538419451Z [inf]      },
-2025-09-12T17:22:24.538419817Z [inf]            "call_part": "call-recording",
-2025-09-12T17:22:24.538425132Z [inf]      "record_type": "event"
-2025-09-12T17:22:24.538430070Z [inf]    },
-2025-09-12T17:22:24.538434974Z [inf]    "meta": {
-2025-09-12T17:22:24.538439107Z [inf]      "attempt": 1,
-2025-09-12T17:22:24.538444123Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T17:22:24.538450316Z [inf]    }
-2025-09-12T17:22:24.538455828Z [inf]  }
-2025-09-12T17:22:24.538464652Z [inf]  Headers: {
-2025-09-12T17:22:24.538469297Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:24.538474096Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T17:22:24.538478977Z [inf]    "content-length": "1557",
-2025-09-12T17:22:24.538484795Z [inf]    "content-type": "application/json",
-2025-09-12T17:22:24.538489815Z [inf]    "telnyx-signature-ed25519": "JJkYg+NnS7KLY4jAvYowCFrJIj0azTNJKmJr6E9or1BGj1JwzuveTRBWWlZfAD1s5t0EA94O0e4XeIuhQOjwAA==",
-2025-09-12T17:22:24.538495401Z [inf]    "telnyx-timestamp": "1757697735",
-2025-09-12T17:22:24.538500849Z [inf]    "webhook-id": "83187392-4c79-4c20-8144-e2c7c9b6834d",
-2025-09-12T17:22:24.538506425Z [inf]    "webhook-signature": "JJkYg+NnS7KLY4jAvYowCFrJIj0azTNJKmJr6E9or1BGj1JwzuveTRBWWlZfAD1s5t0EA94O0e4XeIuhQOjwAA==",
-2025-09-12T17:22:24.538512161Z [inf]    "webhook-timestamp": "1757697735",
-2025-09-12T17:22:24.538530183Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T17:22:24.538537759Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:24.538545197Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T17:22:24.538551865Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T17:22:24.538558824Z [inf]    "x-railway-request-id": "heIoYLJeRd-f2glb0-QtfA",
-2025-09-12T17:22:24.538565205Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T17:22:24.538571458Z [inf]    "x-request-start": "1757697736212",
-2025-09-12T17:22:24.538578180Z [inf]    "accept-encoding": "gzip"
-2025-09-12T17:22:24.538585355Z [inf]  }
-2025-09-12T17:22:24.539242858Z [inf]            "cost": "0.0008",
-2025-09-12T17:22:24.539250405Z [inf]            "currency": "USD",
-2025-09-12T17:22:24.539255655Z [inf]            "rate": "0.00200"
-2025-09-12T17:22:24.539260623Z [inf]          },
-2025-09-12T17:22:24.539264961Z [inf]          {
-2025-09-12T17:22:24.539269244Z [inf]            "billed_duration_secs": 24,
-2025-09-12T17:22:24.539273048Z [inf]            "call_part": "call-control",
-2025-09-12T17:22:24.539276813Z [inf]            "cost": "0.0008",
-2025-09-12T17:22:24.539281104Z [inf]            "currency": "USD",
-2025-09-12T17:22:24.539285587Z [inf]            "rate": "0.00200"
-2025-09-12T17:22:24.539290013Z [inf]          }
-2025-09-12T17:22:24.539293907Z [inf]        ],
-2025-09-12T17:22:24.539297847Z [inf]        "status": "success",
-2025-09-12T17:22:24.539301952Z [inf]        "total_cost": "0.0029"
-2025-09-12T17:22:24.539305972Z [inf]      },
-2025-09-12T17:22:24.539309821Z [inf]      "record_type": "event"
-2025-09-12T17:22:24.539313912Z [inf]    },
-2025-09-12T17:22:24.539317745Z [inf]    "meta": {
-2025-09-12T17:22:24.539321965Z [inf]      "attempt": 1,
-2025-09-12T17:22:24.539325651Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T17:22:24.539329341Z [inf]    }
-2025-09-12T17:22:24.539333228Z [inf]  }
-2025-09-12T17:22:24.539337816Z [inf]  Headers: {
-2025-09-12T17:22:24.539341318Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:24.539344828Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T17:22:24.539348683Z [inf]    "content-length": "1347",
-2025-09-12T17:22:24.539352257Z [inf]    "content-type": "application/json",
-2025-09-12T17:22:24.539356589Z [inf]    "telnyx-signature-ed25519": "OLPpslWvQW3Ht9mcU0yvEaV9wIyXG64MJTIpRczgkuuq5o3nOAk2xpl0axaHAnBP9znwYLdZysDzkzb+PdwZBA==",
-2025-09-12T17:22:24.539360519Z [inf]    "telnyx-timestamp": "1757697736",
-2025-09-12T17:22:24.539365050Z [inf]    "webhook-id": "2332c163-2915-4595-8558-07b5f005b011",
-2025-09-12T17:22:24.539369218Z [inf]    "webhook-signature": "OLPpslWvQW3Ht9mcU0yvEaV9wIyXG64MJTIpRczgkuuq5o3nOAk2xpl0axaHAnBP9znwYLdZysDzkzb+PdwZBA==",
-2025-09-12T17:22:24.539372854Z [inf]    "webhook-timestamp": "1757697736",
-2025-09-12T17:22:24.539376842Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T17:22:24.539380970Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T17:22:24.539385506Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T17:22:24.539389996Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T17:22:24.539393989Z [inf]    "x-railway-request-id": "ylkLRUuXROietCBlrJsmnA",
-2025-09-12T17:22:24.539398409Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T17:22:24.539402265Z [inf]    "x-request-start": "1757697736390",
-2025-09-12T17:22:24.539406744Z [inf]    "accept-encoding": "gzip"
-2025-09-12T17:22:24.539411600Z [inf]  }
-2025-09-12T17:22:24.539415707Z [inf]  Event type: call.cost
+2025-09-12T20:57:44.000000000Z [inf]  Starting Container
+2025-09-12T20:57:45.127561551Z [err]  (node:1) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2025-09-12T20:57:45.127565853Z [err]  (Use `node --trace-deprecation ...` to show where the warning was created)
+2025-09-12T20:57:45.127569671Z [inf]  Connected to SQLite database
+2025-09-12T20:57:45.127573245Z [inf]  Created default Swedish agent
+2025-09-12T20:57:45.127577005Z [inf]  Telnyx WebSocket server initialized on /api/telnyx/stream
+2025-09-12T20:57:45.127580789Z [inf]  Telnyx GPT-Realtime Gateway running on http://0.0.0.0:8080
+2025-09-12T20:57:45.127584968Z [inf]  Static client available at GET /
+2025-09-12T20:57:45.127588737Z [inf]  API endpoints:
+2025-09-12T20:57:45.127593137Z [inf]    GET /health - Service health check
+2025-09-12T20:57:45.127597235Z [inf]    GET /api/config - Configuration presets
+2025-09-12T20:57:45.127600837Z [inf]    POST /api/session - GPT-Realtime session creation
+2025-09-12T20:57:45.127605717Z [inf]    POST /api/twilio/voice - Twilio voice webhook
+2025-09-12T20:57:45.127609935Z [inf]    WS /api/twilio/stream - Twilio media stream handler
+2025-09-12T20:57:45.127614251Z [inf]    POST /api/telnyx/voice - Telnyx voice webhook
+2025-09-12T20:57:45.127618304Z [inf]    WS /api/telnyx/stream - Telnyx media stream handler
+2025-09-12T20:57:45.127993985Z [inf]    GET /api/agents - List agents
+2025-09-12T20:57:45.127998077Z [inf]    POST /api/agents - Create agent
+2025-09-12T20:57:45.128001756Z [inf]    GET /api/calls - List calls
+2025-09-12T20:57:50.000000000Z [inf]  Stopping Container
+2025-09-12T21:00:25.154897542Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T21:00:25.154901815Z [inf]  Raw body: {
+2025-09-12T21:00:25.154905619Z [inf]    "data": {
+2025-09-12T21:00:25.154910634Z [inf]      "event_type": "call.initiated",
+2025-09-12T21:00:25.154937257Z [inf]      "id": "780088c2-0e3e-43df-868a-1e784a24f804",
+2025-09-12T21:00:25.154942568Z [inf]      "occurred_at": "2025-09-12T21:00:16.652296Z",
+2025-09-12T21:00:25.154946759Z [inf]      "payload": {
+2025-09-12T21:00:25.154951607Z [inf]        "call_control_id": "v3:lI4slrvUV-TL1qt86Mu1yCxlf01YZNj4yRsYdA_7y_8e6odLzb5wWA",
+2025-09-12T21:00:25.154955411Z [inf]        "call_leg_id": "7bf729b6-901b-11f0-8e49-02420a1f2020",
+2025-09-12T21:00:25.154962344Z [inf]        "call_session_id": "7bf72128-901b-11f0-8313-02420a1f2020",
+2025-09-12T21:00:25.154967131Z [inf]        "caller_id_name": "+46723161614",
+2025-09-12T21:00:25.154971494Z [inf]        "calling_party_type": "pstn",
+2025-09-12T21:00:25.154975268Z [inf]        "client_state": null,
+2025-09-12T21:00:25.154979375Z [inf]        "connection_codecs": "PCMA,PCMU",
+2025-09-12T21:00:25.154984140Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T21:00:25.154988101Z [inf]        "custom_headers": [
+2025-09-12T21:00:25.154991923Z [inf]          {
+2025-09-12T21:00:25.154996353Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T21:00:25.155000480Z [inf]            "value": "icid-value=7103737c-728b-103e-00-00-00-10-6b-03-d5-02"
+2025-09-12T21:00:25.155004151Z [inf]          },
+2025-09-12T21:00:25.155007699Z [inf]          {
+2025-09-12T21:00:25.155011680Z [inf]            "name": "P-Early-Media",
+2025-09-12T21:00:25.155016236Z [inf]            "value": "supported"
+2025-09-12T21:00:25.155436430Z [inf]          }
+2025-09-12T21:00:25.155440901Z [inf]        ],
+2025-09-12T21:00:25.155444825Z [inf]        "direction": "incoming",
+2025-09-12T21:00:25.155448319Z [inf]        "from": "+46723161614",
+2025-09-12T21:00:25.155451804Z [inf]        "from_sip_uri": "+46723161614@57.67.212.40",
+2025-09-12T21:00:25.155455334Z [inf]        "offered_codecs": "PCMA,PCMU,G729",
+2025-09-12T21:00:25.155458787Z [inf]        "start_time": "2025-09-12T21:00:16.652296Z",
+2025-09-12T21:00:25.155463103Z [inf]        "state": "parked",
+2025-09-12T21:00:25.155467023Z [inf]        "tags": [
+2025-09-12T21:00:25.155470556Z [inf]          "gpt-realtime"
+2025-09-12T21:00:25.155474114Z [inf]        ],
+2025-09-12T21:00:25.155477640Z [inf]        "to": "+46105200937",
+2025-09-12T21:00:25.155481079Z [inf]        "to_sip_uri": "+46105200937;phone-context=ims.mnc002.mcc240.3gppnetwork.org@185.246.41.140"
+2025-09-12T21:00:25.155484721Z [inf]      },
+2025-09-12T21:00:25.155488306Z [inf]      "record_type": "event"
+2025-09-12T21:00:25.155495139Z [inf]    },
+2025-09-12T21:00:25.155499800Z [inf]    "meta": {
+2025-09-12T21:00:25.155501184Z [inf]        ],
+2025-09-12T21:00:25.155505547Z [inf]      "attempt": 1,
+2025-09-12T21:00:25.155509227Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T21:00:25.155512811Z [inf]    }
+2025-09-12T21:00:25.155516245Z [inf]  }
+2025-09-12T21:00:25.155519723Z [inf]  Headers: {
+2025-09-12T21:00:25.155524069Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:25.155527865Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T21:00:25.155532977Z [inf]    "content-length": "1386",
+2025-09-12T21:00:25.155535317Z [inf]            "value": "supported"
+2025-09-12T21:00:25.155537298Z [inf]    "content-type": "application/json",
+2025-09-12T21:00:25.155541023Z [inf]    "telnyx-signature-ed25519": "FxAc9+sZNeIVFa8nwPRyCWWv81rVjOXKzR4D0SFnRQ9GGhoHZArNVSuv15Z5njzJwl6gn6mPL6sM3B+VDxjICg==",
+2025-09-12T21:00:25.155545515Z [inf]    "telnyx-timestamp": "1757710816",
+2025-09-12T21:00:25.155547072Z [inf]          }
+2025-09-12T21:00:25.155549425Z [inf]    "webhook-id": "780088c2-0e3e-43df-868a-1e784a24f804",
+2025-09-12T21:00:25.155553883Z [inf]        ],
+2025-09-12T21:00:25.155555252Z [inf]    "webhook-signature": "FxAc9+sZNeIVFa8nwPRyCWWv81rVjOXKzR4D0SFnRQ9GGhoHZArNVSuv15Z5njzJwl6gn6mPL6sM3B+VDxjICg==",
+2025-09-12T21:00:25.155560385Z [inf]        "from": "+46723161614",
+2025-09-12T21:00:25.155560759Z [inf]    "webhook-timestamp": "1757710816",
+2025-09-12T21:00:25.155566087Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T21:00:25.155566449Z [inf]        "start_time": "2025-09-12T21:00:16.652296Z",
+2025-09-12T21:00:25.155570899Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:25.155574210Z [inf]        "tags": [
+2025-09-12T21:00:25.155576638Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T21:00:25.155581198Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T21:00:25.155582151Z [inf]          "gpt-realtime"
+2025-09-12T21:00:25.155585695Z [inf]    "x-railway-request-id": "Vn4CWtwrSAS2voaCYqdHTg",
+2025-09-12T21:00:25.155589755Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T21:00:25.155594784Z [inf]    "x-request-start": "1757710817168",
+2025-09-12T21:00:25.155598630Z [inf]    "accept-encoding": "gzip"
+2025-09-12T21:00:25.155602526Z [inf]  }
+2025-09-12T21:00:25.155606211Z [inf]  Event type: call.initiated
+2025-09-12T21:00:25.155610448Z [inf]  Incoming call from: +46723161614 to: +46105200937
+2025-09-12T21:00:25.155614275Z [inf]  Created call record 1 using agent 1
+2025-09-12T21:00:25.155618611Z [inf]  Call answered and streaming started
+2025-09-12T21:00:25.155622411Z [inf]  === WEBSOCKET HEADERS EVENT ===
+2025-09-12T21:00:25.155626485Z [inf]  Headers being sent: [
+2025-09-12T21:00:25.155630339Z [inf]    'HTTP/1.1 101 Switching Protocols',
+2025-09-12T21:00:25.155634183Z [inf]    'Upgrade: websocket',
+2025-09-12T21:00:25.155638035Z [inf]    'Connection: Upgrade',
+2025-09-12T21:00:25.155641915Z [inf]    'Sec-WebSocket-Accept: fNTSRLYkWyhW6mcqf6hM32gznVU='
+2025-09-12T21:00:25.155647559Z [inf]  ]
+2025-09-12T21:00:25.155651712Z [inf]  Request URL: /api/telnyx/stream
+2025-09-12T21:00:25.155655444Z [inf]  === TELNYX WEBSOCKET CONNECTION SUCCESSFUL ===
+2025-09-12T21:00:25.155659263Z [inf]  WebSocket connected from: 100.64.0.3
+2025-09-12T21:00:25.155663143Z [inf]  Protocol: 
+2025-09-12T21:00:25.155666887Z [inf]  Headers: {
+2025-09-12T21:00:25.155670819Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:25.155676247Z [inf]    "user-agent": "telnyx-websocket",
+2025-09-12T21:00:25.155680630Z [inf]    "connection": "Upgrade",
+2025-09-12T21:00:25.155684504Z [inf]    "sec-websocket-key": "7qoZcrWZDKQL28UhKTdYJQ==",
+2025-09-12T21:00:25.155688384Z [inf]    "sec-websocket-version": "13",
+2025-09-12T21:00:25.155691968Z [inf]    "upgrade": "websocket",
+2025-09-12T21:00:25.155695698Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T21:00:25.155699534Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:25.155704039Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T21:00:25.155710148Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T21:00:25.155713978Z [inf]    "x-railway-request-id": "3FE34qb3S1We4hZ55nX1uw",
+2025-09-12T21:00:25.155718463Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T21:00:25.155722258Z [inf]    "x-request-start": "1757710817887",
+2025-09-12T21:00:25.155726760Z [inf]    "accept-encoding": "gzip"
+2025-09-12T21:00:25.155730292Z [inf]  }
+2025-09-12T21:00:25.155734334Z [inf]  Telnyx stream connected, version: 1.0.0
+2025-09-12T21:00:25.155738225Z [inf]  === STREAM INITIALIZATION ===
+2025-09-12T21:00:25.155742055Z [inf]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.155746294Z [inf]  Media format: { channels: 1, encoding: 'PCMA', sample_rate: 8000 }
+2025-09-12T21:00:25.155749920Z [inf]  Using agent 1: voice="alloy"
+2025-09-12T21:00:25.155754520Z [inf]  Agent prompt preview: Du är en hjälpsam AI-assistent som talar svenska. Svara naturligt och använd svenska konversationsmö...
+2025-09-12T21:00:25.155759198Z [inf]  Initializing GPT session with API key: sk-proj...
+2025-09-12T21:00:25.155763124Z [inf]  RealtimeClient created, connection state: false
+2025-09-12T21:00:25.155767290Z [inf]  Pre-connection state: false
+2025-09-12T21:00:25.155771053Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T21:00:25.155775032Z [inf]  Raw body: {
+2025-09-12T21:00:25.155779137Z [inf]    "data": {
+2025-09-12T21:00:25.155783534Z [inf]      "event_type": "call.answered",
+2025-09-12T21:00:25.155788425Z [inf]      "id": "f7411e72-b337-44da-919e-b1dfba42fb05",
+2025-09-12T21:00:25.155792526Z [inf]      "occurred_at": "2025-09-12T21:00:17.672302Z",
+2025-09-12T21:00:25.155796645Z [inf]      "payload": {
+2025-09-12T21:00:25.155800896Z [inf]        "call_control_id": "v3:lI4slrvUV-TL1qt86Mu1yCxlf01YZNj4yRsYdA_7y_8e6odLzb5wWA",
+2025-09-12T21:00:25.155804922Z [inf]        "call_leg_id": "7bf729b6-901b-11f0-8e49-02420a1f2020",
+2025-09-12T21:00:25.155808636Z [inf]        "call_session_id": "7bf72128-901b-11f0-8313-02420a1f2020",
+2025-09-12T21:00:25.155812540Z [inf]        "calling_party_type": "pstn",
+2025-09-12T21:00:25.155816653Z [inf]        "client_state": "MQ==",
+2025-09-12T21:00:25.155820573Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T21:00:25.155824584Z [inf]        "custom_headers": [
+2025-09-12T21:00:25.155829369Z [inf]          {
+2025-09-12T21:00:25.155833138Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T21:00:25.155836910Z [inf]            "value": "icid-value=7103737c-728b-103e-00-00-00-10-6b-03-d5-02"
+2025-09-12T21:00:25.155841875Z [inf]          },
+2025-09-12T21:00:25.155845403Z [inf]          {
+2025-09-12T21:00:25.155849461Z [inf]            "name": "P-Early-Media",
+2025-09-12T21:00:25.156551460Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.156583070Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.156601917Z [err]  Connection state: false
+2025-09-12T21:00:25.156607115Z [inf]  }
+2025-09-12T21:00:25.156613933Z [err]  Connection state: false
+2025-09-12T21:00:25.156616511Z [inf]  Event type: call.answered
+2025-09-12T21:00:25.156621016Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.156625239Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.156627215Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.156631910Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.156633313Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.156634692Z [err]  Connection state: false
+2025-09-12T21:00:25.156637929Z [inf]  Headers: {
+2025-09-12T21:00:25.156639536Z [err]  Connection state: false
+2025-09-12T21:00:25.156645751Z [err]  Connection state: false
+2025-09-12T21:00:25.156648536Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.156648809Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T21:00:25.156650541Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:25.156655318Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.156657965Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T21:00:25.156660455Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T21:00:25.156665357Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.156666017Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.156666437Z [inf]    "x-railway-request-id": "7PkuPMlrSi-w0JbZrJsmnA",
+2025-09-12T21:00:25.156670898Z [inf]        "to": "+46105200937"
+2025-09-12T21:00:25.156673393Z [inf]    "content-length": "1059",
+2025-09-12T21:00:25.156675210Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T21:00:25.156675664Z [err]  Connection state: false
+2025-09-12T21:00:25.156681342Z [inf]    "content-type": "application/json",
+2025-09-12T21:00:25.156683546Z [inf]      },
+2025-09-12T21:00:25.156685845Z [inf]    "x-request-start": "1757710818016",
+2025-09-12T21:00:25.156687613Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.156691220Z [inf]    "telnyx-signature-ed25519": "3vBMVrYxbiy4wUOSZtliHAjcUa06z1UtNkDtB525t8KLALJCYbDGPXsvBkhAiBkYlq0mmQkRONvY5vN5H053Ag==",
+2025-09-12T21:00:25.156694342Z [inf]      "record_type": "event"
+2025-09-12T21:00:25.156695051Z [inf]    "accept-encoding": "gzip"
+2025-09-12T21:00:25.156696641Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.156698135Z [inf]    "telnyx-timestamp": "1757710817",
+2025-09-12T21:00:25.156703506Z [err]  Connection state: false
+2025-09-12T21:00:25.156705148Z [inf]    },
+2025-09-12T21:00:25.156705214Z [inf]    "webhook-id": "f7411e72-b337-44da-919e-b1dfba42fb05",
+2025-09-12T21:00:25.156710515Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.156713448Z [inf]    "webhook-signature": "3vBMVrYxbiy4wUOSZtliHAjcUa06z1UtNkDtB525t8KLALJCYbDGPXsvBkhAiBkYlq0mmQkRONvY5vN5H053Ag==",
+2025-09-12T21:00:25.156715364Z [inf]    "meta": {
+2025-09-12T21:00:25.156721304Z [inf]    "webhook-timestamp": "1757710817",
+2025-09-12T21:00:25.156722140Z [inf]      "attempt": 1,
+2025-09-12T21:00:25.156727216Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T21:00:25.156729168Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T21:00:25.156733201Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:25.156735393Z [inf]    }
+2025-09-12T21:00:25.156740236Z [inf]  }
+2025-09-12T21:00:25.158549751Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158557954Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158563581Z [err]  Connection state: false
+2025-09-12T21:00:25.158568585Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158573704Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158579029Z [err]  Connection state: false
+2025-09-12T21:00:25.158584218Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158589136Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158594425Z [err]  Connection state: false
+2025-09-12T21:00:25.158599655Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158604594Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158609886Z [err]  Connection state: false
+2025-09-12T21:00:25.158614002Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158618400Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158622825Z [err]  Connection state: false
+2025-09-12T21:00:25.158627538Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158631931Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158636877Z [err]  Connection state: false
+2025-09-12T21:00:25.158641083Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158645797Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158650142Z [err]  Connection state: false
+2025-09-12T21:00:25.158654865Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158660035Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158664837Z [err]  Connection state: false
+2025-09-12T21:00:25.158982791Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.158988847Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.158994275Z [err]  Connection state: false
+2025-09-12T21:00:25.158998762Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159002807Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159006971Z [err]  Connection state: false
+2025-09-12T21:00:25.159011014Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159014672Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159018684Z [err]  Connection state: false
+2025-09-12T21:00:25.159022992Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159028284Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159032449Z [err]  Connection state: false
+2025-09-12T21:00:25.159036371Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159040750Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159044833Z [err]  Connection state: false
+2025-09-12T21:00:25.159048695Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159052476Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159057839Z [err]  Connection state: false
+2025-09-12T21:00:25.159061854Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159066035Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159070340Z [err]  Connection state: false
+2025-09-12T21:00:25.159074347Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159078300Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159082329Z [err]  Connection state: false
+2025-09-12T21:00:25.159088916Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159093217Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159099918Z [err]  Connection state: false
+2025-09-12T21:00:25.159105025Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159490542Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159495090Z [err]  Connection state: false
+2025-09-12T21:00:25.159499074Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159521586Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159526170Z [err]  Connection state: false
+2025-09-12T21:00:25.159530111Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159534334Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159538400Z [err]  Connection state: false
+2025-09-12T21:00:25.159542367Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159546201Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159549999Z [err]  Connection state: false
+2025-09-12T21:00:25.159554183Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159558272Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159559265Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159564046Z [err]  Connection state: false
+2025-09-12T21:00:25.159565832Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159569098Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159572099Z [err]  Connection state: false
+2025-09-12T21:00:25.159574673Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159580033Z [err]  Connection state: false
+2025-09-12T21:00:25.159584295Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159586153Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159593132Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159597142Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159598604Z [err]  Connection state: false
+2025-09-12T21:00:25.159599966Z [err]  Connection state: false
+2025-09-12T21:00:25.159604373Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159609042Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159611230Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159612093Z [err]  Connection state: false
+2025-09-12T21:00:25.159617707Z [err]  Connection state: false
+2025-09-12T21:00:25.159618950Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159620107Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159620390Z [err]  Connection state: false
+2025-09-12T21:00:25.159625418Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159625998Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159629774Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159631635Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159635617Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159637787Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159638009Z [err]  Connection state: false
+2025-09-12T21:00:25.159641225Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159643062Z [err]  Connection state: false
+2025-09-12T21:00:25.159644128Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:25.159644177Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159648273Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159648611Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159651328Z [err]  Connection state: false
+2025-09-12T21:00:25.159652674Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159653974Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159658575Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159658968Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159659695Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159660369Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159667062Z [err]  Connection state: false
+2025-09-12T21:00:25.159668731Z [err]  Connection state: false
+2025-09-12T21:00:25.159670286Z [err]  Connection state: false
+2025-09-12T21:00:25.159672729Z [inf]  GPT-Realtime session fully initialized for stream 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159675088Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159675994Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159678700Z [inf]  GPT response received
+2025-09-12T21:00:25.159680365Z [inf]  Post-connection state: true
+2025-09-12T21:00:25.159682354Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159682574Z [inf]  === STREAM 1c46dc50-8b3a-485d-a9bb-5db4c09ec191 READY FOR AUDIO ===
+2025-09-12T21:00:25.159682741Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159685856Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159687411Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159689227Z [err]  Connection state: false
+2025-09-12T21:00:25.159694045Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159694884Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159700435Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159703513Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159705414Z [err]  Connection state: false
+2025-09-12T21:00:25.159710652Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159715585Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159720696Z [err]  Connection state: false
+2025-09-12T21:00:25.159727064Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159729931Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159731653Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159737630Z [err]  Connection state: false
+2025-09-12T21:00:25.159745431Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159745921Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159748412Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:25.159753771Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159757600Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159759160Z [err]  Connection state: false
+2025-09-12T21:00:25.159763598Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.159769037Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.159772762Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159774156Z [err]  Connection state: false
+2025-09-12T21:00:25.159779690Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T21:00:25.159781641Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159784671Z [inf]  Raw body: {
+2025-09-12T21:00:25.159789675Z [inf]    "data": {
+2025-09-12T21:00:25.159790090Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:25.159795600Z [inf]      "event_type": "streaming.started",
+2025-09-12T21:00:25.159801140Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159801231Z [inf]      "id": "cdcdbaa9-bdbd-4881-81b7-e21d9b68061d",
+2025-09-12T21:00:25.159808389Z [inf]      "occurred_at": "2025-09-12T21:00:18.152298Z",
+2025-09-12T21:00:25.159810218Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159814808Z [inf]      "payload": {
+2025-09-12T21:00:25.159819760Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159820653Z [inf]        "call_control_id": "v3:lI4slrvUV-TL1qt86Mu1yCxlf01YZNj4yRsYdA_7y_8e6odLzb5wWA",
+2025-09-12T21:00:25.159825719Z [inf]        "call_leg_id": "7bf729b6-901b-11f0-8e49-02420a1f2020",
+2025-09-12T21:00:25.159828440Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159831540Z [inf]        "call_session_id": "7bf72128-901b-11f0-8313-02420a1f2020",
+2025-09-12T21:00:25.159837276Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159837311Z [inf]        "calling_party_type": "pstn",
+2025-09-12T21:00:25.159844235Z [inf]        "client_state": "MQ==",
+2025-09-12T21:00:25.159846031Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159852440Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T21:00:25.159853772Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159857103Z [inf]        "stream_id": "1c46dc50-8b3a-485d-a9bb-5db4c09ec191",
+2025-09-12T21:00:25.159863431Z [inf]        "stream_params": {
+2025-09-12T21:00:25.159863909Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159868165Z [inf]          "stream_track": "both",
+2025-09-12T21:00:25.159872899Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159873633Z [inf]          "stream_url": "wss://web-production-b99cf.up.railway.app/api/telnyx/stream"
+2025-09-12T21:00:25.159878808Z [inf]        },
+2025-09-12T21:00:25.159881050Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159884414Z [inf]        "stream_type": "websocket"
+2025-09-12T21:00:25.159889310Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159890670Z [inf]      },
+2025-09-12T21:00:25.159896668Z [inf]      "record_type": "event"
+2025-09-12T21:00:25.159898280Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159901596Z [inf]    },
+2025-09-12T21:00:25.159907281Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159907528Z [inf]    "meta": {
+2025-09-12T21:00:25.159914534Z [inf]      "attempt": 1,
+2025-09-12T21:00:25.159915702Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159919570Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T21:00:25.159924282Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159925076Z [inf]    }
+2025-09-12T21:00:25.159930379Z [inf]  }
+2025-09-12T21:00:25.159932822Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159936631Z [inf]  Headers: {
+2025-09-12T21:00:25.159940496Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159945491Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:25.159948579Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159951423Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T21:00:25.159956299Z [inf]    "content-length": "893",
+2025-09-12T21:00:25.159961036Z [inf]    "content-type": "application/json",
+2025-09-12T21:00:25.159961598Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159965819Z [inf]    "telnyx-signature-ed25519": "31B9/YvzUKYgrcf9kLymmASm9hqgSGqNZptf0moENBMBv51FAjk3m4pUwAmJLw3/p48ltSBWiS9U/5HyLrNqDA==",
+2025-09-12T21:00:25.159970196Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159971126Z [inf]    "telnyx-timestamp": "1757710818",
+2025-09-12T21:00:25.159977531Z [inf]    "webhook-id": "cdcdbaa9-bdbd-4881-81b7-e21d9b68061d",
+2025-09-12T21:00:25.159979667Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159982872Z [inf]    "webhook-signature": "31B9/YvzUKYgrcf9kLymmASm9hqgSGqNZptf0moENBMBv51FAjk3m4pUwAmJLw3/p48ltSBWiS9U/5HyLrNqDA==",
+2025-09-12T21:00:25.159988047Z [inf]    "webhook-timestamp": "1757710818",
+2025-09-12T21:00:25.159988396Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159993220Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T21:00:25.159994513Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.159998393Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:25.160000159Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.160003512Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T21:00:25.160005894Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.160008877Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T21:00:25.160013170Z [inf]    "x-railway-request-id": "W7-rO_PdR1aQwgrLN8N_Fg",
+2025-09-12T21:00:25.160017240Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T21:00:25.160021426Z [inf]    "x-request-start": "1757710818463",
+2025-09-12T21:00:25.160026405Z [inf]    "accept-encoding": "gzip"
+2025-09-12T21:00:25.160030476Z [inf]  }
+2025-09-12T21:00:25.160034462Z [inf]  Event type: streaming.started
+2025-09-12T21:00:25.160038790Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.160042914Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.160047615Z [err]  Connection state: false
+2025-09-12T21:00:25.160051827Z [err]  === AUDIO PROCESSING ERROR: GPT client not connected ===
+2025-09-12T21:00:25.160055602Z [err]  Stream ID: 1c46dc50-8b3a-485d-a9bb-5db4c09ec191
+2025-09-12T21:00:25.160059707Z [err]  Connection state: false
+2025-09-12T21:00:25.164362714Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.164371479Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.164379464Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.164387326Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.164396006Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.164405614Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.164413550Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.164421980Z [inf]  Conversation updated: undefined
+2025-09-12T21:00:25.164429907Z [inf]  Streaming GPT audio response to Telnyx
+2025-09-12T21:00:25.164437581Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:25.164444316Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:25.164453371Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:26.497836669Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:26.639489481Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:27.541840443Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:28.098223543Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:28.264810558Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:29.238591453Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:31.682673030Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:32.159364108Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:32.782034299Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:32.919276308Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:33.710682457Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:33.820424156Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:33.866026806Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:35.348181867Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:35.780260656Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:35.941910881Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:36.300795490Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:36.717641806Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:37.079967749Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:38.365237520Z [inf]  Audio forwarded to GPT: 444 samples
+2025-09-12T21:00:38.570794193Z [inf]  === STREAM 1c46dc50-8b3a-485d-a9bb-5db4c09ec191 TERMINATED ===
+2025-09-12T21:00:38.570798459Z [inf]  Termination source: Telnyx
+2025-09-12T21:00:38.570802836Z [inf]  Stream 1c46dc50-8b3a-485d-a9bb-5db4c09ec191 ended, duration: 20536ms
+2025-09-12T21:00:38.580374368Z [inf]  Telnyx stream closed for call null
+2025-09-12T21:00:38.863077003Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T21:00:38.863083554Z [inf]  Raw body: {
+2025-09-12T21:00:38.863087801Z [inf]    "data": {
+2025-09-12T21:00:38.863091579Z [inf]      "event_type": "call.hangup",
+2025-09-12T21:00:38.863095514Z [inf]      "id": "af18cce1-7c4e-4d01-8e03-b63bf4360580",
+2025-09-12T21:00:38.863099593Z [inf]      "occurred_at": "2025-09-12T21:00:38.512298Z",
+2025-09-12T21:00:38.863104379Z [inf]      "payload": {
+2025-09-12T21:00:38.863108341Z [inf]        "call_control_id": "v3:lI4slrvUV-TL1qt86Mu1yCxlf01YZNj4yRsYdA_7y_8e6odLzb5wWA",
+2025-09-12T21:00:38.863113151Z [inf]        "call_leg_id": "7bf729b6-901b-11f0-8e49-02420a1f2020",
+2025-09-12T21:00:38.863117249Z [inf]        "call_quality_stats": {
+2025-09-12T21:00:38.863122607Z [inf]          "inbound": {
+2025-09-12T21:00:38.863127025Z [inf]            "jitter_max_variance": "32.00",
+2025-09-12T21:00:38.863131087Z [inf]            "jitter_packet_count": "0",
+2025-09-12T21:00:38.863136729Z [inf]            "mos": "4.50",
+2025-09-12T21:00:38.863141925Z [inf]            "packet_count": "1015",
+2025-09-12T21:00:38.863150740Z [inf]            "skip_packet_count": "30"
+2025-09-12T21:00:38.863157694Z [inf]          },
+2025-09-12T21:00:38.863163049Z [inf]          "outbound": {
+2025-09-12T21:00:38.863168020Z [inf]            "packet_count": "1018",
+2025-09-12T21:00:38.863176994Z [inf]            "skip_packet_count": "0"
+2025-09-12T21:00:38.863183587Z [inf]          }
+2025-09-12T21:00:38.863189506Z [inf]        },
+2025-09-12T21:00:38.863195889Z [inf]        "call_session_id": "7bf72128-901b-11f0-8313-02420a1f2020",
+2025-09-12T21:00:38.863201205Z [inf]        "calling_party_type": "pstn",
+2025-09-12T21:00:38.863206979Z [inf]        "client_state": "MQ==",
+2025-09-12T21:00:38.863212345Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T21:00:38.863218294Z [inf]        "custom_headers": [
+2025-09-12T21:00:38.863233595Z [inf]          {
+2025-09-12T21:00:38.863239277Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T21:00:38.863244842Z [inf]            "value": "icid-value=7103737c-728b-103e-00-00-00-10-6b-03-d5-02"
+2025-09-12T21:00:38.863251143Z [inf]          },
+2025-09-12T21:00:38.863257211Z [inf]          {
+2025-09-12T21:00:38.863534533Z [inf]            "name": "P-Early-Media",
+2025-09-12T21:00:38.863541137Z [inf]            "value": "supported"
+2025-09-12T21:00:38.863545299Z [inf]          }
+2025-09-12T21:00:38.863549108Z [inf]        ],
+2025-09-12T21:00:38.863553380Z [inf]        "end_time": "2025-09-12T21:00:38.512298Z",
+2025-09-12T21:00:38.863556827Z [inf]        "from": "+46723161614",
+2025-09-12T21:00:38.863560227Z [inf]        "hangup_cause": "normal_clearing",
+2025-09-12T21:00:38.863563830Z [inf]        "hangup_source": "caller",
+2025-09-12T21:00:38.863567206Z [inf]        "sip_hangup_cause": "200",
+2025-09-12T21:00:38.863570723Z [inf]        "start_time": "2025-09-12T21:00:16.652296Z",
+2025-09-12T21:00:38.863574144Z [inf]        "tags": [
+2025-09-12T21:00:38.863577965Z [inf]          "gpt-realtime"
+2025-09-12T21:00:38.863581456Z [inf]        ],
+2025-09-12T21:00:38.863585018Z [inf]        "to": "+46105200937"
+2025-09-12T21:00:38.863588569Z [inf]      },
+2025-09-12T21:00:38.863591953Z [inf]      "record_type": "event"
+2025-09-12T21:00:38.863595597Z [inf]    },
+2025-09-12T21:00:38.863599317Z [inf]    "meta": {
+2025-09-12T21:00:38.863602892Z [inf]      "attempt": 1,
+2025-09-12T21:00:38.863607641Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T21:00:38.863611183Z [inf]    }
+2025-09-12T21:00:38.863614516Z [inf]  }
+2025-09-12T21:00:38.863618072Z [inf]  Headers: {
+2025-09-12T21:00:38.863621380Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:38.863624806Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T21:00:38.863628535Z [inf]    "content-length": "1560",
+2025-09-12T21:00:38.863631945Z [inf]    "content-type": "application/json",
+2025-09-12T21:00:38.863635440Z [inf]    "telnyx-signature-ed25519": "h10/iekbUUaM2Io+wBD+bQBNLfj2EBULUyQR4ocwgwSN8ydFjNXqavEB5Rj6PbXSm2OPW+V86hGm44FyCmLqDw==",
+2025-09-12T21:00:38.863638918Z [inf]    "telnyx-timestamp": "1757710838",
+2025-09-12T21:00:38.863642456Z [inf]    "webhook-id": "af18cce1-7c4e-4d01-8e03-b63bf4360580",
+2025-09-12T21:00:38.863646145Z [inf]    "webhook-signature": "h10/iekbUUaM2Io+wBD+bQBNLfj2EBULUyQR4ocwgwSN8ydFjNXqavEB5Rj6PbXSm2OPW+V86hGm44FyCmLqDw==",
+2025-09-12T21:00:38.863649780Z [inf]    "webhook-timestamp": "1757710838",
+2025-09-12T21:00:38.863653526Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T21:00:38.863656915Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:38.863660299Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T21:00:38.863663925Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T21:00:38.863667644Z [inf]    "x-railway-request-id": "JNi2iohfS4CL0SM1rJsmnA",
+2025-09-12T21:00:38.863671334Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T21:00:38.863674868Z [inf]    "x-request-start": "1757710838852",
+2025-09-12T21:00:38.863679588Z [inf]    "accept-encoding": "gzip"
+2025-09-12T21:00:38.863683377Z [inf]  }
+2025-09-12T21:00:38.863686984Z [inf]  Event type: call.hangup
+2025-09-12T21:00:39.011042856Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T21:00:39.011048284Z [inf]  Raw body: {
+2025-09-12T21:00:39.011054011Z [inf]    "data": {
+2025-09-12T21:00:39.011059685Z [inf]      "event_type": "streaming.stopped",
+2025-09-12T21:00:39.011065642Z [inf]      "id": "c632e721-d2e4-40ed-9220-5618c9265322",
+2025-09-12T21:00:39.011070671Z [inf]      "occurred_at": "2025-09-12T21:00:38.575450Z",
+2025-09-12T21:00:39.011075397Z [inf]      "payload": {
+2025-09-12T21:00:39.011430725Z [inf]        "call_control_id": "v3:lI4slrvUV-TL1qt86Mu1yCxlf01YZNj4yRsYdA_7y_8e6odLzb5wWA",
+2025-09-12T21:00:39.011441665Z [inf]        "call_leg_id": "7bf729b6-901b-11f0-8e49-02420a1f2020",
+2025-09-12T21:00:39.011451412Z [inf]        "call_session_id": "7bf72128-901b-11f0-8313-02420a1f2020",
+2025-09-12T21:00:39.011458373Z [inf]        "calling_party_type": "pstn",
+2025-09-12T21:00:39.011465236Z [inf]        "client_state": "MQ==",
+2025-09-12T21:00:39.011471578Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T21:00:39.011477552Z [inf]        "stream_id": "1c46dc50-8b3a-485d-a9bb-5db4c09ec191",
+2025-09-12T21:00:39.011483267Z [inf]        "stream_params": {
+2025-09-12T21:00:39.011489714Z [inf]          "stream_track": "both",
+2025-09-12T21:00:39.011496605Z [inf]          "stream_url": "wss://web-production-b99cf.up.railway.app/api/telnyx/stream"
+2025-09-12T21:00:39.011504060Z [inf]        },
+2025-09-12T21:00:39.011510845Z [inf]        "stream_type": "websocket"
+2025-09-12T21:00:39.011529394Z [inf]      },
+2025-09-12T21:00:39.011538565Z [inf]      "record_type": "event"
+2025-09-12T21:00:39.011545382Z [inf]    },
+2025-09-12T21:00:39.011552969Z [inf]    "meta": {
+2025-09-12T21:00:39.011560044Z [inf]      "attempt": 1,
+2025-09-12T21:00:39.011566680Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T21:00:39.011575314Z [inf]    }
+2025-09-12T21:00:39.011743878Z [inf]  }
+2025-09-12T21:00:39.011748455Z [inf]  Headers: {
+2025-09-12T21:00:39.011752772Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:39.011760380Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T21:00:39.011765265Z [inf]    "content-length": "893",
+2025-09-12T21:00:39.011770313Z [inf]    "content-type": "application/json",
+2025-09-12T21:00:39.011774262Z [inf]    "telnyx-signature-ed25519": "sSNKmd3aSmGx+Rgw6U3ZW0vH4fXjskWzM4v4SE4JHNUxvQ1uLKkS+5ZzT255mQHzZ9f7S28LG7nMVBXe70RHDQ==",
+2025-09-12T21:00:39.011780122Z [inf]    "telnyx-timestamp": "1757710838",
+2025-09-12T21:00:39.011791691Z [inf]    "webhook-id": "c632e721-d2e4-40ed-9220-5618c9265322",
+2025-09-12T21:00:39.011793186Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T21:00:39.011801913Z [inf]    "webhook-signature": "sSNKmd3aSmGx+Rgw6U3ZW0vH4fXjskWzM4v4SE4JHNUxvQ1uLKkS+5ZzT255mQHzZ9f7S28LG7nMVBXe70RHDQ==",
+2025-09-12T21:00:39.011806665Z [inf]    "x-railway-request-id": "uZ-0IUdpT5erSjEI0-QtfA",
+2025-09-12T21:00:39.011812303Z [inf]    "webhook-timestamp": "1757710838",
+2025-09-12T21:00:39.011819803Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T21:00:39.011824478Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T21:00:39.011831242Z [inf]    "x-request-start": "1757710838862",
+2025-09-12T21:00:39.011835850Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:39.011845084Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T21:00:39.011848256Z [inf]    "accept-encoding": "gzip"
+2025-09-12T21:00:39.011855246Z [inf]  }
+2025-09-12T21:00:39.011861705Z [inf]  Event type: streaming.stopped
+2025-09-12T21:00:40.011437493Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T21:00:40.011443316Z [inf]  Raw body: {
+2025-09-12T21:00:40.011449082Z [inf]    "data": {
+2025-09-12T21:00:40.011454397Z [inf]      "event_type": "call.cost",
+2025-09-12T21:00:40.011459786Z [inf]      "id": "5c8abf55-b5cd-4bcf-99d0-44c7eda5a55d",
+2025-09-12T21:00:40.011465372Z [inf]      "occurred_at": "2025-09-12T21:00:39.585888Z",
+2025-09-12T21:00:40.011471256Z [inf]      "payload": {
+2025-09-12T21:00:40.011476717Z [inf]        "billed_duration_secs": 24,
+2025-09-12T21:00:40.011484465Z [inf]        "billing_group_id": null,
+2025-09-12T21:00:40.011490035Z [inf]        "call_control_id": "v3:lI4slrvUV-TL1qt86Mu1yCxlf01YZNj4yRsYdA_7y_8e6odLzb5wWA",
+2025-09-12T21:00:40.011495390Z [inf]        "call_leg_id": "7bf729b6-901b-11f0-8e49-02420a1f2020",
+2025-09-12T21:00:40.011500913Z [inf]        "call_session_id": "7bf72128-901b-11f0-8313-02420a1f2020",
+2025-09-12T21:00:40.011506583Z [inf]        "calling_party_type": "pstn",
+2025-09-12T21:00:40.011512525Z [inf]        "client_state": "MQ==",
+2025-09-12T21:00:40.011517571Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T21:00:40.011525152Z [inf]        "cost_parts": [
+2025-09-12T21:00:40.011530791Z [inf]          {
+2025-09-12T21:00:40.011536100Z [inf]            "billed_duration_secs": 24,
+2025-09-12T21:00:40.011541315Z [inf]            "call_part": "sip-trunking",
+2025-09-12T21:00:40.011546472Z [inf]            "cost": "0.0013",
+2025-09-12T21:00:40.011551961Z [inf]            "currency": "USD",
+2025-09-12T21:00:40.011557368Z [inf]            "rate": "0.003200"
+2025-09-12T21:00:40.011563043Z [inf]          },
+2025-09-12T21:00:40.011568352Z [inf]          {
+2025-09-12T21:00:40.011574367Z [inf]            "billed_duration_secs": 24,
+2025-09-12T21:00:40.011579687Z [inf]            "call_part": "call-recording",
+2025-09-12T21:00:40.011585287Z [inf]            "cost": "0.0008",
+2025-09-12T21:00:40.011620554Z [inf]            "currency": "USD",
+2025-09-12T21:00:40.011625823Z [inf]            "rate": "0.00200"
+2025-09-12T21:00:40.011631182Z [inf]          },
+2025-09-12T21:00:40.011636469Z [inf]          {
+2025-09-12T21:00:40.011641817Z [inf]            "billed_duration_secs": 24,
+2025-09-12T21:00:40.011647154Z [inf]            "call_part": "call-control",
+2025-09-12T21:00:40.011652455Z [inf]            "cost": "0.0008",
+2025-09-12T21:00:40.011657833Z [inf]            "currency": "USD",
+2025-09-12T21:00:40.011663360Z [inf]            "rate": "0.00200"
+2025-09-12T21:00:40.011668653Z [inf]          }
+2025-09-12T21:00:40.011674062Z [inf]        ],
+2025-09-12T21:00:40.013342387Z [inf]        "status": "success",
+2025-09-12T21:00:40.013356246Z [inf]        "total_cost": "0.0029"
+2025-09-12T21:00:40.013364970Z [inf]      },
+2025-09-12T21:00:40.013371667Z [inf]      "record_type": "event"
+2025-09-12T21:00:40.013383270Z [inf]    },
+2025-09-12T21:00:40.013390725Z [inf]    "meta": {
+2025-09-12T21:00:40.013397667Z [inf]      "attempt": 1,
+2025-09-12T21:00:40.013405072Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T21:00:40.013411783Z [inf]    }
+2025-09-12T21:00:40.013420153Z [inf]  }
+2025-09-12T21:00:40.013426801Z [inf]  Headers: {
+2025-09-12T21:00:40.013433732Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:40.013440351Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T21:00:40.013447295Z [inf]    "content-length": "1347",
+2025-09-12T21:00:40.013454340Z [inf]    "content-type": "application/json",
+2025-09-12T21:00:40.013460554Z [inf]    "telnyx-signature-ed25519": "AeGpnI5vYtOUO96FB5Tfdgf3heU3ba1jIwRSmXx4FvqnsYXOyIEZXm2BCsx8dssf4hNe1hTXE0SgSJmyblKxAA==",
+2025-09-12T21:00:40.013469568Z [inf]    "telnyx-timestamp": "1757710839",
+2025-09-12T21:00:40.013476515Z [inf]    "webhook-id": "5c8abf55-b5cd-4bcf-99d0-44c7eda5a55d",
+2025-09-12T21:00:40.013482974Z [inf]    "webhook-signature": "AeGpnI5vYtOUO96FB5Tfdgf3heU3ba1jIwRSmXx4FvqnsYXOyIEZXm2BCsx8dssf4hNe1hTXE0SgSJmyblKxAA==",
+2025-09-12T21:00:40.013489556Z [inf]    "webhook-timestamp": "1757710839",
+2025-09-12T21:00:40.013497160Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T21:00:40.013503882Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T21:00:40.013514394Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T21:00:40.013525704Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T21:00:40.013532639Z [inf]    "x-railway-request-id": "7E_1HDGFRVmALnLsjUJq2g",
+2025-09-12T21:00:40.013539057Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T21:00:40.013545376Z [inf]    "x-request-start": "1757710839865",
+2025-09-12T21:00:40.013551921Z [inf]    "accept-encoding": "gzip"
+2025-09-12T21:00:40.013558061Z [inf]  }
+2025-09-12T21:00:40.013565860Z [inf]  Event type: call.cost

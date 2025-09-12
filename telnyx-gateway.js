@@ -57,6 +57,8 @@ class TelnyxGPTGateway {
             agentId: null,
             agent: null,
             gptClient: null,
+            gptConnecting: false,
+            audioBuffer: [], // Buffer audio packets during connection
             startTime: Date.now()
         };
 
@@ -106,13 +108,33 @@ class TelnyxGPTGateway {
                     
                     // Initialize GPT-Realtime session with error handling
                     try {
+                        callData.gptConnecting = true;
+                        console.log(`Starting GPT connection, buffering audio packets...`);
+                        
                         await this.initializeGPTSession(callData);
+                        
+                        callData.gptConnecting = false;
                         this.activeCalls.set(callData.streamId, callData);
-                        console.log(`=== STREAM ${callData.streamId} READY FOR AUDIO ===`);
+                        
+                        // Process buffered audio packets
+                        console.log(`Processing ${callData.audioBuffer.length} buffered audio packets`);
+                        for (const audioPayload of callData.audioBuffer) {
+                            try {
+                                this.processAudioPacket(callData, audioPayload);
+                            } catch (bufferError) {
+                                console.error('Error processing buffered audio:', bufferError.message);
+                            }
+                        }
+                        callData.audioBuffer = []; // Clear buffer
+                        
+                        console.log(`=== STREAM ${callData.streamId} READY FOR REAL-TIME AUDIO ===`);
                     } catch (gptError) {
                         console.error('=== GPT INITIALIZATION FAILED ===');
                         console.error('Stream ID:', callData.streamId);
                         console.error('GPT Error:', gptError.message);
+                        
+                        callData.gptConnecting = false;
+                        callData.audioBuffer = []; // Clear buffer on failure
                         
                         // Send error response to Telnyx if possible
                         ws.send(JSON.stringify({
@@ -125,36 +147,41 @@ class TelnyxGPTGateway {
                     break;
 
             case 'media':
-                // CRITICAL: Validate GPT connection before processing audio
+                // CRITICAL: Handle audio during connection establishment
                 if (!callData.gptClient) {
-                    console.error('=== AUDIO PROCESSING ERROR: No GPT client initialized ===');
-                    console.error('Stream ID:', callData.streamId);
-                    return;
+                    if (callData.gptConnecting) {
+                        // Buffer audio during connection
+                        callData.audioBuffer.push(message.media.payload);
+                        if (callData.audioBuffer.length > 100) { // Limit buffer size
+                            callData.audioBuffer.shift(); // Remove oldest
+                        }
+                        return;
+                    } else {
+                        console.error('=== AUDIO PROCESSING ERROR: No GPT client and not connecting ===');
+                        console.error('Stream ID:', callData.streamId);
+                        return;
+                    }
                 }
                 
                 if (!callData.gptClient.isConnected()) {
-                    console.error('=== AUDIO PROCESSING ERROR: GPT client not connected ===');
-                    console.error('Stream ID:', callData.streamId);
-                    console.error('Connection state:', callData.gptClient.isConnected());
-                    return;
+                    if (callData.gptConnecting) {
+                        // Still connecting - buffer audio
+                        callData.audioBuffer.push(message.media.payload);
+                        if (callData.audioBuffer.length > 100) {
+                            callData.audioBuffer.shift();
+                        }
+                        return;
+                    } else {
+                        console.error('=== AUDIO PROCESSING ERROR: GPT client not connected ===');
+                        console.error('Stream ID:', callData.streamId);
+                        console.error('Connection state:', callData.gptClient.isConnected());
+                        return;
+                    }
                 }
                 
                 try {
-                    // Transcode and forward audio to GPT-Realtime
-                    const audioData = this.transcodeToGPT(message.media.payload);
-                    if (audioData) {
-                        // Convert base64 to Int16Array as required by RealtimeClient
-                        const buffer = Buffer.from(audioData, 'base64');
-                        const int16Array = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.length / 2);
-                        
-                        // Append audio with connection verification
-                        callData.gptClient.appendInputAudio(int16Array);
-                        
-                        // Debug audio flow
-                        if (Math.random() < 0.01) { // Log 1% of audio packets to avoid spam
-                            console.log(`Audio forwarded to GPT: ${int16Array.length} samples`);
-                        }
-                    }
+                    // Process current audio packet
+                    this.processAudioPacket(callData, message.media.payload);
                 } catch (error) {
                     console.error('=== AUDIO PROCESSING ERROR ===');
                     console.error('Stream ID:', callData.streamId);
@@ -307,6 +334,24 @@ class TelnyxGPTGateway {
             }
             
             throw error; // Re-throw to prevent silent failure
+        }
+    }
+
+    processAudioPacket(callData, audioPayload) {
+        // Transcode and forward audio to GPT-Realtime
+        const audioData = this.transcodeToGPT(audioPayload);
+        if (audioData) {
+            // Convert base64 to Int16Array as required by RealtimeClient
+            const buffer = Buffer.from(audioData, 'base64');
+            const int16Array = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.length / 2);
+            
+            // Append audio to GPT client
+            callData.gptClient.appendInputAudio(int16Array);
+            
+            // Debug audio flow (log 1% of packets to avoid spam)
+            if (Math.random() < 0.01) {
+                console.log(`Audio forwarded to GPT: ${int16Array.length} samples`);
+            }
         }
     }
 
