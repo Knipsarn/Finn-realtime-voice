@@ -57,7 +57,7 @@ class TelnyxGPTGateway {
             agentId: null,
             agent: null,
             gptClient: null,
-            gptConnecting: false,
+            gptConnecting: true, // Set to true immediately to buffer early audio
             audioBuffer: [], // Buffer audio packets during connection
             startTime: Date.now()
         };
@@ -108,7 +108,6 @@ class TelnyxGPTGateway {
                     
                     // Initialize GPT-Realtime session with error handling
                     try {
-                        callData.gptConnecting = true;
                         console.log(`Starting GPT connection, buffering audio packets...`);
                         
                         await this.initializeGPTSession(callData);
