@@ -59,7 +59,8 @@ class TelnyxGPTGateway {
             gptClient: null,
             gptConnecting: true, // Set to true immediately to buffer early audio
             audioBuffer: [], // Buffer audio packets during connection
-            startTime: Date.now()
+            startTime: Date.now(),
+            rtpSequence: Math.floor(Math.random() * 65536) // Initialize random sequence for RTP packets
         };
 
         ws.on('message', async (data) => {
@@ -497,7 +498,10 @@ class TelnyxGPTGateway {
         // FIXED: Use proper RTP timestamp calculation for 8kHz audio
         const now = Date.now();
         const rtpTimestamp = Math.floor((now % 536870912) * 8); // Proper 32-bit RTP timestamp for 8kHz
-        const sequenceNumber = Math.floor(Math.random() * 65536);
+        
+        // FIXED: Use incremental sequence numbers for proper RTP packet ordering
+        const sequenceNumber = callData.rtpSequence;
+        callData.rtpSequence = (callData.rtpSequence + 1) % 65536; // Increment and handle 16-bit wraparound
         
         rtpHeader.writeUInt16BE(sequenceNumber, 2); // Sequence number
         rtpHeader.writeUInt32BE(rtpTimestamp, 4); // 32-bit RTP timestamp
