@@ -491,8 +491,8 @@ const twilioGateway = new TwilioGPTGateway(httpServer);
 const telnyxGateway = new TelnyxGPTGateway(httpServer);
 
 // Start server
-httpServer.listen(PORT, () => {
-    console.log(`Twilio GPT-Realtime Gateway running on http://localhost:${PORT}`);
+httpServer.listen(PORT, '0.0.0.0', () => {
+    console.log(`Twilio GPT-Realtime Gateway running on http://0.0.0.0:${PORT}`);
     console.log('Static client available at GET /');
     console.log('API endpoints:');
     console.log('  GET /health - Service health check');
