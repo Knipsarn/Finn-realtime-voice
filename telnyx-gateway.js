@@ -583,14 +583,12 @@ class TelnyxGPTGateway {
             const pcm16Buffer = Buffer.from(audioDelta, 'base64');
             console.log('Decoded PCM16 buffer size:', pcm16Buffer.length, 'bytes');
             
-            // Validate audio data quality to filter out corrupted GPT packets
-            if (this.isCorruptedAudio(pcm16Buffer)) {
-                console.log('🚫 Skipping corrupted GPT audio packet');
-                return;
-            }
+            // TEMPORARY: Replace ALL GPT audio with clean silence to test pipeline
+            console.log('🔇 REPLACING GPT AUDIO WITH SILENCE FOR TESTING');
+            const silenceBuffer = Buffer.alloc(pcm16Buffer.length);
             
-            // Downsample from 24kHz to 8kHz for Telnyx
-            const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
+            // Downsample from 24kHz to 8kHz for Telnyx  
+            const downsampledBuffer = this.downsampleAudio(silenceBuffer, 24000, 8000);
             console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
             
             // Convert PCM16 to PCMA (A-law)
