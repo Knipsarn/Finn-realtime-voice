@@ -459,6 +459,15 @@ app.post('/api/telnyx/voice', async (req, res) => {
     }
 });
 
+// WebSocket test endpoint
+app.get('/api/telnyx/stream', (req, res) => {
+    res.json({ 
+        error: 'This is a WebSocket endpoint', 
+        upgrade_required: true,
+        websocket_url: 'wss://web-production-b99cf.up.railway.app/api/telnyx/stream'
+    });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ 

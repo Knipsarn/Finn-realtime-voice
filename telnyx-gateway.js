@@ -23,8 +23,14 @@ class TelnyxGPTGateway {
         });
 
         this.wss.on('connection', (ws, req) => {
-            console.log('Telnyx Media Stream connected');
+            console.log('=== TELNYX WEBSOCKET CONNECTION ===');
+            console.log('WebSocket connected from:', req.socket.remoteAddress);
+            console.log('Headers:', JSON.stringify(req.headers, null, 2));
             this.handleTelnyxConnection(ws, req);
+        });
+        
+        this.wss.on('error', (error) => {
+            console.error('Telnyx WebSocket Server Error:', error);
         });
 
         console.log('Telnyx WebSocket server initialized on /api/telnyx/stream');
