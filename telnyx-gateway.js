@@ -7,6 +7,7 @@ import { WebSocketServer } from 'ws';
 import OpenAI from 'openai';
 import { RealtimeClient } from '@openai/realtime-api-beta';
 import database from './database.js';
+import { linear16ToAlaw } from 'alawmulaw';
 
 class TelnyxGPTGateway {
     constructor(server) {
@@ -437,14 +438,21 @@ class TelnyxGPTGateway {
     }
 
     downsampleAudio(pcm16Buffer, fromRate, toRate) {
-        const ratio = fromRate / toRate;
+        const ratio = fromRate / toRate; // 3.0 for 24kHz->8kHz
         const inputSamples = new Int16Array(pcm16Buffer);
         const outputLength = Math.floor(inputSamples.length / ratio);
         const outputSamples = new Int16Array(outputLength);
         
+        // ANTI-ALIASING FILTER: Prevent clicking from frequency fold-back
         for (let i = 0; i < outputLength; i++) {
-            const srcIndex = Math.floor(i * ratio);
-            outputSamples[i] = inputSamples[srcIndex] || 0;
+            const srcIndex = i * ratio;
+            const idx0 = Math.floor(srcIndex);
+            const idx1 = Math.min(idx0 + 1, inputSamples.length - 1);
+            const idx2 = Math.min(idx0 + 2, inputSamples.length - 1);
+            
+            // Simple 3-point moving average to eliminate >4kHz frequencies
+            const sample = Math.round((inputSamples[idx0] + inputSamples[idx1] + inputSamples[idx2]) / 3);
+            outputSamples[i] = Math.max(-32768, Math.min(32767, sample));
         }
         
         return outputSamples.buffer;
@@ -591,8 +599,9 @@ class TelnyxGPTGateway {
             const downsampledBuffer = this.downsampleAudio(silenceBuffer, 24000, 8000);
             console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
             
-            // Convert PCM16 to PCMA (A-law)
-            const pcmaBuffer = this.pcm16ToPcma(downsampledBuffer);
+            // Convert PCM16 to PCMA (A-law) using proven library
+            const pcm16Samples = new Int16Array(downsampledBuffer);
+            const pcmaBuffer = Buffer.from(linear16ToAlaw(Array.from(pcm16Samples)));
             console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
             
             // Create RTP header and payload
