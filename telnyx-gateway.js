@@ -81,57 +81,154 @@ class TelnyxGPTGateway {
     }
 
     async handleTelnyxMessage(ws, message, callData) {
-        switch (message.event) {
-            case 'connected':
-                console.log('Telnyx stream connected, version:', message.version);
-                break;
+        try {
+            switch (message.event) {
+                case 'connected':
+                    console.log('Telnyx stream connected, version:', message.version);
+                    break;
 
-            case 'start':
-                callData.streamId = message.stream_id;
-                console.log(`Stream started with ID: ${callData.streamId}`);
-                console.log('Media format:', message.start.media_format);
-                
-                // Get default agent for now - in production you'd pass this via URL params
-                const agents = await database.getAllAgents();
-                callData.agent = agents[0];
-                
-                if (callData.agent) {
-                    console.log(`Using agent ${callData.agent.id}: "${callData.agent.voice}"`);
-                    // Initialize GPT-Realtime session
-                    await this.initializeGPTSession(callData);
-                    this.activeCalls.set(callData.streamId, callData);
-                }
-                break;
+                case 'start':
+                    callData.streamId = message.stream_id;
+                    console.log(`=== STREAM INITIALIZATION ===`);
+                    console.log(`Stream ID: ${callData.streamId}`);
+                    console.log('Media format:', message.start.media_format);
+                    
+                    // Get default agent for now - in production you'd pass this via URL params
+                    const agents = await database.getAllAgents();
+                    callData.agent = agents[0];
+                    
+                    if (!callData.agent) {
+                        throw new Error('No agents configured in database');
+                    }
+                    
+                    console.log(`Using agent ${callData.agent.id}: voice="${callData.agent.voice}"`);
+                    console.log('Agent prompt preview:', callData.agent.prompt.substring(0, 100) + '...');
+                    
+                    // Initialize GPT-Realtime session with error handling
+                    try {
+                        await this.initializeGPTSession(callData);
+                        this.activeCalls.set(callData.streamId, callData);
+                        console.log(`=== STREAM ${callData.streamId} READY FOR AUDIO ===`);
+                    } catch (gptError) {
+                        console.error('=== GPT INITIALIZATION FAILED ===');
+                        console.error('Stream ID:', callData.streamId);
+                        console.error('GPT Error:', gptError.message);
+                        
+                        // Send error response to Telnyx if possible
+                        ws.send(JSON.stringify({
+                            event: 'stop',
+                            stream_id: callData.streamId
+                        }));
+                        
+                        throw gptError;
+                    }
+                    break;
 
             case 'media':
-                // Transcode and forward audio to GPT-Realtime
-                if (callData.gptClient) {
+                // CRITICAL: Validate GPT connection before processing audio
+                if (!callData.gptClient) {
+                    console.error('=== AUDIO PROCESSING ERROR: No GPT client initialized ===');
+                    console.error('Stream ID:', callData.streamId);
+                    return;
+                }
+                
+                if (!callData.gptClient.isConnected()) {
+                    console.error('=== AUDIO PROCESSING ERROR: GPT client not connected ===');
+                    console.error('Stream ID:', callData.streamId);
+                    console.error('Connection state:', callData.gptClient.isConnected());
+                    return;
+                }
+                
+                try {
+                    // Transcode and forward audio to GPT-Realtime
                     const audioData = this.transcodeToGPT(message.media.payload);
                     if (audioData) {
                         // Convert base64 to Int16Array as required by RealtimeClient
                         const buffer = Buffer.from(audioData, 'base64');
                         const int16Array = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.length / 2);
+                        
+                        // Append audio with connection verification
                         callData.gptClient.appendInputAudio(int16Array);
+                        
+                        // Debug audio flow
+                        if (Math.random() < 0.01) { // Log 1% of audio packets to avoid spam
+                            console.log(`Audio forwarded to GPT: ${int16Array.length} samples`);
+                        }
                     }
+                } catch (error) {
+                    console.error('=== AUDIO PROCESSING ERROR ===');
+                    console.error('Stream ID:', callData.streamId);
+                    console.error('Error message:', error.message);
+                    console.error('GPT connection state:', callData.gptClient ? callData.gptClient.isConnected() : 'null');
                 }
                 break;
 
             case 'stop':
-                console.log(`Stream ${callData.streamId} ended by Telnyx`);
+                console.log(`=== STREAM ${callData.streamId} TERMINATED ===`);
+                console.log('Termination source: Telnyx');
                 await this.endCall(callData);
                 break;
+                
+            default:
+                console.log(`Unknown Telnyx event: ${message.event}`);
+                break;
+        }
+        } catch (error) {
+            console.error('=== TELNYX MESSAGE HANDLING ERROR ===');
+            console.error('Stream ID:', callData.streamId);
+            console.error('Message event:', message.event);
+            console.error('Error message:', error.message);
+            console.error('Error stack:', error.stack);
+            
+            // Attempt cleanup on critical errors
+            if (error.message.includes('GPT') || error.message.includes('agents')) {
+                this.cleanup(callData);
+            }
         }
     }
 
     async initializeGPTSession(callData) {
         try {
+            // CRITICAL: Validate API key exists before connection attempt
+            if (!process.env.OPENAI_API_KEY) {
+                throw new Error('OPENAI_API_KEY environment variable not set');
+            }
+            
+            if (process.env.OPENAI_API_KEY.length < 20) {
+                throw new Error('OPENAI_API_KEY appears invalid (too short)');
+            }
+
+            console.log('Initializing GPT session with API key:', process.env.OPENAI_API_KEY.substring(0, 7) + '...');
+
             // Initialize RealtimeClient from beta library
             callData.gptClient = new RealtimeClient({
                 apiKey: process.env.OPENAI_API_KEY,
                 dangerouslyAllowAPIKeyInBrowser: false
             });
 
-            // Configure session
+            console.log('RealtimeClient created, connection state:', callData.gptClient.isConnected());
+
+            // Set up connection event handlers BEFORE connecting
+            callData.gptClient.on('connected', () => {
+                console.log('=== GPT-Realtime CONNECTION ESTABLISHED ===');
+                console.log('Stream ID:', callData.streamId);
+                console.log('Agent voice:', callData.agent.voice);
+                console.log('Connection state verified:', callData.gptClient.isConnected());
+            });
+
+            callData.gptClient.on('disconnected', () => {
+                console.log('=== GPT-Realtime CONNECTION LOST ===');
+                console.log('Stream ID:', callData.streamId);
+            });
+
+            callData.gptClient.on('error', (error) => {
+                console.error('=== GPT-Realtime CONNECTION ERROR ===');
+                console.error('Stream ID:', callData.streamId);
+                console.error('Error details:', error);
+                console.error('Stack trace:', error.stack);
+            });
+
+            // Configure session BEFORE connecting
             callData.gptClient.updateSession({
                 voice: callData.agent.voice,
                 instructions: callData.agent.prompt,
@@ -150,15 +247,14 @@ class TelnyxGPTGateway {
                 max_response_output_tokens: 4096
             });
 
-            // Set up event handlers
+            // Set up conversation event handlers
             callData.gptClient.on('conversation.updated', (event) => {
-                // Handle conversation updates
-                console.log('Conversation updated:', event);
+                console.log('Conversation updated:', event.type);
             });
 
             callData.gptClient.on('conversation.item.appended', (event) => {
                 if (event.item.type === 'message' && event.item.role === 'assistant') {
-                    console.log('GPT response:', event.item.content);
+                    console.log('GPT response received');
                 }
             });
 
@@ -167,29 +263,50 @@ class TelnyxGPTGateway {
                     // Handle audio content
                     for (const content of event.item.content) {
                         if (content.type === 'audio') {
+                            console.log('Streaming GPT audio response to Telnyx');
                             this.streamGPTAudioToTelnyx(callData, content.audio);
                         }
                     }
                 }
             });
 
-            callData.gptClient.on('error', (error) => {
-                console.error('GPT error:', error);
-            });
-
-            // Connect to OpenAI
+            console.log('Pre-connection state:', callData.gptClient.isConnected());
+            
+            // CRITICAL: Connect to OpenAI with explicit verification
             await callData.gptClient.connect();
+            
+            console.log('Post-connection state:', callData.gptClient.isConnected());
+            
+            // CRITICAL: Verify connection actually established
+            if (!callData.gptClient.isConnected()) {
+                throw new Error('RealtimeClient.connect() returned success but connection not established');
+            }
 
-            // Send initial greeting
+            // Send initial greeting only after verified connection
             callData.gptClient.sendUserMessageContent([{
                 type: 'input_text',
                 text: this.getGreeting(callData.agent)
             }]);
 
-            console.log('GPT-Realtime connection established for stream', callData.streamId);
+            console.log('GPT-Realtime session fully initialized for stream', callData.streamId);
 
         } catch (error) {
-            console.error('Failed to initialize GPT session:', error);
+            console.error('=== CRITICAL: GPT SESSION INITIALIZATION FAILED ===');
+            console.error('Stream ID:', callData.streamId);
+            console.error('Error message:', error.message);
+            console.error('Error stack:', error.stack);
+            
+            // Clean up failed client
+            if (callData.gptClient) {
+                try {
+                    callData.gptClient.disconnect();
+                } catch (disconnectError) {
+                    console.error('Error during cleanup disconnect:', disconnectError);
+                }
+                callData.gptClient = null;
+            }
+            
+            throw error; // Re-throw to prevent silent failure
         }
     }
 
