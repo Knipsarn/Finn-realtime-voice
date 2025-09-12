@@ -21,24 +21,19 @@ class TelnyxGPTGateway {
             server: this.server,
             path: '/api/telnyx/stream',
             handleProtocols: (protocols, req) => {
-                console.log('WebSocket protocols requested:', protocols);
-                console.log('Protocol type:', typeof protocols);
-                console.log('Request headers:', req.headers);
+                console.log('=== WEBSOCKET PROTOCOL NEGOTIATION ===');
+                console.log('Protocols:', protocols);
                 
-                // Convert to array if it's a Set
-                const protocolArray = Array.isArray(protocols) ? protocols : Array.from(protocols);
-                console.log('Protocol array:', protocolArray);
-                
-                // Accept telnyx-media-stream protocol if requested
-                if (protocolArray.includes('telnyx-media-stream')) {
-                    console.log('Accepting telnyx-media-stream protocol');
+                // Per ws library docs: protocols is a Set
+                if (protocols.has('telnyx-media-stream')) {
+                    console.log('Selected: telnyx-media-stream');
                     return 'telnyx-media-stream';
                 }
                 
-                // Accept first protocol if available, otherwise false for no protocol
-                const selectedProtocol = protocolArray.length > 0 ? protocolArray[0] : false;
-                console.log('Selected protocol:', selectedProtocol);
-                return selectedProtocol;
+                // Default: return first protocol or false
+                const firstProtocol = protocols.values().next().value;
+                console.log('Selected:', firstProtocol || 'none');
+                return firstProtocol || false;
             }
         });
 

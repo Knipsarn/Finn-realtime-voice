@@ -1,21 +1,21 @@
-2025-09-12T15:28:08.000000000Z [inf]  Starting Container
-2025-09-12T15:28:09.087664560Z [err]  (node:1) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
-2025-09-12T15:28:09.087669359Z [err]  (Use `node --trace-deprecation ...` to show where the warning was created)
-2025-09-12T15:28:09.087673036Z [inf]  Connected to SQLite database
-2025-09-12T15:28:09.087676509Z [inf]  Created default Swedish agent
-2025-09-12T15:28:09.087680070Z [inf]  Twilio WebSocket server initialized on /api/twilio/stream
-2025-09-12T15:28:09.087686147Z [inf]  Telnyx WebSocket server initialized on /api/telnyx/stream
-2025-09-12T15:28:09.087689933Z [inf]  Twilio GPT-Realtime Gateway running on http://0.0.0.0:8080
-2025-09-12T15:28:09.087693467Z [inf]  Static client available at GET /
-2025-09-12T15:28:09.087697041Z [inf]  API endpoints:
-2025-09-12T15:28:09.087701015Z [inf]    GET /health - Service health check
-2025-09-12T15:28:09.087704728Z [inf]    GET /api/config - Configuration presets
-2025-09-12T15:28:09.087708279Z [inf]    POST /api/session - GPT-Realtime session creation
-2025-09-12T15:28:09.087712355Z [inf]    POST /api/twilio/voice - Twilio voice webhook
-2025-09-12T15:28:09.087715978Z [inf]    WS /api/twilio/stream - Twilio media stream handler
-2025-09-12T15:28:09.087719597Z [inf]    POST /api/telnyx/voice - Telnyx voice webhook
-2025-09-12T15:28:09.087723253Z [inf]    WS /api/telnyx/stream - Telnyx media stream handler
-2025-09-12T15:28:09.087727132Z [inf]    GET /api/agents - List agents
-2025-09-12T15:28:09.087731333Z [inf]    POST /api/agents - Create agent
-2025-09-12T15:28:09.087735660Z [inf]    GET /api/calls - List calls
-2025-09-12T15:28:21.000000000Z [inf]  Stopping Container
+Starting Container
+(node:1) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+  WS /api/twilio/stream - Twilio media stream handler
+(Use `node --trace-deprecation ...` to show where the warning was created)
+  POST /api/telnyx/voice - Telnyx voice webhook
+Connected to SQLite database
+  POST /api/session - GPT-Realtime session creation
+  WS /api/telnyx/stream - Telnyx media stream handler
+Created default Swedish agent
+  GET /api/agents - List agents
+  POST /api/twilio/voice - Twilio voice webhook
+  POST /api/agents - Create agent
+  GET /api/calls - List calls
+Twilio WebSocket server initialized on /api/twilio/stream
+API endpoints:
+Telnyx WebSocket server initialized on /api/telnyx/stream
+Static client available at GET /
+  GET /health - Service health check
+Twilio GPT-Realtime Gateway running on http://0.0.0.0:8080
+  GET /api/config - Configuration presets
+Stopping ContainerS
