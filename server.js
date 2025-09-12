@@ -395,8 +395,17 @@ app.post('/api/twilio/voice', async (req, res) => {
 // Telnyx Voice Webhook - Incoming Call Handler
 app.post('/api/telnyx/voice', async (req, res) => {
     try {
+        console.log('=== TELNYX WEBHOOK DEBUG ===');
+        console.log('Raw body:', JSON.stringify(req.body, null, 2));
+        console.log('Headers:', JSON.stringify(req.headers, null, 2));
+        
         const event = req.body.data;
-        console.log('Telnyx webhook received:', event.event_type);
+        if (!event) {
+            console.log('ERROR: No data field in webhook');
+            return res.status(400).json({ error: 'No data field' });
+        }
+        
+        console.log('Event type:', event.event_type);
         
         if (event.event_type === 'call.initiated') {
             const payload = event.payload;
