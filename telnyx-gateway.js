@@ -443,60 +443,51 @@ class TelnyxGPTGateway {
         return outputSamples.buffer;
     }
 
-    pcm16ToPcmu(pcm16Buffer) {
-        const BIAS = 0x84;
-        const CLIP = 8159;
+    pcm16ToPcma(pcm16Buffer) {
+        // A-law encoding for PCMA
         const pcmSamples = new Int16Array(pcm16Buffer);
-        const pcmuBuffer = Buffer.alloc(pcmSamples.length);
+        const pcmaBuffer = Buffer.alloc(pcmSamples.length);
         
         for (let i = 0; i < pcmSamples.length; i++) {
-            let sample = Math.max(-CLIP, Math.min(CLIP, pcmSamples[i]));
-            const sign = (sample < 0) ? 0x80 : 0x00;
-            if (sample < 0) sample = -sample;
-            sample += BIAS;
+            let sample = pcmSamples[i];
+            let sign = 0x00;
             
-            let exponent = 0;
-            if (sample >= 256) {
-                exponent = 1;
-                sample >>= 1;
-            }
-            if (sample >= 256) {
-                exponent = 2;
-                sample >>= 1;
-            }
-            if (sample >= 256) {
-                exponent = 3;
-                sample >>= 1;
-            }
-            if (sample >= 256) {
-                exponent = 4;
-                sample >>= 1;
-            }
-            if (sample >= 256) {
-                exponent = 5;
-                sample >>= 1;
-            }
-            if (sample >= 256) {
-                exponent = 6;
-                sample >>= 1;
-            }
-            if (sample >= 256) {
-                exponent = 7;
-                sample >>= 1;
+            if (sample < 0) {
+                sample = -sample;
+                sign = 0x80;
             }
             
-            const mantissa = (sample >> 4) & 0x0F;
-            pcmuBuffer[i] = sign | (exponent << 4) | mantissa;
+            // Clip to maximum value
+            if (sample > 32635) sample = 32635;
+            
+            let exponent = 7;
+            let mantissa = 0;
+            
+            // Find exponent and mantissa for A-law
+            if (sample >= 256) {
+                for (exponent = 0; exponent < 7; exponent++) {
+                    if (sample <= (256 << exponent)) break;
+                }
+                mantissa = (sample >> (exponent + 4)) & 0x0F;
+            } else {
+                exponent = 0;
+                mantissa = sample >> 4;
+            }
+            
+            // A-law has inverted exponent bits
+            exponent ^= 0x07;
+            
+            pcmaBuffer[i] = sign | (exponent << 4) | mantissa;
         }
         
-        return pcmuBuffer;
+        return pcmaBuffer;
     }
 
     createRtpPacket(payloadBuffer) {
         // Create minimal RTP header (12 bytes)
         const rtpHeader = Buffer.alloc(12);
         rtpHeader[0] = 0x80; // Version 2, no padding, no extension, no CSRC
-        rtpHeader[1] = 0x00; // PCMU payload type
+        rtpHeader[1] = 0x08; // PCMA (A-law) payload type
         
         // FIXED: Use proper RTP timestamp calculation for 8kHz audio
         const now = Date.now();
@@ -530,12 +521,12 @@ class TelnyxGPTGateway {
             const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
             console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
             
-            // Convert PCM16 to PCMU (μ-law)
-            const pcmuBuffer = this.pcm16ToPcmu(downsampledBuffer);
-            console.log('PCMU buffer size:', pcmuBuffer.length, 'bytes');
+            // Convert PCM16 to PCMA (A-law)
+            const pcmaBuffer = this.pcm16ToPcma(downsampledBuffer);
+            console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
             
             // Create RTP header and payload
-            const rtpPacket = this.createRtpPacket(pcmuBuffer);
+            const rtpPacket = this.createRtpPacket(pcmaBuffer);
             console.log('RTP packet size:', rtpPacket.length, 'bytes');
             
             // Send to Telnyx WebSocket
@@ -549,7 +540,7 @@ class TelnyxGPTGateway {
             
             callData.ws.send(JSON.stringify(message));
             
-            console.log(`✅ Sent GPT audio to Telnyx: ${pcmuBuffer.length} PCMU bytes, RTP packet: ${rtpPacket.length} bytes`);
+            console.log(`✅ Sent GPT audio to Telnyx: ${pcmaBuffer.length} PCMA bytes, RTP packet: ${rtpPacket.length} bytes`);
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
