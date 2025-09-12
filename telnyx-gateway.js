@@ -224,107 +224,73 @@ class TelnyxGPTGateway {
 
             console.log('Initializing GPT session with API key:', process.env.OPENAI_API_KEY.substring(0, 7) + '...');
 
-            // Initialize RealtimeClient from beta library
-            callData.gptClient = new RealtimeClient({
-                apiKey: process.env.OPENAI_API_KEY,
-                dangerouslyAllowAPIKeyInBrowser: false
+            // Create raw WebSocket connection to new gpt-realtime API
+            const wsUrl = `wss://api.openai.com/v1/realtime?model=gpt-realtime`;
+            callData.gptWebSocket = new WebSocket(wsUrl, {
+                headers: {
+                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                    'OpenAI-Beta': 'realtime=v1'
+                }
             });
 
-            console.log('RealtimeClient created, connection state:', callData.gptClient.isConnected());
+            console.log('OpenAI WebSocket created, URL:', wsUrl);
 
-            // Set up connection event handlers BEFORE connecting
-            callData.gptClient.on('connected', () => {
-                console.log('=== GPT-Realtime CONNECTION ESTABLISHED ===');
+            // Set up WebSocket event handlers
+            callData.gptWebSocket.on('open', () => {
+                console.log('✅ OpenAI Realtime WebSocket connected');
                 console.log('Stream ID:', callData.streamId);
                 console.log('Agent voice:', callData.agent.voice);
-                console.log('Connection state verified:', callData.gptClient.isConnected());
+                console.log('WebSocket state:', callData.gptWebSocket.readyState);
+                
+                // Send session configuration (will be implemented in Task 2.3)
+                // Send initial greeting (will be implemented in Task 2.3) 
+                // Trigger response.create (will be implemented in Task 2.3)
             });
 
-            callData.gptClient.on('disconnected', () => {
-                console.log('=== GPT-Realtime CONNECTION LOST ===');
+            callData.gptWebSocket.on('close', () => {
+                console.log('=== GPT-Realtime WebSocket CLOSED ===');
                 console.log('Stream ID:', callData.streamId);
             });
 
-            callData.gptClient.on('error', (error) => {
-                console.error('=== GPT-Realtime CONNECTION ERROR ===');
+            callData.gptWebSocket.on('error', (error) => {
+                console.error('=== GPT-Realtime WebSocket ERROR ===');
                 console.error('Stream ID:', callData.streamId);
-                console.error('Error details:', error);
-                console.error('Stack trace:', error.stack);
+                console.error('Error details:', error.message);
             });
 
-            // Configure session BEFORE connecting
-            callData.gptClient.updateSession({
-                voice: callData.agent.voice,
-                instructions: callData.agent.prompt,
-                input_audio_format: 'pcm16',
-                output_audio_format: 'pcm16',
-                input_audio_transcription: { model: 'whisper-1' },
-                turn_detection: {
-                    type: 'server_vad',
-                    threshold: 0.5,
-                    prefix_padding_ms: 300,
-                    silence_duration_ms: 500
-                },
-                tools: [],
-                tool_choice: 'auto',
-                temperature: 0.8,
-                max_response_output_tokens: 4096
-            });
-
-            // Set up conversation event handlers
-            callData.gptClient.on('conversation.updated', (event) => {
-                console.log('Conversation updated:', event.type);
-            });
-
-            callData.gptClient.on('conversation.item.appended', (event) => {
-                if (event.item.type === 'message' && event.item.role === 'assistant') {
-                    console.log('GPT response received');
+            callData.gptWebSocket.on('message', (data) => {
+                try {
+                    const event = JSON.parse(data.toString());
+                    console.log('OpenAI event:', event.type);
+                    // Handle events (will be implemented in Task 2.3)
+                    this.handleOpenAIEvent(callData, event);
+                } catch (error) {
+                    console.error('Error parsing OpenAI message:', error);
                 }
             });
 
-            // CORRECT: Listen to streaming audio deltas for real-time playback
-            callData.gptClient.on('conversation.updated', ({ item, delta }) => {
-                if (delta?.audio) {
-                    console.log('Streaming GPT audio delta to Telnyx, samples:', delta.audio.length);
-                    // Convert Int16Array to base64 for streamGPTAudioToTelnyx
-                    const audioBuffer = Buffer.from(delta.audio.buffer, delta.audio.byteOffset, delta.audio.byteLength);
-                    const base64Audio = audioBuffer.toString('base64');
-                    this.streamGPTAudioToTelnyx(callData, base64Audio);
-                }
+            // WebSocket will connect automatically after event handlers are set
+            console.log('Waiting for WebSocket connection...');
+            
+            // Wait for connection with timeout
+            await new Promise((resolve, reject) => {
+                const timeout = setTimeout(() => {
+                    reject(new Error('OpenAI WebSocket connection timeout after 10 seconds'));
+                }, 10000);
+                
+                callData.gptWebSocket.on('open', () => {
+                    clearTimeout(timeout);
+                    console.log('✅ OpenAI WebSocket connection established');
+                    resolve();
+                });
+                
+                callData.gptWebSocket.on('error', (error) => {
+                    clearTimeout(timeout);
+                    reject(error);
+                });
             });
-            
-            // Keep item completion for logging
-            callData.gptClient.on('conversation.item.completed', (event) => {
-                if (event.item.type === 'message' && event.item.role === 'assistant') {
-                    console.log('GPT response completed:', event.item.id);
-                }
-            });
 
-            console.log('Pre-connection state:', callData.gptClient.isConnected());
-            
-            // CRITICAL: Connect to OpenAI with explicit verification and timeout
-            console.log('Attempting GPT-Realtime connection...');
-            const connectionPromise = callData.gptClient.connect();
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('GPT connection timeout after 10 seconds')), 10000)
-            );
-            
-            await Promise.race([connectionPromise, timeoutPromise]);
-            
-            console.log('Post-connection state:', callData.gptClient.isConnected());
-            
-            // CRITICAL: Verify connection actually established
-            if (!callData.gptClient.isConnected()) {
-                throw new Error('RealtimeClient.connect() returned success but connection not established');
-            }
-
-            // Send initial greeting only after verified connection
-            callData.gptClient.sendUserMessageContent([{
-                type: 'input_text',
-                text: this.getGreeting(callData.agent)
-            }]);
-
-            console.log('GPT-Realtime session fully initialized for stream', callData.streamId);
+            console.log('GPT-Realtime WebSocket session initialized for stream', callData.streamId);
 
         } catch (error) {
             console.error('=== CRITICAL: GPT SESSION INITIALIZATION FAILED ===');
@@ -332,14 +298,14 @@ class TelnyxGPTGateway {
             console.error('Error message:', error.message);
             console.error('Error stack:', error.stack);
             
-            // Clean up failed client
-            if (callData.gptClient) {
+            // Clean up failed WebSocket
+            if (callData.gptWebSocket) {
                 try {
-                    callData.gptClient.disconnect();
+                    callData.gptWebSocket.close();
                 } catch (disconnectError) {
-                    console.error('Error during cleanup disconnect:', disconnectError);
+                    console.error('Error during cleanup close:', disconnectError);
                 }
-                callData.gptClient = null;
+                callData.gptWebSocket = null;
             }
             
             throw error; // Re-throw to prevent silent failure
@@ -364,6 +330,12 @@ class TelnyxGPTGateway {
     appendAudioToOpenAI(callData, base64Audio) {
         // TODO: Implement in Task 3.2
         console.log('TODO: appendAudioToOpenAI - will batch and send audio to OpenAI WebSocket');
+    }
+
+    // Placeholder for Task 2.3 - will implement OpenAI event handling
+    handleOpenAIEvent(callData, event) {
+        // TODO: Implement in Task 2.3
+        console.log('TODO: handleOpenAIEvent - received event type:', event.type);
     }
 
     transcodeToGPT(base64RtpAudio) {
