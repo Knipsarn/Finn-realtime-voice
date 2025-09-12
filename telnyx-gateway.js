@@ -494,7 +494,7 @@ class TelnyxGPTGateway {
         // Create minimal RTP header (12 bytes)
         const rtpHeader = Buffer.alloc(12);
         rtpHeader[0] = 0x80; // Version 2, no padding, no extension, no CSRC
-        rtpHeader[1] = 0x08; // PCMA (A-law) payload type
+        rtpHeader[1] = 0x00; // PCMU (μ-law) payload type
         
         // FIXED: Use proper RTP timestamp calculation for 8kHz audio
         const samplesInPacket = payloadBuffer.length; // A-law: 1 byte = 1 sample
@@ -532,12 +532,12 @@ class TelnyxGPTGateway {
             const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
             console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
             
-            // Convert PCM16 to PCMA (A-law)
-            const pcmaBuffer = this.pcm16ToPcma(downsampledBuffer);
-            console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
+            // Convert PCM16 to PCMU (μ-law)
+            const pcmuBuffer = this.pcm16ToPcmu(downsampledBuffer);
+            console.log('PCMU buffer size:', pcmuBuffer.length, 'bytes');
             
             // Create RTP header and payload
-            const rtpPacket = this.createRtpPacket(pcmaBuffer, callData);
+            const rtpPacket = this.createRtpPacket(pcmuBuffer, callData);
             console.log('RTP packet size:', rtpPacket.length, 'bytes');
             
             // Send to Telnyx WebSocket
@@ -551,7 +551,7 @@ class TelnyxGPTGateway {
             
             callData.ws.send(JSON.stringify(message));
             
-            console.log(`✅ Sent GPT audio to Telnyx: ${pcmaBuffer.length} PCMA bytes, RTP packet: ${rtpPacket.length} bytes`);
+            console.log(`✅ Sent GPT audio to Telnyx: ${pcmuBuffer.length} PCMU bytes, RTP packet: ${rtpPacket.length} bytes`);
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
