@@ -32,6 +32,16 @@ await database.initialize();
 
 // Middleware
 app.use(cors());
+
+// Raw body middleware for Telnyx webhook signature validation
+app.use('/api/telnyx', express.raw({ type: 'application/json' }));
+app.use('/api/telnyx', (req, res, next) => {
+    req.rawBody = req.body;
+    req.body = JSON.parse(req.body);
+    console.log('Raw body length:', req.rawBody?.length);
+    next();
+});
+
 app.use(express.json());
 app.use(express.static('public'));
 
