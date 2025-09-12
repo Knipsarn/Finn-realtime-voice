@@ -509,6 +509,42 @@ class TelnyxGPTGateway {
         return buffer;
     }
 
+    isCorruptedAudio(pcm16Buffer) {
+        if (pcm16Buffer.length < 4) return true; // Too small
+        
+        const samples = new Int16Array(pcm16Buffer);
+        if (samples.length < 10) return true; // Need reasonable sample size
+        
+        // Check for digital artifacts that cause clicking
+        let identicalCount = 0;
+        let alternatingCount = 0;
+        
+        for (let i = 1; i < Math.min(samples.length, 100); i++) {
+            // Count identical consecutive samples
+            if (samples[i] === samples[i-1]) {
+                identicalCount++;
+            }
+            
+            // Count alternating patterns (A,B,A,B...)
+            if (i >= 2 && samples[i] === samples[i-2] && samples[i] !== samples[i-1]) {
+                alternatingCount++;
+            }
+        }
+        
+        const sampleCount = Math.min(samples.length, 100);
+        const identicalRatio = identicalCount / sampleCount;
+        const alternatingRatio = alternatingCount / sampleCount;
+        
+        // Flag as corrupted if too many identical or alternating patterns
+        const isCorrupted = identicalRatio > 0.8 || alternatingRatio > 0.6;
+        
+        if (isCorrupted) {
+            console.log(`🔍 Audio corruption detected: ${(identicalRatio*100).toFixed(1)}% identical, ${(alternatingRatio*100).toFixed(1)}% alternating`);
+        }
+        
+        return isCorrupted;
+    }
+
     createRtpPacket(payloadBuffer, callData) {
         // Create minimal RTP header (12 bytes)
         const rtpHeader = Buffer.alloc(12);
@@ -546,6 +582,12 @@ class TelnyxGPTGateway {
             // Decode GPT's PCM16 audio from base64
             const pcm16Buffer = Buffer.from(audioDelta, 'base64');
             console.log('Decoded PCM16 buffer size:', pcm16Buffer.length, 'bytes');
+            
+            // Validate audio data quality to filter out corrupted GPT packets
+            if (this.isCorruptedAudio(pcm16Buffer)) {
+                console.log('🚫 Skipping corrupted GPT audio packet');
+                return;
+            }
             
             // Downsample from 24kHz to 8kHz for Telnyx
             const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
@@ -594,22 +636,6 @@ class TelnyxGPTGateway {
             
             console.log(`✅ Sent GPT audio to Telnyx: ${pcmaBuffer.length} PCMA bytes, RTP packet: ${rtpPacket.length} bytes`);
             
-            // EXPERIMENTAL: Inject test sine wave every 10th packet to verify pipeline
-            if (callData.rtpSequence % 10 === 0) {
-                console.log(`🧪 INJECTING TEST SINE WAVE PACKET`);
-                const testBuffer = this.generateTestAudio(4000, 440, 8000); // 0.5sec 440Hz sine at 8kHz
-                const testPcma = this.pcm16ToPcma(testBuffer);
-                const testRtp = this.createRtpPacket(testPcma, callData);
-                
-                const testMessage = {
-                    event: 'media',
-                    stream_id: callData.streamId,
-                    media: { payload: testRtp.toString('base64') }
-                };
-                
-                callData.ws.send(JSON.stringify(testMessage));
-                console.log(`🧪 Sent test sine wave: ${testPcma.length} bytes`);
-            }
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
