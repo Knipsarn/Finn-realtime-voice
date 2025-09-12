@@ -1,733 +1,421 @@
-2025-09-12T21:53:48.000000000Z [inf]  Starting Container
-2025-09-12T21:53:48.628310973Z [err]  (node:1) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
-2025-09-12T21:53:48.628315491Z [err]  (Use `node --trace-deprecation ...` to show where the warning was created)
-2025-09-12T21:53:48.628320457Z [inf]  Connected to SQLite database
-2025-09-12T21:53:48.628325493Z [inf]  Created default Swedish agent
-2025-09-12T21:53:48.628331537Z [inf]  Telnyx WebSocket server initialized on /api/telnyx/stream
-2025-09-12T21:53:48.628336368Z [inf]  Telnyx GPT-Realtime Gateway running on http://0.0.0.0:8080
-2025-09-12T21:53:48.628341166Z [inf]  Static client available at GET /
-2025-09-12T21:53:48.628346561Z [inf]  API endpoints:
-2025-09-12T21:53:48.628351502Z [inf]    GET /health - Service health check
-2025-09-12T21:53:48.628356787Z [inf]    GET /api/config - Configuration presets
-2025-09-12T21:53:48.628361567Z [inf]    POST /api/session - GPT-Realtime session creation
-2025-09-12T21:53:48.628366917Z [inf]    POST /api/twilio/voice - Twilio voice webhook
-2025-09-12T21:53:48.628371441Z [inf]    WS /api/twilio/stream - Twilio media stream handler
-2025-09-12T21:53:48.628376701Z [inf]    POST /api/telnyx/voice - Telnyx voice webhook
-2025-09-12T21:53:48.628381820Z [inf]    WS /api/telnyx/stream - Telnyx media stream handler
-2025-09-12T21:53:48.628387125Z [inf]    GET /api/agents - List agents
-2025-09-12T21:53:48.628391717Z [inf]    POST /api/agents - Create agent
-2025-09-12T21:53:48.628396482Z [inf]    GET /api/calls - List calls
-2025-09-12T21:53:54.000000000Z [inf]  Stopping Container
-2025-09-12T21:54:08.623964737Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T21:54:08.623973362Z [inf]  Raw body: {
-2025-09-12T21:54:08.623979215Z [inf]    "data": {
-2025-09-12T21:54:08.623985650Z [inf]      "event_type": "call.initiated",
-2025-09-12T21:54:08.623990541Z [inf]      "id": "18580de4-ad16-4103-9645-6f84911d32c7",
-2025-09-12T21:54:08.623995536Z [inf]      "occurred_at": "2025-09-12T21:54:08.172298Z",
-2025-09-12T21:54:08.624000400Z [inf]      "payload": {
-2025-09-12T21:54:08.624005120Z [inf]        "call_control_id": "v3:ZJ7jjb5Sl7cRIO3IaCyOUUdxWmpBqAdkrJPga6LtEz82zyZeEhxtHw",
-2025-09-12T21:54:08.624010069Z [inf]        "call_leg_id": "021a48fa-9023-11f0-b855-02420a1f2020",
-2025-09-12T21:54:08.624014946Z [inf]        "call_session_id": "021a39dc-9023-11f0-ad5a-02420a1f2020",
-2025-09-12T21:54:08.624020263Z [inf]        "caller_id_name": "+46723161614",
-2025-09-12T21:54:08.624025095Z [inf]        "calling_party_type": "pstn",
-2025-09-12T21:54:08.624030208Z [inf]        "client_state": null,
-2025-09-12T21:54:08.624035156Z [inf]        "connection_codecs": "PCMA,PCMU",
-2025-09-12T21:54:08.624040533Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T21:54:08.624047780Z [inf]        "custom_headers": [
-2025-09-12T21:54:08.624052520Z [inf]          {
-2025-09-12T21:54:08.624057140Z [inf]            "name": "P-Charging-Vector",
-2025-09-12T21:54:08.624063444Z [inf]            "value": "icid-value=f722bd4e-7292-103e-00-00-00-10-6b-03-d5-00"
-2025-09-12T21:54:08.624068834Z [inf]          },
-2025-09-12T21:54:08.624074524Z [inf]          {
-2025-09-12T21:54:08.624080473Z [inf]            "name": "P-Early-Media",
-2025-09-12T21:54:08.624085834Z [inf]            "value": "supported"
-2025-09-12T21:54:08.624090655Z [inf]          }
-2025-09-12T21:54:08.624095712Z [inf]        ],
-2025-09-12T21:54:08.624101272Z [inf]        "direction": "incoming",
-2025-09-12T21:54:08.624105994Z [inf]        "from": "+46723161614",
-2025-09-12T21:54:08.625349475Z [inf]        "from_sip_uri": "+46723161614@57.67.212.40",
-2025-09-12T21:54:08.625358989Z [inf]        "offered_codecs": "PCMA,PCMU,G729",
-2025-09-12T21:54:08.625366495Z [inf]        "start_time": "2025-09-12T21:54:08.172298Z",
-2025-09-12T21:54:08.625373004Z [inf]        "state": "parked",
-2025-09-12T21:54:08.625379694Z [inf]        "tags": [
-2025-09-12T21:54:08.625386442Z [inf]          "gpt-realtime"
-2025-09-12T21:54:08.625395007Z [inf]        ],
-2025-09-12T21:54:08.625402287Z [inf]        "to": "+46105200937",
-2025-09-12T21:54:08.625409240Z [inf]        "to_sip_uri": "+46105200937;phone-context=ims.mnc002.mcc240.3gppnetwork.org@185.246.41.140"
-2025-09-12T21:54:08.625415669Z [inf]      },
-2025-09-12T21:54:08.625421960Z [inf]      "record_type": "event"
-2025-09-12T21:54:08.625428463Z [inf]    },
-2025-09-12T21:54:08.625434728Z [inf]    "meta": {
-2025-09-12T21:54:08.625441343Z [inf]      "attempt": 1,
-2025-09-12T21:54:08.625447345Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T21:54:08.625455319Z [inf]    }
-2025-09-12T21:54:08.625461345Z [inf]  }
-2025-09-12T21:54:08.625467911Z [inf]  Headers: {
-2025-09-12T21:54:08.625474620Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:08.625480390Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T21:54:08.625486668Z [inf]    "content-length": "1386",
-2025-09-12T21:54:08.625492461Z [inf]    "content-type": "application/json",
-2025-09-12T21:54:08.625498815Z [inf]    "telnyx-signature-ed25519": "KqAo2VWk1UsOQ3UA6UVpf28EJKU1KQAR1RWuV2lP9F8sddZzEOgUjn4GLOi+f7xMK92HEMFx1pPOJtvB6DF8AA==",
-2025-09-12T21:54:08.625504690Z [inf]    "telnyx-timestamp": "1757714048",
-2025-09-12T21:54:08.625512410Z [inf]    "webhook-id": "18580de4-ad16-4103-9645-6f84911d32c7",
-2025-09-12T21:54:08.625518529Z [inf]    "webhook-signature": "KqAo2VWk1UsOQ3UA6UVpf28EJKU1KQAR1RWuV2lP9F8sddZzEOgUjn4GLOi+f7xMK92HEMFx1pPOJtvB6DF8AA==",
-2025-09-12T21:54:08.625704466Z [inf]    "webhook-timestamp": "1757714048",
-2025-09-12T21:54:08.625711429Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T21:54:08.625717075Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:08.625722782Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T21:54:08.625728428Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T21:54:08.625734297Z [inf]    "x-railway-request-id": "zVvmiFDQSR6RxxTYYqdHTg",
-2025-09-12T21:54:08.625739971Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T21:54:08.625745440Z [inf]    "x-request-start": "1757714048459",
-2025-09-12T21:54:08.625751593Z [inf]    "accept-encoding": "gzip"
-2025-09-12T21:54:08.625757127Z [inf]  }
-2025-09-12T21:54:08.625767274Z [inf]  Event type: call.initiated
-2025-09-12T21:54:08.625772842Z [inf]  Incoming call from: +46723161614 to: +46105200937
-2025-09-12T21:54:08.625778548Z [inf]  Created call record 1 using agent 1
-2025-09-12T21:54:09.060005562Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T21:54:09.060012364Z [inf]  Raw body: {
-2025-09-12T21:54:09.060018428Z [inf]    "data": {
-2025-09-12T21:54:09.060024463Z [inf]      "event_type": "call.answered",
-2025-09-12T21:54:09.060030494Z [inf]      "id": "75acfb89-3b0b-4871-8235-4aa159ab47d1",
-2025-09-12T21:54:09.060036999Z [inf]      "occurred_at": "2025-09-12T21:54:08.972360Z",
-2025-09-12T21:54:09.060043321Z [inf]      "payload": {
-2025-09-12T21:54:09.060049269Z [inf]        "call_control_id": "v3:ZJ7jjb5Sl7cRIO3IaCyOUUdxWmpBqAdkrJPga6LtEz82zyZeEhxtHw",
-2025-09-12T21:54:09.060055309Z [inf]        "call_leg_id": "021a48fa-9023-11f0-b855-02420a1f2020",
-2025-09-12T21:54:09.060062036Z [inf]        "call_session_id": "021a39dc-9023-11f0-ad5a-02420a1f2020",
-2025-09-12T21:54:09.060068102Z [inf]        "calling_party_type": "pstn",
-2025-09-12T21:54:09.060073916Z [inf]        "client_state": "MQ==",
-2025-09-12T21:54:09.060080403Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T21:54:09.060087260Z [inf]        "custom_headers": [
-2025-09-12T21:54:09.060093571Z [inf]          {
-2025-09-12T21:54:09.060100091Z [inf]            "name": "P-Charging-Vector",
-2025-09-12T21:54:09.060106743Z [inf]            "value": "icid-value=f722bd4e-7292-103e-00-00-00-10-6b-03-d5-00"
-2025-09-12T21:54:09.060113693Z [inf]          },
-2025-09-12T21:54:09.060142048Z [inf]          {
-2025-09-12T21:54:09.060149400Z [inf]            "name": "P-Early-Media",
-2025-09-12T21:54:09.060156563Z [inf]            "value": "supported"
-2025-09-12T21:54:09.060162358Z [inf]          }
-2025-09-12T21:54:09.060168371Z [inf]        ],
-2025-09-12T21:54:09.060174295Z [inf]        "from": "+46723161614",
-2025-09-12T21:54:09.060187276Z [inf]        "start_time": "2025-09-12T21:54:08.172298Z",
-2025-09-12T21:54:09.060193214Z [inf]        "tags": [
-2025-09-12T21:54:09.060197832Z [inf]          "gpt-realtime"
-2025-09-12T21:54:09.060203340Z [inf]        ],
-2025-09-12T21:54:09.060209620Z [inf]        "to": "+46105200937"
-2025-09-12T21:54:09.060215381Z [inf]      },
-2025-09-12T21:54:09.060221994Z [inf]      "record_type": "event"
-2025-09-12T21:54:09.060228853Z [inf]    },
-2025-09-12T21:54:09.060235612Z [inf]    "meta": {
-2025-09-12T21:54:09.060240142Z [inf]      "attempt": 1,
-2025-09-12T21:54:09.060243985Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T21:54:09.060248702Z [inf]    }
-2025-09-12T21:54:09.060253501Z [inf]  }
-2025-09-12T21:54:09.060257456Z [inf]  Headers: {
-2025-09-12T21:54:09.060261901Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:09.060265697Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T21:54:09.060270531Z [inf]    "content-length": "1059",
-2025-09-12T21:54:09.060275080Z [inf]    "content-type": "application/json",
-2025-09-12T21:54:09.060278995Z [inf]    "telnyx-signature-ed25519": "ZCg5Ne9/P+Wnq02r55HtYtkJb2p/evwRS+sZuY3aKsRu7hYbA+HX6aaJAuPGRjWlgJWuuH4XGZbmPZ7tU3mYCg==",
-2025-09-12T21:54:09.060282785Z [inf]    "telnyx-timestamp": "1757714049",
-2025-09-12T21:54:09.060286715Z [inf]    "webhook-id": "75acfb89-3b0b-4871-8235-4aa159ab47d1",
-2025-09-12T21:54:09.060290638Z [inf]    "webhook-signature": "ZCg5Ne9/P+Wnq02r55HtYtkJb2p/evwRS+sZuY3aKsRu7hYbA+HX6aaJAuPGRjWlgJWuuH4XGZbmPZ7tU3mYCg==",
-2025-09-12T21:54:09.060295263Z [inf]    "webhook-timestamp": "1757714049",
-2025-09-12T21:54:09.060299889Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T21:54:09.060303895Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:09.060308589Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T21:54:09.060312463Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T21:54:09.060316764Z [inf]    "x-railway-request-id": "o7JFUY1ISJ-wfpizYqdHTg",
-2025-09-12T21:54:09.060320886Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T21:54:09.060325003Z [inf]    "x-request-start": "1757714049052",
-2025-09-12T21:54:09.060328974Z [inf]    "accept-encoding": "gzip"
-2025-09-12T21:54:09.060332792Z [inf]  }
-2025-09-12T21:54:09.060336734Z [inf]  Event type: call.answered
-2025-09-12T21:54:09.229052680Z [inf]  Call answered and streaming started
-2025-09-12T21:54:09.365142378Z [inf]  === WEBSOCKET HEADERS EVENT ===
-2025-09-12T21:54:09.369164276Z [inf]  Headers being sent: [
-2025-09-12T21:54:09.369173137Z [inf]    'HTTP/1.1 101 Switching Protocols',
-2025-09-12T21:54:09.369179657Z [inf]    'Upgrade: websocket',
-2025-09-12T21:54:09.369186608Z [inf]    'Connection: Upgrade',
-2025-09-12T21:54:09.369192702Z [inf]    'Sec-WebSocket-Accept: lCB26j4C6hu8QfhVi0BKGRxrwLQ='
-2025-09-12T21:54:09.369199097Z [inf]  ]
-2025-09-12T21:54:09.369204812Z [inf]  Request URL: /api/telnyx/stream
-2025-09-12T21:54:09.369211192Z [inf]  === TELNYX WEBSOCKET CONNECTION SUCCESSFUL ===
-2025-09-12T21:54:09.369217822Z [inf]  WebSocket connected from: 100.64.0.3
-2025-09-12T21:54:09.369224240Z [inf]  Protocol: 
-2025-09-12T21:54:09.369229131Z [inf]  Headers: {
-2025-09-12T21:54:09.369233674Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:09.369237914Z [inf]    "user-agent": "telnyx-websocket",
-2025-09-12T21:54:09.369242738Z [inf]    "connection": "Upgrade",
-2025-09-12T21:54:09.369246967Z [inf]    "sec-websocket-key": "nq869VdrXcxDk7n/JIz6Ag==",
-2025-09-12T21:54:09.369269654Z [inf]    "sec-websocket-version": "13",
-2025-09-12T21:54:09.369274855Z [inf]    "upgrade": "websocket",
-2025-09-12T21:54:09.369279037Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T21:54:09.369283600Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:09.369287979Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T21:54:09.369291872Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T21:54:09.369295812Z [inf]    "x-railway-request-id": "r7RoQuTqR-S2jgSZm3z_FQ",
-2025-09-12T21:54:09.369300190Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T21:54:09.369304944Z [inf]    "x-request-start": "1757714049222",
-2025-09-12T21:54:09.369308883Z [inf]    "accept-encoding": "gzip"
-2025-09-12T21:54:09.369313153Z [inf]  }
-2025-09-12T21:54:09.377940563Z [inf]  Telnyx stream connected, version: 1.0.0
-2025-09-12T21:54:09.389901037Z [inf]  === STREAM INITIALIZATION ===
-2025-09-12T21:54:09.389905765Z [inf]  Stream ID: 28b2baad-c038-471e-9354-09ba62caf47a
-2025-09-12T21:54:09.389982542Z [inf]  Media format: { channels: 1, encoding: 'PCMA', sample_rate: 8000 }
-2025-09-12T21:54:09.393682293Z [inf]  Using agent 1: voice="alloy"
-2025-09-12T21:54:09.393688861Z [inf]  Agent prompt preview: Du är en hjälpsam AI-assistent som talar svenska. Svara naturligt och använd svenska konversationsmö...
-2025-09-12T21:54:09.393693806Z [inf]  Starting GPT connection, buffering audio packets...
-2025-09-12T21:54:09.393697701Z [inf]  Initializing GPT session with API key: sk-proj...
-2025-09-12T21:54:09.393707899Z [inf]  RealtimeClient created, connection state: false
-2025-09-12T21:54:09.393712829Z [inf]  Pre-connection state: false
-2025-09-12T21:54:09.531571031Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T21:54:09.531575010Z [inf]  Raw body: {
-2025-09-12T21:54:09.531588562Z [inf]    "data": {
-2025-09-12T21:54:09.531592469Z [inf]      "event_type": "streaming.started",
-2025-09-12T21:54:09.531596504Z [inf]      "id": "7ded564e-0634-4fec-9e77-0e755f5acdf8",
-2025-09-12T21:54:09.531600394Z [inf]      "occurred_at": "2025-09-12T21:54:09.492302Z",
-2025-09-12T21:54:09.531604162Z [inf]      "payload": {
-2025-09-12T21:54:09.531608320Z [inf]        "call_control_id": "v3:ZJ7jjb5Sl7cRIO3IaCyOUUdxWmpBqAdkrJPga6LtEz82zyZeEhxtHw",
-2025-09-12T21:54:09.531611956Z [inf]        "call_leg_id": "021a48fa-9023-11f0-b855-02420a1f2020",
-2025-09-12T21:54:09.531620453Z [inf]        "call_session_id": "021a39dc-9023-11f0-ad5a-02420a1f2020",
-2025-09-12T21:54:09.531624397Z [inf]        "calling_party_type": "pstn",
-2025-09-12T21:54:09.531628068Z [inf]        "client_state": "MQ==",
-2025-09-12T21:54:09.531631834Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T21:54:09.531635838Z [inf]        "stream_id": "28b2baad-c038-471e-9354-09ba62caf47a",
-2025-09-12T21:54:09.531639632Z [inf]        "stream_params": {
-2025-09-12T21:54:09.531643323Z [inf]          "stream_track": "both",
-2025-09-12T21:54:09.531651543Z [inf]          "stream_url": "wss://web-production-b99cf.up.railway.app/api/telnyx/stream"
-2025-09-12T21:54:09.531655503Z [inf]        },
-2025-09-12T21:54:09.531659282Z [inf]        "stream_type": "websocket"
-2025-09-12T21:54:09.531663259Z [inf]      },
-2025-09-12T21:54:09.531667321Z [inf]      "record_type": "event"
-2025-09-12T21:54:09.531671476Z [inf]    },
-2025-09-12T21:54:09.531675217Z [inf]    "meta": {
-2025-09-12T21:54:09.531679021Z [inf]      "attempt": 1,
-2025-09-12T21:54:09.531684304Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T21:54:09.531688264Z [inf]    }
-2025-09-12T21:54:09.531695660Z [inf]  }
-2025-09-12T21:54:09.531699623Z [inf]  Headers: {
-2025-09-12T21:54:09.531703552Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:09.531707707Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T21:54:09.531711397Z [inf]    "content-length": "893",
-2025-09-12T21:54:09.531715083Z [inf]    "content-type": "application/json",
-2025-09-12T21:54:09.531719127Z [inf]    "telnyx-signature-ed25519": "3+xa1bGmg5BkAtCeNLfOdxm/MDfLtlixF04pinln65FKoHR31l4F6mu6jTlh6wru3W25ipw2G0d56Td2t5CGAw==",
-2025-09-12T21:54:09.531722660Z [inf]    "telnyx-timestamp": "1757714049",
-2025-09-12T21:54:09.531726226Z [inf]    "webhook-id": "7ded564e-0634-4fec-9e77-0e755f5acdf8",
-2025-09-12T21:54:09.531730007Z [inf]    "webhook-signature": "3+xa1bGmg5BkAtCeNLfOdxm/MDfLtlixF04pinln65FKoHR31l4F6mu6jTlh6wru3W25ipw2G0d56Td2t5CGAw==",
-2025-09-12T21:54:09.531733732Z [inf]    "webhook-timestamp": "1757714049",
-2025-09-12T21:54:09.531737551Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T21:54:09.531741315Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:09.531745240Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T21:54:09.531749039Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T21:54:09.531752619Z [inf]    "x-railway-request-id": "f82Md4UHStC4id3-YqdHTg",
-2025-09-12T21:54:09.531756282Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T21:54:09.531760073Z [inf]    "x-request-start": "1757714049528",
-2025-09-12T21:54:09.531763917Z [inf]    "accept-encoding": "gzip"
-2025-09-12T21:54:09.531767709Z [inf]  }
-2025-09-12T21:54:09.531771187Z [inf]  Event type: streaming.started
-2025-09-12T21:54:10.008781258Z [inf]  Post-connection state: true
-2025-09-12T21:54:10.008793085Z [inf]  GPT-Realtime session fully initialized for stream 28b2baad-c038-471e-9354-09ba62caf47a
-2025-09-12T21:54:10.008800799Z [inf]  Processing 46 buffered audio packets
-2025-09-12T21:54:10.029936214Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:10.029940556Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:10.033599681Z [inf]  === STREAM 28b2baad-c038-471e-9354-09ba62caf47a READY FOR REAL-TIME AUDIO ===
-2025-09-12T21:54:10.350117093Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.582476840Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.582481140Z [inf]  GPT response received
-2025-09-12T21:54:10.610716171Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.614221013Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.614227082Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.614231416Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.655184974Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.655191774Z [inf]  Streaming GPT audio delta to Telnyx, samples: 2400
-2025-09-12T21:54:10.655197661Z [inf]  Processing GPT audio chunk, base64 length: 6400
-2025-09-12T21:54:10.655204377Z [inf]  Decoded PCM16 buffer size: 4800 bytes
-2025-09-12T21:54:10.655219419Z [inf]  Downsampled buffer size: 3200 bytes
-2025-09-12T21:54:10.655329327Z [inf]  PCMU buffer size: 1600 bytes
-2025-09-12T21:54:10.655502098Z [inf]  RTP: seq=46272, timestamp=4284445424, payload=1600bytes
-2025-09-12T21:54:10.655507042Z [inf]  RTP packet size: 1612 bytes
-2025-09-12T21:54:10.658117845Z [inf]  ✅ Sent GPT audio to Telnyx: 1600 PCMU bytes, RTP packet: 1612 bytes
-2025-09-12T21:54:10.687520573Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.687526328Z [inf]  Streaming GPT audio delta to Telnyx, samples: 3600
-2025-09-12T21:54:10.687532715Z [inf]  Processing GPT audio chunk, base64 length: 9600
-2025-09-12T21:54:10.687538592Z [inf]  Decoded PCM16 buffer size: 7200 bytes
-2025-09-12T21:54:10.687544382Z [inf]  Downsampled buffer size: 4800 bytes
-2025-09-12T21:54:10.687549941Z [inf]  PCMU buffer size: 2400 bytes
-2025-09-12T21:54:10.687554510Z [inf]  RTP: seq=59180, timestamp=4284445584, payload=2400bytes
-2025-09-12T21:54:10.687559573Z [inf]  RTP packet size: 2412 bytes
-2025-09-12T21:54:10.687565194Z [inf]  ✅ Sent GPT audio to Telnyx: 2400 PCMU bytes, RTP packet: 2412 bytes
-2025-09-12T21:54:10.769312189Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.769317752Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:10.769323247Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:10.769328954Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:10.769335186Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:10.769341560Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:10.769349466Z [inf]  RTP: seq=5846, timestamp=4284446320, payload=4000bytes
-2025-09-12T21:54:10.769355746Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:10.769361917Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:10.769367898Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.769373805Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.769379052Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.769383388Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.818336421Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.818341464Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:10.818345479Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:10.818349593Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:10.818354146Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:10.818358815Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:10.818363705Z [inf]  RTP: seq=10035, timestamp=4284446712, payload=4000bytes
-2025-09-12T21:54:10.818368091Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:10.818372147Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:10.856644608Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.856648617Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:10.856652908Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:10.856657086Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:10.856661230Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:10.856666158Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:10.856669986Z [inf]  RTP: seq=2934, timestamp=4284447016, payload=4000bytes
-2025-09-12T21:54:10.856674651Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:10.856678847Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:10.898557596Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.906011569Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.913830311Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.920816913Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.981327782Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:10.981334174Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:10.981338063Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:10.981342202Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:10.981346507Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:10.981351373Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:10.981355611Z [inf]  RTP: seq=16019, timestamp=4284448032, payload=4000bytes
-2025-09-12T21:54:10.981361648Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:10.981366078Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.019824822Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.019829022Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.019833020Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.019836859Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.019840854Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.019844598Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.019848607Z [inf]  RTP: seq=30438, timestamp=4284448328, payload=4000bytes
-2025-09-12T21:54:11.019852942Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.019857310Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.057351085Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.057356308Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.057362261Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.057367367Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.057373204Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.057378121Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.057383497Z [inf]  RTP: seq=44924, timestamp=4284448632, payload=4000bytes
-2025-09-12T21:54:11.057389986Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.057395138Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.065424373Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.071549885Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.082256155Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.089374850Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.097187417Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.100755587Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.113455009Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.116989451Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.178401156Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.178406826Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.178417141Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.178422798Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.178428142Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.178435346Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.178440668Z [inf]  RTP: seq=61217, timestamp=4284449592, payload=4000bytes
-2025-09-12T21:54:11.178446174Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.178452129Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.233306039Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.233312430Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.233316585Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.233320776Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.233326133Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.233330873Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.233334966Z [inf]  RTP: seq=15424, timestamp=4284450048, payload=4000bytes
-2025-09-12T21:54:11.233338772Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.233342572Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.264305193Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.264311267Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.264317304Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.264323774Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.264330641Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.264337349Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.264342762Z [inf]  RTP: seq=9304, timestamp=4284450296, payload=4000bytes
-2025-09-12T21:54:11.264349093Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.268028243Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.307778322Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.307783147Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.307796161Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.307800743Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.307805263Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.307809316Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.307813785Z [inf]  RTP: seq=31493, timestamp=4284450584, payload=4000bytes
-2025-09-12T21:54:11.307818431Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.307822701Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.339496404Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.339500943Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.339505538Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.339510570Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.339515277Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.339519530Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.339524663Z [inf]  RTP: seq=30976, timestamp=4284450888, payload=4000bytes
-2025-09-12T21:54:11.339529309Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.339534154Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.378097070Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.378103263Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.378108341Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.378113804Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.378120690Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.378126724Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.378132164Z [inf]  RTP: seq=5669, timestamp=4284451184, payload=4000bytes
-2025-09-12T21:54:11.378137608Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.378142221Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.381375528Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.388085773Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.403111182Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.413507879Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.413512000Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.420555074Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.427681071Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.436896376Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.440636311Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.502370503Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.502376374Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.502387500Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.502392658Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.502397537Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.502404268Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.502409330Z [inf]  RTP: seq=50904, timestamp=4284452160, payload=4000bytes
-2025-09-12T21:54:11.502418335Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.502423529Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.539177920Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.539182980Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.539187912Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.539191790Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.539195895Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.539199996Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.539204060Z [inf]  RTP: seq=10864, timestamp=4284452464, payload=4000bytes
-2025-09-12T21:54:11.539208291Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.539212459Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.575836853Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.575843842Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.575850123Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.575855835Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.575862184Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.575868123Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.575873329Z [inf]  RTP: seq=26957, timestamp=4284452776, payload=4000bytes
-2025-09-12T21:54:11.575879131Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.575887053Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.613961068Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.613966843Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.613973286Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.613979326Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.613985821Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.613991882Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.613998226Z [inf]  RTP: seq=35969, timestamp=4284453080, payload=4000bytes
-2025-09-12T21:54:11.614004258Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.614009578Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.651168120Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.651171934Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.651175914Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.651179563Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.651183446Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.651188519Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.651192506Z [inf]  RTP: seq=5692, timestamp=4284453368, payload=4000bytes
-2025-09-12T21:54:11.651196421Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.651200143Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.686350878Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.686399261Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.686405082Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.686411013Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.686416877Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.686421794Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.686426717Z [inf]  RTP: seq=26936, timestamp=4284453664, payload=4000bytes
-2025-09-12T21:54:11.686430975Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.686435384Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.724449610Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.724453983Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.724458220Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.724462439Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.724466550Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.724470679Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.724474488Z [inf]  RTP: seq=23977, timestamp=4284453968, payload=4000bytes
-2025-09-12T21:54:11.724478520Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.724482663Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.774738789Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.774743898Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.774748410Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.774752600Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.774756950Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.774762380Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.778214362Z [inf]  RTP: seq=31224, timestamp=4284454384, payload=4000bytes
-2025-09-12T21:54:11.778220543Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.778226481Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.816952432Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.816956811Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.816961265Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.816965188Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.816969497Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.816974012Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.816978315Z [inf]  RTP: seq=8600, timestamp=4284454712, payload=4000bytes
-2025-09-12T21:54:11.816982180Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.816986113Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.816990433Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.823247387Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.881140910Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.881145116Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.881149003Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.881153113Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.881157016Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.881160886Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.881164751Z [inf]  RTP: seq=21476, timestamp=4284455232, payload=4000bytes
-2025-09-12T21:54:11.881168410Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.884422315Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.919378732Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.919383689Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.919392347Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.919401878Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.919407215Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.919412320Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.919416985Z [inf]  RTP: seq=24657, timestamp=4284455528, payload=4000bytes
-2025-09-12T21:54:11.919422808Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.919429153Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.982781206Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.982787502Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.982791842Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.982796076Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.982800753Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.982804633Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.982808719Z [inf]  RTP: seq=43148, timestamp=4284456040, payload=4000bytes
-2025-09-12T21:54:11.982812715Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.982822953Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:11.995975058Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:11.995980078Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:11.995986202Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:11.996001553Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:11.996006356Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:11.996010797Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:11.996082716Z [inf]  RTP: seq=56207, timestamp=4284456152, payload=4000bytes
-2025-09-12T21:54:11.996087737Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:11.996092539Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:12.033861325Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:12.033865347Z [inf]  Streaming GPT audio delta to Telnyx, samples: 6000
-2025-09-12T21:54:12.033869015Z [inf]  Processing GPT audio chunk, base64 length: 16000
-2025-09-12T21:54:12.033872607Z [inf]  Decoded PCM16 buffer size: 12000 bytes
-2025-09-12T21:54:12.033876520Z [inf]  Downsampled buffer size: 8000 bytes
-2025-09-12T21:54:12.033880088Z [inf]  PCMU buffer size: 4000 bytes
-2025-09-12T21:54:12.033883707Z [inf]  RTP: seq=30381, timestamp=4284456448, payload=4000bytes
-2025-09-12T21:54:12.033887404Z [inf]  RTP packet size: 4012 bytes
-2025-09-12T21:54:12.033890914Z [inf]  ✅ Sent GPT audio to Telnyx: 4000 PCMU bytes, RTP packet: 4012 bytes
-2025-09-12T21:54:12.090455015Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:12.090461476Z [inf]  Streaming GPT audio delta to Telnyx, samples: 16800
-2025-09-12T21:54:12.090467484Z [inf]  Processing GPT audio chunk, base64 length: 44800
-2025-09-12T21:54:12.090473233Z [inf]  Decoded PCM16 buffer size: 33600 bytes
-2025-09-12T21:54:12.090479440Z [inf]  Downsampled buffer size: 22400 bytes
-2025-09-12T21:54:12.090485213Z [inf]  PCMU buffer size: 11200 bytes
-2025-09-12T21:54:12.090490841Z [inf]  RTP: seq=10790, timestamp=4284456896, payload=11200bytes
-2025-09-12T21:54:12.090497750Z [inf]  RTP packet size: 11212 bytes
-2025-09-12T21:54:12.090503868Z [inf]  ✅ Sent GPT audio to Telnyx: 11200 PCMU bytes, RTP packet: 11212 bytes
-2025-09-12T21:54:12.109518328Z [inf]  Conversation updated: undefined
-2025-09-12T21:54:12.109526455Z [inf]  GPT response completed: item_CF60YUegGKnFKsJhmAkCZ
-2025-09-12T21:54:14.294686616Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:14.573531314Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:17.353897734Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:19.832706755Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:20.054826715Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:20.493867226Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:21.332675442Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:21.762322152Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:23.010963335Z [inf]  Audio forwarded to GPT: 444 samples
-2025-09-12T21:54:25.146675981Z [inf]  === STREAM 28b2baad-c038-471e-9354-09ba62caf47a TERMINATED ===
-2025-09-12T21:54:25.146680495Z [inf]  Termination source: Telnyx
-2025-09-12T21:54:25.146684744Z [inf]  Stream 28b2baad-c038-471e-9354-09ba62caf47a ended, duration: 15778ms
-2025-09-12T21:54:25.150655366Z [inf]  Telnyx stream closed for call null
-2025-09-12T21:54:25.195032560Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T21:54:25.195036854Z [inf]  Raw body: {
-2025-09-12T21:54:25.195041074Z [inf]    "data": {
-2025-09-12T21:54:25.195045582Z [inf]      "event_type": "call.hangup",
-2025-09-12T21:54:25.195049364Z [inf]      "id": "9259f2b0-64d8-4bb7-8506-ff5a44f156d1",
-2025-09-12T21:54:25.195053009Z [inf]      "occurred_at": "2025-09-12T21:54:25.092298Z",
-2025-09-12T21:54:25.195056973Z [inf]      "payload": {
-2025-09-12T21:54:25.195061350Z [inf]        "call_control_id": "v3:ZJ7jjb5Sl7cRIO3IaCyOUUdxWmpBqAdkrJPga6LtEz82zyZeEhxtHw",
-2025-09-12T21:54:25.195065542Z [inf]        "call_leg_id": "021a48fa-9023-11f0-b855-02420a1f2020",
-2025-09-12T21:54:25.195069243Z [inf]        "call_quality_stats": {
-2025-09-12T21:54:25.195072834Z [inf]          "inbound": {
-2025-09-12T21:54:25.195076548Z [inf]            "jitter_max_variance": "110.50",
-2025-09-12T21:54:25.195080389Z [inf]            "jitter_packet_count": "0",
-2025-09-12T21:54:25.195084902Z [inf]            "mos": "4.50",
-2025-09-12T21:54:25.195088838Z [inf]            "packet_count": "782",
-2025-09-12T21:54:25.195092763Z [inf]            "skip_packet_count": "27"
-2025-09-12T21:54:25.195096719Z [inf]          },
-2025-09-12T21:54:25.195100775Z [inf]          "outbound": {
-2025-09-12T21:54:25.195104565Z [inf]            "packet_count": "780",
-2025-09-12T21:54:25.195108689Z [inf]            "skip_packet_count": "0"
-2025-09-12T21:54:25.195113498Z [inf]          }
-2025-09-12T21:54:25.195117372Z [inf]        },
-2025-09-12T21:54:25.195121573Z [inf]        "call_session_id": "021a39dc-9023-11f0-ad5a-02420a1f2020",
-2025-09-12T21:54:25.195125515Z [inf]        "calling_party_type": "pstn",
-2025-09-12T21:54:25.195129713Z [inf]        "client_state": "MQ==",
-2025-09-12T21:54:25.195133402Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T21:54:25.195137182Z [inf]        "custom_headers": [
-2025-09-12T21:54:25.195141092Z [inf]          {
-2025-09-12T21:54:25.195145074Z [inf]            "name": "P-Charging-Vector",
-2025-09-12T21:54:25.195149181Z [inf]            "value": "icid-value=f722bd4e-7292-103e-00-00-00-10-6b-03-d5-00"
-2025-09-12T21:54:25.195153096Z [inf]          },
-2025-09-12T21:54:25.195156792Z [inf]          {
-2025-09-12T21:54:25.195160353Z [inf]            "name": "P-Early-Media",
-2025-09-12T21:54:25.195164094Z [inf]            "value": "supported"
-2025-09-12T21:54:25.195167736Z [inf]          }
-2025-09-12T21:54:25.195171413Z [inf]        ],
-2025-09-12T21:54:25.195175806Z [inf]        "end_time": "2025-09-12T21:54:25.092298Z",
-2025-09-12T21:54:25.195179601Z [inf]        "from": "+46723161614",
-2025-09-12T21:54:25.195183203Z [inf]        "hangup_cause": "normal_clearing",
-2025-09-12T21:54:25.195186957Z [inf]        "hangup_source": "caller",
-2025-09-12T21:54:25.195710158Z [inf]        "sip_hangup_cause": "200",
-2025-09-12T21:54:25.195714898Z [inf]        "start_time": "2025-09-12T21:54:08.172298Z",
-2025-09-12T21:54:25.195719335Z [inf]        "tags": [
-2025-09-12T21:54:25.195723138Z [inf]          "gpt-realtime"
-2025-09-12T21:54:25.195726977Z [inf]        ],
-2025-09-12T21:54:25.195730775Z [inf]        "to": "+46105200937"
-2025-09-12T21:54:25.195734403Z [inf]      },
-2025-09-12T21:54:25.195737945Z [inf]      "record_type": "event"
-2025-09-12T21:54:25.195742108Z [inf]    },
-2025-09-12T21:54:25.195746395Z [inf]    "meta": {
-2025-09-12T21:54:25.195749827Z [inf]      "attempt": 1,
-2025-09-12T21:54:25.195753265Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T21:54:25.195756856Z [inf]    }
-2025-09-12T21:54:25.195760510Z [inf]  }
-2025-09-12T21:54:25.195763946Z [inf]  Headers: {
-2025-09-12T21:54:25.195767726Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:25.195773882Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T21:54:25.195782015Z [inf]    "content-length": "1559",
-2025-09-12T21:54:25.195785578Z [inf]    "content-type": "application/json",
-2025-09-12T21:54:25.195789342Z [inf]    "telnyx-signature-ed25519": "0sahSw9pSux9bU04Tcf+iULvm6slH0JVRm2MohegipmyZe8uj5eVckkNePyqluDvSu47erHJWVRbz9THj2P7Bg==",
-2025-09-12T21:54:25.195793263Z [inf]    "telnyx-timestamp": "1757714065",
-2025-09-12T21:54:25.195796905Z [inf]    "webhook-id": "9259f2b0-64d8-4bb7-8506-ff5a44f156d1",
-2025-09-12T21:54:25.195801624Z [inf]    "webhook-signature": "0sahSw9pSux9bU04Tcf+iULvm6slH0JVRm2MohegipmyZe8uj5eVckkNePyqluDvSu47erHJWVRbz9THj2P7Bg==",
-2025-09-12T21:54:25.195806600Z [inf]    "webhook-timestamp": "1757714065",
-2025-09-12T21:54:25.195810337Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T21:54:25.195814079Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:25.195817739Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T21:54:25.195821483Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T21:54:25.195825115Z [inf]    "x-railway-request-id": "sOkYMV_nTwy5mmHlYqdHTg",
-2025-09-12T21:54:25.195829951Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T21:54:25.195833705Z [inf]    "x-request-start": "1757714065184",
-2025-09-12T21:54:25.195837231Z [inf]    "accept-encoding": "gzip"
-2025-09-12T21:54:25.195841058Z [inf]  }
-2025-09-12T21:54:25.195845314Z [inf]  Event type: call.hangup
-2025-09-12T21:54:25.337311626Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T21:54:25.337315660Z [inf]  Raw body: {
-2025-09-12T21:54:25.337321036Z [inf]    "data": {
-2025-09-12T21:54:25.337325055Z [inf]      "event_type": "streaming.stopped",
-2025-09-12T21:54:25.337329652Z [inf]      "id": "176b4dfb-dcea-4f5c-9c60-5fd3bf76156b",
-2025-09-12T21:54:25.337333635Z [inf]      "occurred_at": "2025-09-12T21:54:25.151422Z",
-2025-09-12T21:54:25.337338070Z [inf]      "payload": {
-2025-09-12T21:54:25.337342292Z [inf]        "call_control_id": "v3:ZJ7jjb5Sl7cRIO3IaCyOUUdxWmpBqAdkrJPga6LtEz82zyZeEhxtHw",
-2025-09-12T21:54:25.337346224Z [inf]        "call_leg_id": "021a48fa-9023-11f0-b855-02420a1f2020",
-2025-09-12T21:54:25.337349913Z [inf]        "call_session_id": "021a39dc-9023-11f0-ad5a-02420a1f2020",
-2025-09-12T21:54:25.337353711Z [inf]        "calling_party_type": "pstn",
-2025-09-12T21:54:25.337357377Z [inf]        "client_state": "MQ==",
-2025-09-12T21:54:25.337361293Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T21:54:25.337365432Z [inf]        "stream_id": "28b2baad-c038-471e-9354-09ba62caf47a",
-2025-09-12T21:54:25.337369073Z [inf]        "stream_params": {
-2025-09-12T21:54:25.337372903Z [inf]          "stream_track": "both",
-2025-09-12T21:54:25.337376729Z [inf]          "stream_url": "wss://web-production-b99cf.up.railway.app/api/telnyx/stream"
-2025-09-12T21:54:25.337380484Z [inf]        },
-2025-09-12T21:54:25.337384630Z [inf]        "stream_type": "websocket"
-2025-09-12T21:54:25.337388417Z [inf]      },
-2025-09-12T21:54:25.337392151Z [inf]      "record_type": "event"
-2025-09-12T21:54:25.337395836Z [inf]    },
-2025-09-12T21:54:25.337400816Z [inf]    "meta": {
-2025-09-12T21:54:25.337404984Z [inf]      "attempt": 1,
-2025-09-12T21:54:25.337408591Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T21:54:25.337412605Z [inf]    }
-2025-09-12T21:54:25.337416350Z [inf]  }
-2025-09-12T21:54:25.337420111Z [inf]  Headers: {
-2025-09-12T21:54:25.337423979Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:25.337427747Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T21:54:25.337431986Z [inf]    "content-length": "893",
-2025-09-12T21:54:25.337436086Z [inf]    "content-type": "application/json",
-2025-09-12T21:54:25.337440285Z [inf]    "telnyx-signature-ed25519": "FJQBbCj0sYOzh+3eZjUTZJ+A7xLjbGU4AT1kh2vCiTVd0u/Ze5BEYjXLT9P2lis7ljvyszU3E2whmuT1CwgWAQ==",
-2025-09-12T21:54:25.337443929Z [inf]    "telnyx-timestamp": "1757714065",
-2025-09-12T21:54:25.337447820Z [inf]    "webhook-id": "176b4dfb-dcea-4f5c-9c60-5fd3bf76156b",
-2025-09-12T21:54:25.337451754Z [inf]    "webhook-signature": "FJQBbCj0sYOzh+3eZjUTZJ+A7xLjbGU4AT1kh2vCiTVd0u/Ze5BEYjXLT9P2lis7ljvyszU3E2whmuT1CwgWAQ==",
-2025-09-12T21:54:25.337455335Z [inf]    "webhook-timestamp": "1757714065",
-2025-09-12T21:54:25.337459204Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T21:54:25.337462703Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:25.337466942Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T21:54:25.337470683Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T21:54:25.337474229Z [inf]    "x-railway-request-id": "ju1uNhZOQdCc65AR5nX1uw",
-2025-09-12T21:54:25.337478757Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T21:54:25.337482520Z [inf]    "x-request-start": "1757714065192",
-2025-09-12T21:54:25.337488379Z [inf]    "accept-encoding": "gzip"
-2025-09-12T21:54:25.337492009Z [inf]  }
-2025-09-12T21:54:25.337495626Z [inf]  Event type: streaming.stopped
-2025-09-12T21:54:25.612998779Z [inf]  === TELNYX WEBHOOK DEBUG ===
-2025-09-12T21:54:25.613007374Z [inf]  Raw body: {
-2025-09-12T21:54:25.613011798Z [inf]    "data": {
-2025-09-12T21:54:25.613016367Z [inf]      "event_type": "call.cost",
-2025-09-12T21:54:25.613020637Z [inf]      "id": "05b40fbe-a1d7-45ef-b0fc-cd3fdec528c1",
-2025-09-12T21:54:25.613024462Z [inf]      "occurred_at": "2025-09-12T21:54:25.411542Z",
-2025-09-12T21:54:25.613028135Z [inf]      "payload": {
-2025-09-12T21:54:25.613031949Z [inf]        "billed_duration_secs": 18,
-2025-09-12T21:54:25.613038344Z [inf]        "billing_group_id": null,
-2025-09-12T21:54:25.613042464Z [inf]        "call_control_id": "v3:ZJ7jjb5Sl7cRIO3IaCyOUUdxWmpBqAdkrJPga6LtEz82zyZeEhxtHw",
-2025-09-12T21:54:25.613046330Z [inf]        "call_leg_id": "021a48fa-9023-11f0-b855-02420a1f2020",
-2025-09-12T21:54:25.613050122Z [inf]        "call_session_id": "021a39dc-9023-11f0-ad5a-02420a1f2020",
-2025-09-12T21:54:25.613053929Z [inf]        "calling_party_type": "pstn",
-2025-09-12T21:54:25.613057585Z [inf]        "client_state": "MQ==",
-2025-09-12T21:54:25.613061673Z [inf]        "connection_id": "2782767973897602863",
-2025-09-12T21:54:25.613065718Z [inf]        "cost_parts": [
-2025-09-12T21:54:25.613069865Z [inf]          {
-2025-09-12T21:54:25.613073805Z [inf]            "billed_duration_secs": 18,
-2025-09-12T21:54:25.613077592Z [inf]            "call_part": "sip-trunking",
-2025-09-12T21:54:25.613081307Z [inf]            "cost": "0.0010",
-2025-09-12T21:54:25.613098764Z [inf]            "currency": "USD",
-2025-09-12T21:54:25.613103255Z [inf]            "rate": "0.003200"
-2025-09-12T21:54:25.613107003Z [inf]          },
-2025-09-12T21:54:25.613110723Z [inf]          {
-2025-09-12T21:54:25.613114616Z [inf]            "billed_duration_secs": 18,
-2025-09-12T21:54:25.613118614Z [inf]            "call_part": "call-recording",
-2025-09-12T21:54:25.613122739Z [inf]            "cost": "0.0006",
-2025-09-12T21:54:25.614440201Z [inf]            "currency": "USD",
-2025-09-12T21:54:25.614446339Z [inf]            "rate": "0.00200"
-2025-09-12T21:54:25.614456335Z [inf]          },
-2025-09-12T21:54:25.614461780Z [inf]          {
-2025-09-12T21:54:25.614467676Z [inf]            "billed_duration_secs": 18,
-2025-09-12T21:54:25.614473306Z [inf]            "call_part": "call-control",
-2025-09-12T21:54:25.614479264Z [inf]            "cost": "0.0006",
-2025-09-12T21:54:25.614485490Z [inf]            "currency": "USD",
-2025-09-12T21:54:25.614491881Z [inf]            "rate": "0.00200"
-2025-09-12T21:54:25.614501813Z [inf]          }
-2025-09-12T21:54:25.614508021Z [inf]        ],
-2025-09-12T21:54:25.614515353Z [inf]        "status": "success",
-2025-09-12T21:54:25.614521952Z [inf]        "total_cost": "0.0022"
-2025-09-12T21:54:25.614528295Z [inf]      },
-2025-09-12T21:54:25.614534349Z [inf]      "record_type": "event"
-2025-09-12T21:54:25.614540486Z [inf]    },
-2025-09-12T21:54:25.614548052Z [inf]    "meta": {
-2025-09-12T21:54:25.614554201Z [inf]      "attempt": 1,
-2025-09-12T21:54:25.614559225Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
-2025-09-12T21:54:25.614564288Z [inf]    }
-2025-09-12T21:54:25.614569568Z [inf]  }
-2025-09-12T21:54:25.614576254Z [inf]  Headers: {
-2025-09-12T21:54:25.614582695Z [inf]    "host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:25.614589491Z [inf]    "user-agent": "telnyx-webhooks",
-2025-09-12T21:54:25.614595953Z [inf]    "content-length": "1347",
-2025-09-12T21:54:25.614602060Z [inf]    "content-type": "application/json",
-2025-09-12T21:54:25.614607845Z [inf]    "telnyx-signature-ed25519": "+odVaeX1ujWpI0I038X7gZZc873Beli4zWPj5muS7pSHbjB+PXBMISrBtGnAFJ1LMrsbxVcXa82aMqmLURXeBw==",
-2025-09-12T21:54:25.614613941Z [inf]    "telnyx-timestamp": "1757714065",
-2025-09-12T21:54:25.614621852Z [inf]    "webhook-id": "05b40fbe-a1d7-45ef-b0fc-cd3fdec528c1",
-2025-09-12T21:54:25.614628476Z [inf]    "webhook-signature": "+odVaeX1ujWpI0I038X7gZZc873Beli4zWPj5muS7pSHbjB+PXBMISrBtGnAFJ1LMrsbxVcXa82aMqmLURXeBw==",
-2025-09-12T21:54:25.614634743Z [inf]    "webhook-timestamp": "1757714065",
-2025-09-12T21:54:25.614640360Z [inf]    "x-forwarded-for": "185.246.41.9",
-2025-09-12T21:54:25.614646413Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
-2025-09-12T21:54:25.614652241Z [inf]    "x-forwarded-proto": "https",
-2025-09-12T21:54:25.614658484Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
-2025-09-12T21:54:25.614664719Z [inf]    "x-railway-request-id": "d9_8HOU8QwqMUIgiN8N_Fg",
-2025-09-12T21:54:25.614671922Z [inf]    "x-real-ip": "185.246.41.9",
-2025-09-12T21:54:25.614680234Z [inf]    "x-request-start": "1757714065470",
-2025-09-12T21:54:25.614686255Z [inf]    "accept-encoding": "gzip"
-2025-09-12T21:54:25.614692438Z [inf]  }
-2025-09-12T21:54:25.614698095Z [inf]  Event type: call.cost
+2025-09-12T22:00:27.000000000Z [inf]  Starting Container
+2025-09-12T22:00:28.637788855Z [err]  (node:1) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2025-09-12T22:00:28.637795819Z [err]  (Use `node --trace-deprecation ...` to show where the warning was created)
+2025-09-12T22:00:28.637802145Z [inf]  Connected to SQLite database
+2025-09-12T22:00:28.637810634Z [inf]  Created default Swedish agent
+2025-09-12T22:00:28.637815045Z [inf]  Telnyx WebSocket server initialized on /api/telnyx/stream
+2025-09-12T22:00:28.637820340Z [inf]  Telnyx GPT-Realtime Gateway running on http://0.0.0.0:8080
+2025-09-12T22:00:28.637826400Z [inf]  Static client available at GET /
+2025-09-12T22:00:28.637831858Z [inf]  API endpoints:
+2025-09-12T22:00:28.637836901Z [inf]    GET /health - Service health check
+2025-09-12T22:00:28.637841681Z [inf]    GET /api/config - Configuration presets
+2025-09-12T22:00:28.637846991Z [inf]    POST /api/session - GPT-Realtime session creation
+2025-09-12T22:00:28.637853049Z [inf]    POST /api/twilio/voice - Twilio voice webhook
+2025-09-12T22:00:28.637858247Z [inf]    WS /api/twilio/stream - Twilio media stream handler
+2025-09-12T22:00:28.637862575Z [inf]    POST /api/telnyx/voice - Telnyx voice webhook
+2025-09-12T22:00:28.637867209Z [inf]    WS /api/telnyx/stream - Telnyx media stream handler
+2025-09-12T22:00:28.637871845Z [inf]    GET /api/agents - List agents
+2025-09-12T22:00:28.637876859Z [inf]    POST /api/agents - Create agent
+2025-09-12T22:00:28.637881995Z [inf]    GET /api/calls - List calls
+2025-09-12T22:00:34.000000000Z [inf]  Stopping Container
+2025-09-12T22:00:48.676598402Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T22:00:48.676611733Z [inf]  Raw body: {
+2025-09-12T22:00:48.676620641Z [inf]    "data": {
+2025-09-12T22:00:48.676632480Z [inf]      "event_type": "call.initiated",
+2025-09-12T22:00:48.676640849Z [inf]      "id": "ca2c24bf-e96c-45af-81ca-182f2bd90559",
+2025-09-12T22:00:48.676650326Z [inf]      "occurred_at": "2025-09-12T22:00:45.462394Z",
+2025-09-12T22:00:48.676658153Z [inf]      "payload": {
+2025-09-12T22:00:48.676666391Z [inf]        "call_control_id": "v3:kmv6mjIwVQwrwuxLaqNTutGBVn1TKH-INMzG-oZDEATLmKLclHkD1w",
+2025-09-12T22:00:48.676675243Z [inf]        "call_leg_id": "eee97296-9023-11f0-9e5c-02420a1f2170",
+2025-09-12T22:00:48.676684294Z [inf]        "call_session_id": "eee967a6-9023-11f0-8738-02420a1f2170",
+2025-09-12T22:00:48.676693615Z [inf]        "caller_id_name": "+46723161614",
+2025-09-12T22:00:48.676701234Z [inf]        "calling_party_type": "pstn",
+2025-09-12T22:00:48.676708718Z [inf]        "client_state": null,
+2025-09-12T22:00:48.676717516Z [inf]        "connection_codecs": "PCMA,PCMU",
+2025-09-12T22:00:48.676725352Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T22:00:48.676732659Z [inf]        "custom_headers": [
+2025-09-12T22:00:48.676739712Z [inf]          {
+2025-09-12T22:00:48.676748061Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T22:00:48.676756002Z [inf]            "value": "icid-value=e3f2b2aa-7293-103e-00-00-00-10-6b-03-d5-04"
+2025-09-12T22:00:48.676769258Z [inf]          },
+2025-09-12T22:00:48.676777203Z [inf]          {
+2025-09-12T22:00:48.676784967Z [inf]            "name": "P-Early-Media",
+2025-09-12T22:00:48.676792031Z [inf]            "value": "supported"
+2025-09-12T22:00:48.676799840Z [inf]          }
+2025-09-12T22:00:48.676806318Z [inf]        ],
+2025-09-12T22:00:48.676813744Z [inf]        "direction": "incoming",
+2025-09-12T22:00:48.677215388Z [inf]        "from": "+46723161614",
+2025-09-12T22:00:48.677230097Z [inf]        "from_sip_uri": "+46723161614@57.67.212.40",
+2025-09-12T22:00:48.677240237Z [inf]        "offered_codecs": "PCMA,PCMU,G729",
+2025-09-12T22:00:48.677247517Z [inf]        "start_time": "2025-09-12T22:00:45.462394Z",
+2025-09-12T22:00:48.677256088Z [inf]        "state": "parked",
+2025-09-12T22:00:48.677280160Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T22:00:48.677288594Z [inf]    "content-length": "1386",
+2025-09-12T22:00:48.677295366Z [inf]    "content-type": "application/json",
+2025-09-12T22:00:48.677302567Z [inf]    "telnyx-signature-ed25519": "tdDsgn+RRj3xok8Cm56qpwI9j4BmWPNBFuMVhwHYgCvQ0hWA7junoAAdfAT5q93c6kFzfjIwHusuS7Ftth29Ag==",
+2025-09-12T22:00:48.677310543Z [inf]    "telnyx-timestamp": "1757714445",
+2025-09-12T22:00:48.677319373Z [inf]    "webhook-id": "ca2c24bf-e96c-45af-81ca-182f2bd90559",
+2025-09-12T22:00:48.677328263Z [inf]    "webhook-signature": "tdDsgn+RRj3xok8Cm56qpwI9j4BmWPNBFuMVhwHYgCvQ0hWA7junoAAdfAT5q93c6kFzfjIwHusuS7Ftth29Ag==",
+2025-09-12T22:00:48.677336401Z [inf]    "webhook-timestamp": "1757714445",
+2025-09-12T22:00:48.677341162Z [inf]    "x-request-start": "1757714445750",
+2025-09-12T22:00:48.677344412Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T22:00:48.677352980Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:00:48.677359329Z [inf]    "accept-encoding": "gzip"
+2025-09-12T22:00:48.677362928Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T22:00:48.677373082Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T22:00:48.677378193Z [inf]  }
+2025-09-12T22:00:48.677384995Z [inf]    "x-railway-request-id": "sld5IGS-RK6fMWqaN8N_Fg",
+2025-09-12T22:00:48.677391349Z [inf]  Event type: call.initiated
+2025-09-12T22:00:48.677395948Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T22:00:48.677402591Z [inf]  Incoming call from: +46723161614 to: +46105200937
+2025-09-12T22:00:48.677411481Z [inf]        "tags": [
+2025-09-12T22:00:48.677420782Z [inf]          "gpt-realtime"
+2025-09-12T22:00:48.677426698Z [inf]  Created call record 1 using agent 1
+2025-09-12T22:00:48.677429417Z [inf]        ],
+2025-09-12T22:00:48.677436121Z [inf]  === WEBSOCKET HEADERS EVENT ===
+2025-09-12T22:00:48.677438944Z [inf]        "to": "+46105200937",
+2025-09-12T22:00:48.677442916Z [inf]  Headers being sent: [
+2025-09-12T22:00:48.677449365Z [inf]    'HTTP/1.1 101 Switching Protocols',
+2025-09-12T22:00:48.677450640Z [inf]        "to_sip_uri": "+46105200937;phone-context=ims.mnc002.mcc240.3gppnetwork.org@185.246.41.140"
+2025-09-12T22:00:48.677455095Z [inf]    'Upgrade: websocket',
+2025-09-12T22:00:48.677460625Z [inf]    'Connection: Upgrade',
+2025-09-12T22:00:48.677461855Z [inf]      },
+2025-09-12T22:00:48.677468146Z [inf]    'Sec-WebSocket-Accept: xO26Mi9k94bHMgLtFX14LH8znd8='
+2025-09-12T22:00:48.677470659Z [inf]      "record_type": "event"
+2025-09-12T22:00:48.677478231Z [inf]    },
+2025-09-12T22:00:48.677484897Z [inf]    "meta": {
+2025-09-12T22:00:48.677491778Z [inf]      "attempt": 1,
+2025-09-12T22:00:48.677498376Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T22:00:48.677505287Z [inf]    }
+2025-09-12T22:00:48.677511331Z [inf]  }
+2025-09-12T22:00:48.677517516Z [inf]  Headers: {
+2025-09-12T22:00:48.677522931Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:00:48.678924672Z [inf]  ]
+2025-09-12T22:00:48.678938679Z [inf]  Request URL: /api/telnyx/stream
+2025-09-12T22:00:48.678952324Z [inf]  === TELNYX WEBSOCKET CONNECTION SUCCESSFUL ===
+2025-09-12T22:00:48.678963920Z [inf]  WebSocket connected from: 100.64.0.2
+2025-09-12T22:00:48.678974901Z [inf]  Protocol: 
+2025-09-12T22:00:48.678985958Z [inf]  Headers: {
+2025-09-12T22:00:48.678997117Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:00:48.679007026Z [inf]    "user-agent": "telnyx-websocket",
+2025-09-12T22:00:48.679920940Z [inf]    "connection": "Upgrade",
+2025-09-12T22:00:48.679937671Z [inf]    "sec-websocket-key": "jdes/S4r05H2KWdx9LZUBw==",
+2025-09-12T22:00:48.679947197Z [inf]    "sec-websocket-version": "13",
+2025-09-12T22:00:48.679956528Z [inf]    "upgrade": "websocket",
+2025-09-12T22:00:48.679967557Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T22:00:48.679979014Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:00:48.679990749Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T22:00:48.680002661Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T22:00:48.680010452Z [inf]      },
+2025-09-12T22:00:48.680018088Z [inf]    "x-railway-request-id": "9I0yV3h9R7WH5DpIN8N_Fg",
+2025-09-12T22:00:48.680038149Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T22:00:48.680043780Z [inf]    "accept-encoding": "gzip"
+2025-09-12T22:00:48.680043927Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T22:00:48.680044525Z [inf]  }
+2025-09-12T22:00:48.680058917Z [inf]  }
+2025-09-12T22:00:48.680060515Z [inf]    "x-railway-request-id": "SBDs1UHfSMqyJgAqm3z_FQ",
+2025-09-12T22:00:48.680062049Z [inf]  Headers: {
+2025-09-12T22:00:48.680062551Z [inf]    "x-request-start": "1757714446487",
+2025-09-12T22:00:48.680072514Z [inf]  Event type: streaming.started
+2025-09-12T22:00:48.680073788Z [inf]      "record_type": "event"
+2025-09-12T22:00:48.680075674Z [inf]    "telnyx-signature-ed25519": "+lIF5B+D13TW3kxS7du6P/G1DzmHNocOX006vH6hOjTYmRxUf5qVJDzis+A7ipdbKiBopHeTlrdxNTvioPW0Dw==",
+2025-09-12T22:00:48.680077702Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:00:48.680077828Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T22:00:48.680087236Z [inf]    "accept-encoding": "gzip"
+2025-09-12T22:00:48.680093260Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T22:00:48.680093466Z [inf]    },
+2025-09-12T22:00:48.680094522Z [inf]    "webhook-signature": "+lIF5B+D13TW3kxS7du6P/G1DzmHNocOX006vH6hOjTYmRxUf5qVJDzis+A7ipdbKiBopHeTlrdxNTvioPW0Dw==",
+2025-09-12T22:00:48.680096792Z [inf]    "x-request-start": "1757714446713",
+2025-09-12T22:00:48.680098047Z [inf]    "telnyx-timestamp": "1757714446",
+2025-09-12T22:00:48.680106179Z [inf]    "content-length": "893",
+2025-09-12T22:00:48.680107717Z [inf]    "meta": {
+2025-09-12T22:00:48.680108051Z [inf]    "webhook-timestamp": "1757714446",
+2025-09-12T22:00:48.680116024Z [inf]    "webhook-id": "5abe3d17-c48b-4c3b-b84a-ffc2188d0ae7",
+2025-09-12T22:00:48.680116798Z [inf]  }
+2025-09-12T22:00:48.680122312Z [inf]    "content-type": "application/json",
+2025-09-12T22:00:48.680122600Z [inf]      "attempt": 1,
+2025-09-12T22:00:48.680124012Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T22:00:48.680134940Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:00:48.680136019Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T22:00:48.680142467Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T22:00:48.680146806Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T22:00:48.680148457Z [inf]    }
+2025-09-12T22:00:48.680160303Z [inf]  Raw body: {
+2025-09-12T22:00:48.680170487Z [inf]    "data": {
+2025-09-12T22:00:48.680184576Z [inf]      "event_type": "call.answered",
+2025-09-12T22:00:48.680195754Z [inf]      "id": "51f417fb-091f-4b1c-942d-12ce6b47db7d",
+2025-09-12T22:00:48.680204636Z [inf]      "occurred_at": "2025-09-12T22:00:46.282391Z",
+2025-09-12T22:00:48.680213061Z [inf]      "payload": {
+2025-09-12T22:00:48.680223548Z [inf]        "call_control_id": "v3:kmv6mjIwVQwrwuxLaqNTutGBVn1TKH-INMzG-oZDEATLmKLclHkD1w",
+2025-09-12T22:00:48.680233934Z [inf]        "call_leg_id": "eee97296-9023-11f0-9e5c-02420a1f2170",
+2025-09-12T22:00:48.680243513Z [inf]        "call_session_id": "eee967a6-9023-11f0-8738-02420a1f2170",
+2025-09-12T22:00:48.680254070Z [inf]        "calling_party_type": "pstn",
+2025-09-12T22:00:48.680269101Z [inf]        "client_state": "MQ==",
+2025-09-12T22:00:48.680280297Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T22:00:48.680291947Z [inf]        "custom_headers": [
+2025-09-12T22:00:48.680310613Z [inf]          {
+2025-09-12T22:00:48.680323228Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T22:00:48.680336601Z [inf]            "value": "icid-value=e3f2b2aa-7293-103e-00-00-00-10-6b-03-d5-04"
+2025-09-12T22:00:48.680347233Z [inf]          },
+2025-09-12T22:00:48.680359011Z [inf]          {
+2025-09-12T22:00:48.680372304Z [inf]            "name": "P-Early-Media",
+2025-09-12T22:00:48.680385168Z [inf]            "value": "supported"
+2025-09-12T22:00:48.680397547Z [inf]          }
+2025-09-12T22:00:48.680406775Z [inf]        ],
+2025-09-12T22:00:48.680416772Z [inf]        "from": "+46723161614",
+2025-09-12T22:00:48.680426005Z [inf]        "start_time": "2025-09-12T22:00:45.462394Z",
+2025-09-12T22:00:48.680435217Z [inf]        "tags": [
+2025-09-12T22:00:48.680444600Z [inf]          "gpt-realtime"
+2025-09-12T22:00:48.680454428Z [inf]        ],
+2025-09-12T22:00:48.680464138Z [inf]        "to": "+46105200937"
+2025-09-12T22:00:48.680480109Z [inf]      },
+2025-09-12T22:00:48.680489623Z [inf]      "record_type": "event"
+2025-09-12T22:00:48.680499910Z [inf]    },
+2025-09-12T22:00:48.680508889Z [inf]    "meta": {
+2025-09-12T22:00:48.680517675Z [inf]      "attempt": 1,
+2025-09-12T22:00:48.680526596Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T22:00:48.680535005Z [inf]    }
+2025-09-12T22:00:48.680547956Z [inf]  }
+2025-09-12T22:00:48.680556927Z [inf]  Headers: {
+2025-09-12T22:00:48.680567165Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:00:48.680577643Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T22:00:48.680588530Z [inf]    "content-length": "1059",
+2025-09-12T22:00:48.680597124Z [inf]    "content-type": "application/json",
+2025-09-12T22:00:48.680607314Z [inf]    "telnyx-signature-ed25519": "AtscoG8hCGvry9NoP0wScnjPmtZqvIClE/3/OJ4BHPcABsdnJxsChdkr7PT39L9Qmn9232z6aYgSZBGeTFhbBQ==",
+2025-09-12T22:00:48.680655177Z [inf]    "telnyx-timestamp": "1757714446",
+2025-09-12T22:00:48.680666447Z [inf]    "webhook-id": "51f417fb-091f-4b1c-942d-12ce6b47db7d",
+2025-09-12T22:00:48.680676000Z [inf]    "webhook-signature": "AtscoG8hCGvry9NoP0wScnjPmtZqvIClE/3/OJ4BHPcABsdnJxsChdkr7PT39L9Qmn9232z6aYgSZBGeTFhbBQ==",
+2025-09-12T22:00:48.680694961Z [inf]    "webhook-timestamp": "1757714446",
+2025-09-12T22:00:48.680706568Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T22:00:48.680716963Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:00:48.680728643Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T22:00:48.680740637Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T22:00:48.680751859Z [inf]    "x-railway-request-id": "G13yHoQRTyKWJI0V5nX1uw",
+2025-09-12T22:00:48.680763110Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T22:00:48.680772305Z [inf]    "x-request-start": "1757714446348",
+2025-09-12T22:00:48.680782288Z [inf]    "accept-encoding": "gzip"
+2025-09-12T22:00:48.680792775Z [inf]  }
+2025-09-12T22:00:48.680802517Z [inf]  Event type: call.answered
+2025-09-12T22:00:48.680815574Z [inf]  Telnyx stream connected, version: 1.0.0
+2025-09-12T22:00:48.680830182Z [inf]  Call answered and streaming started
+2025-09-12T22:00:48.680838925Z [inf]  === STREAM INITIALIZATION ===
+2025-09-12T22:00:48.680848300Z [inf]  Stream ID: 38d9ba95-9adf-40a6-adfd-71410325f5ba
+2025-09-12T22:00:48.680857717Z [inf]  Media format: { channels: 1, encoding: 'PCMA', sample_rate: 8000 }
+2025-09-12T22:00:48.680867321Z [inf]  Using agent 1: voice="alloy"
+2025-09-12T22:00:48.680876466Z [inf]  Agent prompt preview: Du är en hjälpsam AI-assistent som talar svenska. Svara naturligt och använd svenska konversationsmö...
+2025-09-12T22:00:48.680888495Z [inf]  Starting GPT connection, buffering audio packets...
+2025-09-12T22:00:48.680898786Z [inf]  Initializing GPT session with API key: sk-proj...
+2025-09-12T22:00:48.680908058Z [inf]  RealtimeClient created, connection state: false
+2025-09-12T22:00:48.680917210Z [inf]  Pre-connection state: false
+2025-09-12T22:00:48.680925833Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T22:00:48.680935551Z [inf]  Raw body: {
+2025-09-12T22:00:48.680952324Z [inf]    "data": {
+2025-09-12T22:00:48.680968473Z [inf]      "event_type": "streaming.started",
+2025-09-12T22:00:48.680978915Z [inf]      "id": "5abe3d17-c48b-4c3b-b84a-ffc2188d0ae7",
+2025-09-12T22:00:48.680988629Z [inf]      "occurred_at": "2025-09-12T22:00:46.622391Z",
+2025-09-12T22:00:48.680998449Z [inf]      "payload": {
+2025-09-12T22:00:48.681007669Z [inf]        "call_control_id": "v3:kmv6mjIwVQwrwuxLaqNTutGBVn1TKH-INMzG-oZDEATLmKLclHkD1w",
+2025-09-12T22:00:48.681017785Z [inf]        "call_leg_id": "eee97296-9023-11f0-9e5c-02420a1f2170",
+2025-09-12T22:00:48.681028591Z [inf]        "call_session_id": "eee967a6-9023-11f0-8738-02420a1f2170",
+2025-09-12T22:00:48.681036983Z [inf]        "calling_party_type": "pstn",
+2025-09-12T22:00:48.681054335Z [inf]        "client_state": "MQ==",
+2025-09-12T22:00:48.681063557Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T22:00:48.681073254Z [inf]        "stream_id": "38d9ba95-9adf-40a6-adfd-71410325f5ba",
+2025-09-12T22:00:48.681081752Z [inf]        "stream_params": {
+2025-09-12T22:00:48.681092391Z [inf]          "stream_track": "both",
+2025-09-12T22:00:48.681101423Z [inf]          "stream_url": "wss://web-production-b99cf.up.railway.app/api/telnyx/stream"
+2025-09-12T22:00:48.681110469Z [inf]        },
+2025-09-12T22:00:48.681121376Z [inf]        "stream_type": "websocket"
+2025-09-12T22:01:08.684106175Z [inf]  === STREAM 38d9ba95-9adf-40a6-adfd-71410325f5ba TERMINATED ===
+2025-09-12T22:01:08.684118687Z [inf]  Termination source: Telnyx
+2025-09-12T22:01:08.684172502Z [inf]  Stream 38d9ba95-9adf-40a6-adfd-71410325f5ba ended, duration: 14838ms
+2025-09-12T22:01:08.684182578Z [inf]  Telnyx stream closed for call null
+2025-09-12T22:01:08.684190098Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T22:01:08.684195502Z [inf]  Raw body: {
+2025-09-12T22:01:08.684200276Z [inf]    "data": {
+2025-09-12T22:01:08.684205130Z [inf]      "event_type": "streaming.stopped",
+2025-09-12T22:01:08.684210797Z [inf]      "id": "d1340a4d-7d8a-4a42-912d-0da4b2c357b6",
+2025-09-12T22:01:08.684216175Z [inf]      "occurred_at": "2025-09-12T22:01:01.334279Z",
+2025-09-12T22:01:08.684220755Z [inf]      "payload": {
+2025-09-12T22:01:08.684226364Z [inf]        "call_control_id": "v3:kmv6mjIwVQwrwuxLaqNTutGBVn1TKH-INMzG-oZDEATLmKLclHkD1w",
+2025-09-12T22:01:08.684231090Z [inf]        "call_leg_id": "eee97296-9023-11f0-9e5c-02420a1f2170",
+2025-09-12T22:01:08.684237186Z [inf]        "call_session_id": "eee967a6-9023-11f0-8738-02420a1f2170",
+2025-09-12T22:01:08.684242069Z [inf]        "calling_party_type": "pstn",
+2025-09-12T22:01:08.684247123Z [inf]        "client_state": "MQ==",
+2025-09-12T22:01:08.684251498Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T22:01:08.684257299Z [inf]        "stream_id": "38d9ba95-9adf-40a6-adfd-71410325f5ba",
+2025-09-12T22:01:08.684262554Z [inf]        "stream_params": {
+2025-09-12T22:01:08.684267857Z [inf]          "stream_track": "both",
+2025-09-12T22:01:08.684271991Z [inf]          "stream_url": "wss://web-production-b99cf.up.railway.app/api/telnyx/stream"
+2025-09-12T22:01:08.684276224Z [inf]        },
+2025-09-12T22:01:08.684280809Z [inf]        "stream_type": "websocket"
+2025-09-12T22:01:08.684285275Z [inf]      },
+2025-09-12T22:01:08.684289634Z [inf]      "record_type": "event"
+2025-09-12T22:01:08.684294137Z [inf]    },
+2025-09-12T22:01:08.684860145Z [inf]    "meta": {
+2025-09-12T22:01:08.684871030Z [inf]      "attempt": 1,
+2025-09-12T22:01:08.684877767Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T22:01:08.684884626Z [inf]    }
+2025-09-12T22:01:08.684892349Z [inf]  }
+2025-09-12T22:01:08.684897280Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:01:08.684899245Z [inf]  Headers: {
+2025-09-12T22:01:08.684910423Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T22:01:08.684919239Z [inf]    "content-length": "893",
+2025-09-12T22:01:08.684926837Z [inf]    "content-type": "application/json",
+2025-09-12T22:01:08.684935687Z [inf]    "telnyx-signature-ed25519": "I+PQIe4Hl2FuwGahU8SYplAuipUfTOMHWv/805O4EYmRQ0Z8BBThX7bBWznl7dY3NwaCQQqBUo+ly3nYDsGHDg==",
+2025-09-12T22:01:08.684942683Z [inf]    "telnyx-timestamp": "1757714461",
+2025-09-12T22:01:08.684949730Z [inf]    "webhook-id": "d1340a4d-7d8a-4a42-912d-0da4b2c357b6",
+2025-09-12T22:01:08.684957168Z [inf]    "webhook-signature": "I+PQIe4Hl2FuwGahU8SYplAuipUfTOMHWv/805O4EYmRQ0Z8BBThX7bBWznl7dY3NwaCQQqBUo+ly3nYDsGHDg==",
+2025-09-12T22:01:08.684965410Z [inf]    "webhook-timestamp": "1757714461",
+2025-09-12T22:01:08.684974172Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T22:01:08.684981477Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:01:08.684988505Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T22:01:08.684995979Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T22:01:08.685002935Z [inf]    "x-railway-request-id": "kvsTor9MThGpmH3jN8N_Fg",
+2025-09-12T22:01:08.685022437Z [inf]          "outbound": {
+2025-09-12T22:01:08.685031147Z [inf]            "packet_count": "731",
+2025-09-12T22:01:08.685038311Z [inf]            "skip_packet_count": "0"
+2025-09-12T22:01:08.685045545Z [inf]          }
+2025-09-12T22:01:08.685053213Z [inf]        },
+2025-09-12T22:01:08.685061201Z [inf]        "call_session_id": "eee967a6-9023-11f0-8738-02420a1f2170",
+2025-09-12T22:01:08.685070717Z [inf]        "calling_party_type": "pstn",
+2025-09-12T22:01:08.685077945Z [inf]        "client_state": "MQ==",
+2025-09-12T22:01:08.685086050Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T22:01:08.685105888Z [inf]        "custom_headers": [
+2025-09-12T22:01:08.685113348Z [inf]          {
+2025-09-12T22:01:08.685119820Z [inf]            "name": "P-Charging-Vector",
+2025-09-12T22:01:08.685128023Z [inf]      "attempt": 1,
+2025-09-12T22:01:08.685129914Z [inf]            "value": "icid-value=e3f2b2aa-7293-103e-00-00-00-10-6b-03-d5-04"
+2025-09-12T22:01:08.685139363Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T22:01:08.685143709Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T22:01:08.685148308Z [inf]    }
+2025-09-12T22:01:08.685155187Z [inf]    "x-request-start": "1757714461371",
+2025-09-12T22:01:08.685157913Z [inf]  }
+2025-09-12T22:01:08.685163892Z [inf]    "accept-encoding": "gzip"
+2025-09-12T22:01:08.685166472Z [inf]  Headers: {
+2025-09-12T22:01:08.685172037Z [inf]  }
+2025-09-12T22:01:08.685175195Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:01:08.685180359Z [inf]  Event type: streaming.stopped
+2025-09-12T22:01:08.685183935Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T22:01:08.685191176Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T22:01:08.685192529Z [inf]    "content-length": "1557",
+2025-09-12T22:01:08.685200226Z [inf]  Raw body: {
+2025-09-12T22:01:08.685201281Z [inf]    "content-type": "application/json",
+2025-09-12T22:01:08.685209255Z [inf]    "data": {
+2025-09-12T22:01:08.685209832Z [inf]    "telnyx-signature-ed25519": "9/1J3rykwgHnzA1ZAlorAmCF4rjBDDbvmXpz+6kI3Zwlg3PeIz3rC1sMpXlDDTnZjbb0I0mg6SADbsGj+8snCg==",
+2025-09-12T22:01:08.685217953Z [inf]      "event_type": "call.hangup",
+2025-09-12T22:01:08.685219713Z [inf]    "telnyx-timestamp": "1757714461",
+2025-09-12T22:01:08.685227435Z [inf]    "webhook-id": "dc65a96c-b73b-4f60-92a1-a48382e9c784",
+2025-09-12T22:01:08.685228695Z [inf]      "id": "dc65a96c-b73b-4f60-92a1-a48382e9c784",
+2025-09-12T22:01:08.685235778Z [inf]    "webhook-signature": "9/1J3rykwgHnzA1ZAlorAmCF4rjBDDbvmXpz+6kI3Zwlg3PeIz3rC1sMpXlDDTnZjbb0I0mg6SADbsGj+8snCg==",
+2025-09-12T22:01:08.685238580Z [inf]      "occurred_at": "2025-09-12T22:01:01.242393Z",
+2025-09-12T22:01:08.685239799Z [inf]          },
+2025-09-12T22:01:08.685245587Z [inf]    "webhook-timestamp": "1757714461",
+2025-09-12T22:01:08.685248298Z [inf]      "payload": {
+2025-09-12T22:01:08.685249131Z [inf]          {
+2025-09-12T22:01:08.685255439Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T22:01:08.685257850Z [inf]            "name": "P-Early-Media",
+2025-09-12T22:01:08.685259402Z [inf]        "call_control_id": "v3:kmv6mjIwVQwrwuxLaqNTutGBVn1TKH-INMzG-oZDEATLmKLclHkD1w",
+2025-09-12T22:01:08.685264503Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:01:08.685265752Z [inf]            "value": "supported"
+2025-09-12T22:01:08.685268280Z [inf]        "call_leg_id": "eee97296-9023-11f0-9e5c-02420a1f2170",
+2025-09-12T22:01:08.685273503Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T22:01:08.685273746Z [inf]          }
+2025-09-12T22:01:08.685277658Z [inf]        "call_quality_stats": {
+2025-09-12T22:01:08.685282784Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T22:01:08.685283430Z [inf]        ],
+2025-09-12T22:01:08.685287400Z [inf]          "inbound": {
+2025-09-12T22:01:08.685291465Z [inf]    "x-railway-request-id": "MbGLPKISQg-90Trsw9P4nw",
+2025-09-12T22:01:08.685294273Z [inf]        "end_time": "2025-09-12T22:01:01.242393Z",
+2025-09-12T22:01:08.685297369Z [inf]            "jitter_max_variance": "0.00",
+2025-09-12T22:01:08.685300916Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T22:01:08.685303531Z [inf]        "from": "+46723161614",
+2025-09-12T22:01:08.685306395Z [inf]            "jitter_packet_count": "0",
+2025-09-12T22:01:08.685310205Z [inf]    "x-request-start": "1757714461369",
+2025-09-12T22:01:08.685314569Z [inf]        "hangup_cause": "normal_clearing",
+2025-09-12T22:01:08.685316590Z [inf]            "mos": "4.50",
+2025-09-12T22:01:08.685324364Z [inf]            "packet_count": "726",
+2025-09-12T22:01:08.685328032Z [inf]        "hangup_source": "caller",
+2025-09-12T22:01:08.685331331Z [inf]    "accept-encoding": "gzip"
+2025-09-12T22:01:08.685334381Z [inf]            "skip_packet_count": "24"
+2025-09-12T22:01:08.685336701Z [inf]        "sip_hangup_cause": "200",
+2025-09-12T22:01:08.685340901Z [inf]  }
+2025-09-12T22:01:08.685345120Z [inf]          },
+2025-09-12T22:01:08.685346320Z [inf]        "start_time": "2025-09-12T22:00:45.462394Z",
+2025-09-12T22:01:08.685349655Z [inf]  Event type: call.hangup
+2025-09-12T22:01:08.685354662Z [inf]        "tags": [
+2025-09-12T22:01:08.685357784Z [inf]  === TELNYX WEBHOOK DEBUG ===
+2025-09-12T22:01:08.685363054Z [inf]          "gpt-realtime"
+2025-09-12T22:01:08.685368614Z [inf]  Raw body: {
+2025-09-12T22:01:08.685371675Z [inf]        ],
+2025-09-12T22:01:08.685378476Z [inf]        "to": "+46105200937"
+2025-09-12T22:01:08.685385198Z [inf]      },
+2025-09-12T22:01:08.685391772Z [inf]      "record_type": "event"
+2025-09-12T22:01:08.685398534Z [inf]    },
+2025-09-12T22:01:08.685404285Z [inf]    "meta": {
+2025-09-12T22:01:08.685943176Z [inf]    "data": {
+2025-09-12T22:01:08.685951427Z [inf]      "event_type": "call.cost",
+2025-09-12T22:01:08.685957843Z [inf]      "id": "bc710cfa-c810-4825-98fc-c732a33c040c",
+2025-09-12T22:01:08.685963709Z [inf]      "occurred_at": "2025-09-12T22:01:01.675250Z",
+2025-09-12T22:01:08.685969950Z [inf]      "payload": {
+2025-09-12T22:01:08.685976218Z [inf]        "billed_duration_secs": 18,
+2025-09-12T22:01:08.685981908Z [inf]        "billing_group_id": null,
+2025-09-12T22:01:08.685988742Z [inf]        "call_control_id": "v3:kmv6mjIwVQwrwuxLaqNTutGBVn1TKH-INMzG-oZDEATLmKLclHkD1w",
+2025-09-12T22:01:08.685994907Z [inf]        "call_leg_id": "eee97296-9023-11f0-9e5c-02420a1f2170",
+2025-09-12T22:01:08.686001024Z [inf]        "call_session_id": "eee967a6-9023-11f0-8738-02420a1f2170",
+2025-09-12T22:01:08.686006466Z [inf]        "calling_party_type": "pstn",
+2025-09-12T22:01:08.686012735Z [inf]        "client_state": "MQ==",
+2025-09-12T22:01:08.686018375Z [inf]        "connection_id": "2782767973897602863",
+2025-09-12T22:01:08.686024824Z [inf]        "cost_parts": [
+2025-09-12T22:01:08.686030536Z [inf]          {
+2025-09-12T22:01:08.686035638Z [inf]            "billed_duration_secs": 18,
+2025-09-12T22:01:08.686041054Z [inf]            "call_part": "sip-trunking",
+2025-09-12T22:01:08.686047071Z [inf]            "cost": "0.0010",
+2025-09-12T22:01:08.686051408Z [inf]            "currency": "USD",
+2025-09-12T22:01:08.686056122Z [inf]            "rate": "0.003200"
+2025-09-12T22:01:08.686060464Z [inf]          },
+2025-09-12T22:01:08.686069540Z [inf]          {
+2025-09-12T22:01:08.686074523Z [inf]            "billed_duration_secs": 18,
+2025-09-12T22:01:08.686080068Z [inf]            "call_part": "call-recording",
+2025-09-12T22:01:08.686085836Z [inf]            "cost": "0.0006",
+2025-09-12T22:01:08.686091248Z [inf]            "currency": "USD",
+2025-09-12T22:01:08.686096883Z [inf]            "rate": "0.00200"
+2025-09-12T22:01:08.686102450Z [inf]          },
+2025-09-12T22:01:08.686112641Z [inf]          {
+2025-09-12T22:01:08.686140010Z [inf]            "billed_duration_secs": 18,
+2025-09-12T22:01:08.686146433Z [inf]            "call_part": "call-control",
+2025-09-12T22:01:08.686152799Z [inf]            "cost": "0.0006",
+2025-09-12T22:01:08.686158667Z [inf]            "currency": "USD",
+2025-09-12T22:01:08.686165281Z [inf]            "rate": "0.00200"
+2025-09-12T22:01:08.686175489Z [inf]          }
+2025-09-12T22:01:08.686181267Z [inf]        ],
+2025-09-12T22:01:08.686212239Z [inf]        "status": "success",
+2025-09-12T22:01:08.686219325Z [inf]        "total_cost": "0.0022"
+2025-09-12T22:01:08.686225429Z [inf]      },
+2025-09-12T22:01:08.686232443Z [inf]      "record_type": "event"
+2025-09-12T22:01:08.686238441Z [inf]    },
+2025-09-12T22:01:08.686243728Z [inf]    "meta": {
+2025-09-12T22:01:08.686252244Z [inf]      "attempt": 1,
+2025-09-12T22:01:08.686258062Z [inf]      "delivered_to": "https://web-production-b99cf.up.railway.app/api/telnyx/voice"
+2025-09-12T22:01:08.686263674Z [inf]    }
+2025-09-12T22:01:08.686269871Z [inf]  }
+2025-09-12T22:01:08.686275474Z [inf]  Headers: {
+2025-09-12T22:01:08.686281326Z [inf]    "host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:01:08.686286897Z [inf]    "user-agent": "telnyx-webhooks",
+2025-09-12T22:01:08.686293222Z [inf]    "content-length": "1347",
+2025-09-12T22:01:08.686299323Z [inf]    "content-type": "application/json",
+2025-09-12T22:01:08.686305865Z [inf]    "telnyx-signature-ed25519": "KwgRZwirvFBhjOBI+OHRJmVvmy4/hFDDTs3gl94YY1CQS0aQq80MYtWsaLR16G09di5Fga7tM8vEOGxId2YdCA==",
+2025-09-12T22:01:08.686311977Z [inf]    "telnyx-timestamp": "1757714461",
+2025-09-12T22:01:08.686318086Z [inf]    "webhook-id": "bc710cfa-c810-4825-98fc-c732a33c040c",
+2025-09-12T22:01:08.686325139Z [inf]    "webhook-signature": "KwgRZwirvFBhjOBI+OHRJmVvmy4/hFDDTs3gl94YY1CQS0aQq80MYtWsaLR16G09di5Fga7tM8vEOGxId2YdCA==",
+2025-09-12T22:01:08.686330722Z [inf]    "webhook-timestamp": "1757714461",
+2025-09-12T22:01:08.686338797Z [inf]    "x-forwarded-for": "185.246.41.9",
+2025-09-12T22:01:08.686344625Z [inf]    "x-forwarded-host": "web-production-b99cf.up.railway.app",
+2025-09-12T22:01:08.686350896Z [inf]    "x-forwarded-proto": "https",
+2025-09-12T22:01:08.686357570Z [inf]    "x-railway-edge": "railway/europe-west4-drams3a",
+2025-09-12T22:01:08.686363508Z [inf]    "x-railway-request-id": "akWXJLoUQ9WoRDaF0-QtfA",
+2025-09-12T22:01:08.686369481Z [inf]    "x-real-ip": "185.246.41.9",
+2025-09-12T22:01:08.686376097Z [inf]    "x-request-start": "1757714461725",
+2025-09-12T22:01:08.686383289Z [inf]    "accept-encoding": "gzip"
+2025-09-12T22:01:08.686389763Z [inf]  }
+2025-09-12T22:01:08.686397105Z [inf]  Event type: call.cost

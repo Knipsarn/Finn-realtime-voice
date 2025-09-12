@@ -305,8 +305,14 @@ class TelnyxGPTGateway {
 
             console.log('Pre-connection state:', callData.gptClient.isConnected());
             
-            // CRITICAL: Connect to OpenAI with explicit verification
-            await callData.gptClient.connect();
+            // CRITICAL: Connect to OpenAI with explicit verification and timeout
+            console.log('Attempting GPT-Realtime connection...');
+            const connectionPromise = callData.gptClient.connect();
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('GPT connection timeout after 10 seconds')), 10000)
+            );
+            
+            await Promise.race([connectionPromise, timeoutPromise]);
             
             console.log('Post-connection state:', callData.gptClient.isConnected());
             
