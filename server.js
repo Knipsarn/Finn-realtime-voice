@@ -435,7 +435,8 @@ app.post('/api/telnyx/voice', async (req, res) => {
                     client_state: Buffer.from(callId.toString()).toString('base64'),
                     stream_url: `wss://${req.get('host')}/api/telnyx/stream`,
                     stream_track: 'both_tracks',
-                    stream_bidirectional_mode: 'rtp'
+                    stream_bidirectional_mode: 'rtp',
+                    stream_bidirectional_codec: 'PCMU'
                 })
             });
 
@@ -446,8 +447,13 @@ app.post('/api/telnyx/voice', async (req, res) => {
             }
             
             res.status(200).json({});
+        } else if (event.event_type === 'streaming.started') {
+            console.log('✅ Received streaming.started event:', event.event_type);
+            console.log('Stream parameters:', event.payload);
+            res.status(200).json({});
         } else {
             // Acknowledge other events
+            console.log('Other Telnyx event:', event.event_type);
             res.status(200).json({});
         }
         
