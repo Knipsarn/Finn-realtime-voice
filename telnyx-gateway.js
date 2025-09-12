@@ -242,9 +242,47 @@ class TelnyxGPTGateway {
                 console.log('Agent voice:', callData.agent.voice);
                 console.log('WebSocket state:', callData.gptWebSocket.readyState);
                 
-                // Send session configuration (will be implemented in Task 2.3)
-                // Send initial greeting (will be implemented in Task 2.3) 
-                // Trigger response.create (will be implemented in Task 2.3)
+                // Send session configuration
+                callData.gptWebSocket.send(JSON.stringify({
+                    type: 'session.update',
+                    session: {
+                        voice: callData.agent.voice,
+                        instructions: callData.agent.prompt,
+                        input_audio_format: 'pcm16',
+                        output_audio_format: 'pcm16',
+                        input_audio_transcription: { model: 'whisper-1' },
+                        turn_detection: {
+                            type: 'server_vad',
+                            threshold: 0.5,
+                            prefix_padding_ms: 300,
+                            silence_duration_ms: 500
+                        },
+                        tools: [],
+                        tool_choice: 'auto',
+                        temperature: 0.8,
+                        max_response_output_tokens: 4096
+                    }
+                }));
+                
+                // Send initial greeting
+                callData.gptWebSocket.send(JSON.stringify({
+                    type: 'conversation.item.create',
+                    item: {
+                        type: 'message',
+                        role: 'user',
+                        content: [{
+                            type: 'input_text',
+                            text: this.getGreeting(callData.agent)
+                        }]
+                    }
+                }));
+                
+                // Trigger response generation
+                callData.gptWebSocket.send(JSON.stringify({
+                    type: 'response.create'
+                }));
+                
+                console.log('📤 Sent session config, greeting, and response trigger');
             });
 
             callData.gptWebSocket.on('close', () => {
@@ -332,10 +370,50 @@ class TelnyxGPTGateway {
         console.log('TODO: appendAudioToOpenAI - will batch and send audio to OpenAI WebSocket');
     }
 
-    // Placeholder for Task 2.3 - will implement OpenAI event handling
+    // OpenAI Realtime event handler
     handleOpenAIEvent(callData, event) {
-        // TODO: Implement in Task 2.3
-        console.log('TODO: handleOpenAIEvent - received event type:', event.type);
+        switch (event.type) {
+            case 'session.created':
+                console.log('🎯 OpenAI session created:', event.session.id);
+                break;
+                
+            case 'session.updated':
+                console.log('🔧 OpenAI session updated');
+                break;
+                
+            case 'response.audio.delta':
+                console.log('🔊 GPT audio delta:', event.delta.length, 'bytes');
+                this.streamGPTAudioToTelnyx(callData, event.delta);
+                break;
+                
+            case 'response.audio.done':
+                console.log('✅ GPT audio response completed');
+                break;
+                
+            case 'input_audio_buffer.speech_started':
+                console.log('🎤 User started speaking');
+                break;
+                
+            case 'input_audio_buffer.speech_stopped':
+                console.log('🎤 User stopped speaking - triggering response');
+                // Trigger GPT response after user stops speaking
+                callData.gptWebSocket.send(JSON.stringify({
+                    type: 'response.create'
+                }));
+                break;
+                
+            case 'response.done':
+                console.log('🏁 GPT response completed');
+                break;
+                
+            case 'error':
+                console.error('❌ OpenAI Realtime error:', event.error);
+                break;
+                
+            default:
+                console.log('📨 OpenAI event:', event.type);
+                break;
+        }
     }
 
     transcodeToGPT(base64RtpAudio) {
