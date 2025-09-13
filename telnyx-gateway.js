@@ -713,7 +713,7 @@ class TelnyxGPTGateway {
 
     createRtpPacket(g711Payload, callData) {
         // Initialize RTP state for this call if needed
-        if (!callData.rtpSeq) {
+        if (typeof callData.rtpSeq === 'undefined') {
             callData.rtpSeq = 0;
             callData.rtpTimestamp = 0;
             // Generate random SSRC per call for proper RTP session identification
@@ -732,11 +732,11 @@ class TelnyxGPTGateway {
         header.writeUInt32BE(callData.rtpTimestamp, 4);
         header.writeUInt32BE(callData.rtpSSRC, 8);
         
-        // Increment timestamp by payload length AFTER creating packet
+        console.log(`RTP: seq=${callData.rtpSeq}, ts=${callData.rtpTimestamp}, SSRC=0x${callData.rtpSSRC.toString(16)}, payload=${g711Payload.length}B`);
+        
+        // Increment timestamp AFTER logging but BEFORE returning
         // Each G.711 byte = 1 sample at 8kHz
         callData.rtpTimestamp = (callData.rtpTimestamp + g711Payload.length) % 0x100000000;
-        
-        console.log(`RTP: seq=${callData.rtpSeq}, ts=${callData.rtpTimestamp}, SSRC=0x${callData.rtpSSRC.toString(16)}, payload=${g711Payload.length}B`);
         
         return Buffer.concat([header, g711Payload]);
     }
@@ -753,12 +753,12 @@ class TelnyxGPTGateway {
             // Check if OpenAI is sending G.711 A-law directly
             if (callData.isG711Output) {
                 // Direct G.711 A-law from OpenAI - NO TRANSCODING!
-                console.log('Processing GPT G.711 A-law chunk, base64 length:', audioDelta.length);
+                console.log('🎯 USING G.711 PATH: Processing GPT G.711 A-law chunk, base64 length:', audioDelta.length);
                 pcmaBuffer = Buffer.from(audioDelta, 'base64');
                 console.log('G.711 A-law buffer size:', pcmaBuffer.length, 'bytes (direct from OpenAI)');
             } else {
                 // PCM16 from OpenAI - needs transcoding
-                console.log('Processing GPT PCM16 chunk, base64 length:', audioDelta.length);
+                console.log('🔄 USING PCM16 PATH: Processing GPT PCM16 chunk, base64 length:', audioDelta.length);
                 const pcm16Buffer = Buffer.from(audioDelta, 'base64');
                 console.log('Decoded PCM16 buffer size:', pcm16Buffer.length, 'bytes');
                 
@@ -791,8 +791,12 @@ class TelnyxGPTGateway {
                     }
                 };
                 
-                callData.ws.send(JSON.stringify(message));
-                packetCount++;
+                if (callData.ws && callData.ws.readyState === 1) {
+                    callData.ws.send(JSON.stringify(message));
+                    packetCount++;
+                } else {
+                    console.error('❌ WebSocket not ready, cannot send RTP packet');
+                }
             }
             
             console.log(`✅ Sent ${packetCount} RTP packets (${pcmaBuffer.length} PCMA bytes total)`);
