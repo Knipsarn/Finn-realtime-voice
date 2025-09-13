@@ -99,11 +99,11 @@ class TelnyxGPTGateway {
                     // CRITICAL: Log the codec Telnyx expects
                     const expectedCodec = message.start.media_format?.encoding;
                     console.log(`🎯 TELNYX EXPECTS CODEC: ${expectedCodec}`);
-                    console.log(`🔧 WE ARE USING: PCMA (payload type 8)`);
-                    if (expectedCodec && expectedCodec !== 'PCMA') {
-                        console.log(`⚠️  CODEC MISMATCH DETECTED! Telnyx wants ${expectedCodec}, we send PCMA`);
-                    } else if (expectedCodec === 'PCMA') {
-                        console.log(`✅ CODEC MATCH! Both using PCMA (A-law)`);
+                    console.log(`🔧 WE ARE USING: PCMU (payload type 0) - A/B TEST`);
+                    if (expectedCodec && expectedCodec !== 'PCMU') {
+                        console.log(`⚠️  CODEC MISMATCH FOR TEST! Telnyx wants ${expectedCodec}, we send PCMU`);
+                    } else if (expectedCodec === 'PCMU') {
+                        console.log(`✅ CODEC MATCH! Both using PCMU (μ-law)`);
                     }
                     
                     // Get default agent for now - in production you'd pass this via URL params
@@ -607,22 +607,22 @@ class TelnyxGPTGateway {
         return pcmaBuffer;
     }
 
-    createRtpPacket(pcmaPayload, callData) {
+    createRtpPacket(pcmuPayload, callData) {
         // Track sequence and timestamp per call  
         callData.rtpSeq = (callData.rtpSeq + 1) % 65536;
-        // Increment timestamp by actual sample count (each PCMA byte = 1 sample at 8kHz)
-        callData.rtpTimestamp = (callData.rtpTimestamp + pcmaPayload.length) % 4294967296;
+        // Increment timestamp by actual sample count (each PCMU byte = 1 sample at 8kHz)
+        callData.rtpTimestamp = (callData.rtpTimestamp + pcmuPayload.length) % 4294967296;
         
         const header = Buffer.alloc(12);
         header[0] = 0x80;  // Version 2
-        header[1] = 0x08;  // PCMA payload type (A-law)
+        header[1] = 0x00;  // PCMU payload type (μ-law) - A/B TEST
         header.writeUInt16BE(callData.rtpSeq, 2);
         header.writeUInt32BE(callData.rtpTimestamp, 4);
         header.writeUInt32BE(0x12345678, 8); // SSRC
         
-        console.log(`RTP packet: seq=${callData.rtpSeq}, ts=${callData.rtpTimestamp}, payload=${pcmaPayload.length}bytes`);
+        console.log(`RTP packet: seq=${callData.rtpSeq}, ts=${callData.rtpTimestamp}, payload=${pcmuPayload.length}bytes`);
         
-        return Buffer.concat([header, pcmaPayload]);
+        return Buffer.concat([header, pcmuPayload]);
     }
 
     streamGPTAudioToTelnyx(callData, audioDelta) {
@@ -643,16 +643,16 @@ class TelnyxGPTGateway {
             const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
             console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
             
-            // Convert PCM16 to PCMA (A-law) - matching Telnyx expectation
-            const pcmaBuffer = this.pcm16ToPcma(downsampledBuffer);
-            console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
+            // A/B TEST: Convert PCM16 to PCMU (μ-law) instead of PCMA
+            const pcmuBuffer = this.pcm16ToPcmu(downsampledBuffer);
+            console.log('PCMU buffer size:', pcmuBuffer.length, 'bytes - A/B TEST');
             
             // CRITICAL: Split into 20ms packets (160 bytes each at 8kHz)
-            const packetSize = 160; // 20ms at 8kHz = 160 samples = 160 PCMA bytes
+            const packetSize = 160; // 20ms at 8kHz = 160 samples = 160 PCMU bytes
             let packetCount = 0;
             
-            for (let offset = 0; offset < pcmaBuffer.length; offset += packetSize) {
-                const packetPayload = pcmaBuffer.slice(offset, Math.min(offset + packetSize, pcmaBuffer.length));
+            for (let offset = 0; offset < pcmuBuffer.length; offset += packetSize) {
+                const packetPayload = pcmuBuffer.slice(offset, Math.min(offset + packetSize, pcmuBuffer.length));
                 
                 // Create RTP packet for this 20ms chunk
                 const rtpPacket = this.createRtpPacket(packetPayload, callData);
@@ -670,7 +670,7 @@ class TelnyxGPTGateway {
                 packetCount++;
             }
             
-            console.log(`✅ Sent ${packetCount} RTP packets (${pcmaBuffer.length} PCMA bytes total) to Telnyx`);
+            console.log(`✅ Sent ${packetCount} RTP packets (${pcmuBuffer.length} PCMU bytes total) to Telnyx - A/B TEST`);
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
