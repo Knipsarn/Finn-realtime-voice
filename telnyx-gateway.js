@@ -99,11 +99,11 @@ class TelnyxGPTGateway {
                     // CRITICAL: Log the codec Telnyx expects
                     const expectedCodec = message.start.media_format?.encoding;
                     console.log(`🎯 TELNYX EXPECTS CODEC: ${expectedCodec}`);
-                    console.log(`🔧 WE ARE USING: PCMU (payload type 0) - A/B TEST`);
-                    if (expectedCodec && expectedCodec !== 'PCMU') {
-                        console.log(`⚠️  CODEC MISMATCH FOR TEST! Telnyx wants ${expectedCodec}, we send PCMU`);
-                    } else if (expectedCodec === 'PCMU') {
-                        console.log(`✅ CODEC MATCH! Both using PCMU (μ-law)`);
+                    console.log(`🔧 WE ARE USING: G.711 A-law direct from OpenAI (PCMA, payload type 8)`);
+                    if (expectedCodec && expectedCodec === 'PCMA') {
+                        console.log(`✅ CODEC MATCH! Both using PCMA (G.711 A-law)`);
+                    } else if (expectedCodec && expectedCodec !== 'PCMA') {
+                        console.log(`⚠️  CODEC MISMATCH! Telnyx wants ${expectedCodec}, we send PCMA`);
                     }
                     
                     // Get default agent for now - in production you'd pass this via URL params
@@ -262,7 +262,7 @@ class TelnyxGPTGateway {
                         voice: callData.agent.voice,
                         instructions: callData.agent.prompt,
                         input_audio_format: 'pcm16',
-                        output_audio_format: 'pcm16',
+                        output_audio_format: 'g711_alaw',
                         input_audio_transcription: { model: 'whisper-1' },
                         turn_detection: {
                             type: 'server_vad',
@@ -607,60 +607,50 @@ class TelnyxGPTGateway {
         return pcmaBuffer;
     }
 
-    createRtpPacket(pcmuPayload, callData) {
+    createRtpPacket(g711Payload, callData) {
         // Track sequence and timestamp per call  
         callData.rtpSeq = (callData.rtpSeq + 1) % 65536;
-        // Increment timestamp by actual sample count (each PCMU byte = 1 sample at 8kHz)
-        callData.rtpTimestamp = (callData.rtpTimestamp + pcmuPayload.length) % 4294967296;
+        // Increment timestamp by actual sample count (each G.711 byte = 1 sample at 8kHz)
+        callData.rtpTimestamp = (callData.rtpTimestamp + g711Payload.length) % 4294967296;
         
         const header = Buffer.alloc(12);
         header[0] = 0x80;  // Version 2
-        header[1] = 0x08;  // PCMA payload type (A-law)
+        header[1] = 0x08;  // PCMA payload type (A-law) - direct from OpenAI
         header.writeUInt16BE(callData.rtpSeq, 2);
         header.writeUInt32BE(callData.rtpTimestamp, 4);
         header.writeUInt32BE(0x12345678, 8); // SSRC
         
-        console.log(`RTP packet: seq=${callData.rtpSeq}, ts=${callData.rtpTimestamp}, payload=${pcmuPayload.length}bytes`);
+        console.log(`RTP packet: seq=${callData.rtpSeq}, ts=${callData.rtpTimestamp}, payload=${g711Payload.length}bytes G.711 A-law`);
         
-        return Buffer.concat([header, pcmuPayload]);
+        return Buffer.concat([header, g711Payload]);
     }
 
     streamGPTAudioToTelnyx(callData, audioDelta) {
         try {
-            // audioDelta is base64-encoded PCM16 audio from GPT (24kHz, 1 channel)
+            // audioDelta is now base64-encoded G.711 A-law audio from GPT (8kHz, already compressed)
             if (!audioDelta || !callData.ws) {
                 console.error('Missing audio data or WebSocket connection');
                 return;
             }
             
-            console.log('Processing GPT audio chunk, base64 length:', audioDelta.length);
+            console.log('Processing GPT G.711 A-law chunk, base64 length:', audioDelta.length);
             
-            // Decode GPT's PCM16 audio from base64
-            const pcm16Buffer = Buffer.from(audioDelta, 'base64');
-            console.log('Decoded PCM16 buffer size:', pcm16Buffer.length, 'bytes');
+            // Decode GPT's G.711 A-law audio directly - no transcoding needed!
+            const g711Buffer = Buffer.from(audioDelta, 'base64');
+            console.log('G.711 A-law buffer size:', g711Buffer.length, 'bytes (direct from OpenAI)');
             
-            // Downsample from 24kHz to 8kHz for Telnyx
-            const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
-            console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
-            
-            // Convert PCM16 to PCMA (A-law) for Telnyx
-            const pcmaBuffer = this.pcm16ToPcma(downsampledBuffer);
-            console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
-            
-            // CRITICAL: Split into 20ms packets (160 bytes each at 8kHz)
-            const packetSize = 160; // 20ms at 8kHz = 160 samples = 160 PCMA bytes
+            // Split into 20ms packets (160 bytes each at 8kHz)
+            const packetSize = 160; // 20ms at 8kHz = 160 G.711 samples
             let packetCount = 0;
             
-            // Send packets with proper 20ms timing to avoid engine sputtering
-            const packetInterval = 20; // 20ms between packets
-            
-            for (let offset = 0; offset < pcmaBuffer.length; offset += packetSize) {
-                const packetPayload = pcmaBuffer.slice(offset, Math.min(offset + packetSize, pcmaBuffer.length));
+            // Send all packets immediately - no setTimeout pacing needed
+            for (let offset = 0; offset < g711Buffer.length; offset += packetSize) {
+                const packetPayload = g711Buffer.slice(offset, Math.min(offset + packetSize, g711Buffer.length));
                 
                 // Create RTP packet for this 20ms chunk
                 const rtpPacket = this.createRtpPacket(packetPayload, callData);
                 
-                // Send to Telnyx WebSocket with proper timing
+                // Send to Telnyx WebSocket immediately
                 const message = {
                     event: 'media',
                     stream_id: callData.streamId,
@@ -669,18 +659,13 @@ class TelnyxGPTGateway {
                     }
                 };
                 
-                // Use setTimeout to pace packets at 20ms intervals instead of burst
-                setTimeout(() => {
-                    if (callData.ws && callData.ws.readyState === 1) {
-                        callData.ws.send(JSON.stringify(message));
-                        console.log(`📤 Sent RTP packet ${packetCount + 1} (${packetPayload.length} bytes) with 20ms pacing`);
-                    }
-                }, packetCount * packetInterval);
-                
+                callData.ws.send(JSON.stringify(message));
                 packetCount++;
+                
+                console.log(`📤 Sent RTP packet ${packetCount} (${packetPayload.length} bytes G.711 A-law)`);
             }
             
-            console.log(`✅ Scheduled ${packetCount} RTP packets (${pcmaBuffer.length} PCMA bytes total) with 20ms pacing`);
+            console.log(`✅ Sent ${packetCount} RTP packets (${g711Buffer.length} G.711 A-law bytes total) - no transcoding!`);
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
