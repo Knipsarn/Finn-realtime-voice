@@ -96,6 +96,14 @@ class TelnyxGPTGateway {
                     console.log(`Stream ID: ${callData.streamId}`);
                     console.log('Media format:', message.start.media_format);
                     
+                    // CRITICAL: Log the codec Telnyx expects
+                    const expectedCodec = message.start.media_format?.encoding;
+                    console.log(`🎯 TELNYX EXPECTS CODEC: ${expectedCodec}`);
+                    console.log(`🔧 WE ARE USING: PCMU (payload type 0)`);
+                    if (expectedCodec && expectedCodec !== 'PCMU') {
+                        console.log(`⚠️  CODEC MISMATCH DETECTED! Telnyx wants ${expectedCodec}, we send PCMU`);
+                    }
+                    
                     // Get default agent for now - in production you'd pass this via URL params
                     const agents = await database.getAllAgents();
                     callData.agent = agents[0];
