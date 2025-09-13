@@ -743,11 +743,7 @@ class TelnyxGPTGateway {
 
     streamGPTAudioToTelnyx(callData, audioDelta) {
         try {
-            console.log('📍 streamGPTAudioToTelnyx called');
-            console.log('  - ws exists?', !!callData.ws);
-            console.log('  - ws state:', callData.ws?.readyState);
-            console.log('  - streamId:', callData.streamId);
-            console.log('  - audioDelta length:', audioDelta?.length);
+            console.log('📍 streamGPTAudioToTelnyx called, ws exists?', !!callData.ws, 'ws state:', callData.ws?.readyState, 'streamId:', callData.streamId, 'audioDelta length:', audioDelta?.length);
             
             if (!audioDelta || !callData.ws) {
                 console.error('❌ CRITICAL: Cannot send audio to Telnyx!');
@@ -758,6 +754,7 @@ class TelnyxGPTGateway {
                 return;
             }
             
+            console.log('✅ Passed WebSocket check, proceeding to audio processing');
             let pcmaBuffer;
             
             // Check if OpenAI is sending G.711 A-law directly
@@ -784,6 +781,8 @@ class TelnyxGPTGateway {
             // Split into 20ms packets (160 bytes each at 8kHz)
             const packetSize = 160; // 20ms at 8kHz = 160 G.711 samples
             let packetCount = 0;
+            
+            console.log(`📦 About to send ${Math.ceil(pcmaBuffer.length / packetSize)} RTP packets, pcmaBuffer length: ${pcmaBuffer.length}`);
             
             // Send all packets immediately - no pacing
             for (let offset = 0; offset < pcmaBuffer.length; offset += packetSize) {
