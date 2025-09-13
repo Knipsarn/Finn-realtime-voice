@@ -743,8 +743,18 @@ class TelnyxGPTGateway {
 
     streamGPTAudioToTelnyx(callData, audioDelta) {
         try {
+            console.log('📍 streamGPTAudioToTelnyx called');
+            console.log('  - ws exists?', !!callData.ws);
+            console.log('  - ws state:', callData.ws?.readyState);
+            console.log('  - streamId:', callData.streamId);
+            console.log('  - audioDelta length:', audioDelta?.length);
+            
             if (!audioDelta || !callData.ws) {
-                console.error('Missing audio data or WebSocket connection');
+                console.error('❌ CRITICAL: Cannot send audio to Telnyx!');
+                console.error('  - audioDelta exists:', !!audioDelta);
+                console.error('  - callData.ws exists:', !!callData.ws);
+                console.error('  - streamId:', callData.streamId);
+                console.error('  - Available keys in callData:', Object.keys(callData));
                 return;
             }
             
