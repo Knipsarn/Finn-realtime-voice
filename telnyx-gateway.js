@@ -575,13 +575,14 @@ class TelnyxGPTGateway {
     }
 
     createRtpPacket(pcmuPayload, callData) {
-        // Track sequence and timestamp per call
+        // Track sequence and timestamp per call  
         callData.rtpSeq = (callData.rtpSeq + 1) % 65536;
-        callData.rtpTimestamp = (callData.rtpTimestamp + 160) % 4294967296; // 20ms * 8kHz = 160 samples
+        // Increment timestamp by actual sample count (each PCMU byte = 1 sample at 8kHz)
+        callData.rtpTimestamp = (callData.rtpTimestamp + pcmuPayload.length) % 4294967296;
         
         const header = Buffer.alloc(12);
         header[0] = 0x80;  // Version 2
-        header[1] = 0x00;  // PCMU payload type (not PCMA)
+        header[1] = 0x00;  // PCMU payload type
         header.writeUInt16BE(callData.rtpSeq, 2);
         header.writeUInt32BE(callData.rtpTimestamp, 4);
         header.writeUInt32BE(0x12345678, 8); // SSRC
@@ -609,26 +610,34 @@ class TelnyxGPTGateway {
             const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
             console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
             
-            // Convert PCM16 to PCMU (μ-law) - Telnyx expects PCMU, not PCMA
+            // Convert PCM16 to PCMU (μ-law)
             const pcmuBuffer = this.pcm16ToPcmu(downsampledBuffer);
             console.log('PCMU buffer size:', pcmuBuffer.length, 'bytes');
             
-            // Create RTP header and payload
-            const rtpPacket = this.createRtpPacket(pcmuBuffer, callData);
-            console.log('RTP packet size:', rtpPacket.length, 'bytes');
+            // CRITICAL: Split into 20ms packets (160 bytes each at 8kHz)
+            const packetSize = 160; // 20ms at 8kHz = 160 samples = 160 PCMU bytes
+            let packetCount = 0;
             
-            // Send to Telnyx WebSocket
-            const message = {
-                event: 'media',
-                stream_id: callData.streamId,
-                media: {
-                    payload: rtpPacket.toString('base64')
-                }
-            };
+            for (let offset = 0; offset < pcmuBuffer.length; offset += packetSize) {
+                const packetPayload = pcmuBuffer.slice(offset, Math.min(offset + packetSize, pcmuBuffer.length));
+                
+                // Create RTP packet for this 20ms chunk
+                const rtpPacket = this.createRtpPacket(packetPayload, callData);
+                
+                // Send to Telnyx WebSocket
+                const message = {
+                    event: 'media',
+                    stream_id: callData.streamId,
+                    media: {
+                        payload: rtpPacket.toString('base64')
+                    }
+                };
+                
+                callData.ws.send(JSON.stringify(message));
+                packetCount++;
+            }
             
-            callData.ws.send(JSON.stringify(message));
-            
-            console.log(`✅ Sent GPT audio to Telnyx: ${pcmuBuffer.length} PCMU bytes, RTP packet: ${rtpPacket.length} bytes`);
+            console.log(`✅ Sent ${packetCount} RTP packets (${pcmuBuffer.length} PCMU bytes total) to Telnyx`);
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
