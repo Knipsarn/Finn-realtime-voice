@@ -615,7 +615,7 @@ class TelnyxGPTGateway {
         
         const header = Buffer.alloc(12);
         header[0] = 0x80;  // Version 2
-        header[1] = 0x00;  // PCMU payload type (μ-law) - A/B TEST
+        header[1] = 0x08;  // PCMA payload type (A-law)
         header.writeUInt16BE(callData.rtpSeq, 2);
         header.writeUInt32BE(callData.rtpTimestamp, 4);
         header.writeUInt32BE(0x12345678, 8); // SSRC
@@ -643,21 +643,24 @@ class TelnyxGPTGateway {
             const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
             console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
             
-            // A/B TEST: Convert PCM16 to PCMU (μ-law) instead of PCMA
-            const pcmuBuffer = this.pcm16ToPcmu(downsampledBuffer);
-            console.log('PCMU buffer size:', pcmuBuffer.length, 'bytes - A/B TEST');
+            // Convert PCM16 to PCMA (A-law) for Telnyx
+            const pcmaBuffer = this.pcm16ToPcma(downsampledBuffer);
+            console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
             
             // CRITICAL: Split into 20ms packets (160 bytes each at 8kHz)
-            const packetSize = 160; // 20ms at 8kHz = 160 samples = 160 PCMU bytes
+            const packetSize = 160; // 20ms at 8kHz = 160 samples = 160 PCMA bytes
             let packetCount = 0;
             
-            for (let offset = 0; offset < pcmuBuffer.length; offset += packetSize) {
-                const packetPayload = pcmuBuffer.slice(offset, Math.min(offset + packetSize, pcmuBuffer.length));
+            // Send packets with proper 20ms timing to avoid engine sputtering
+            const packetInterval = 20; // 20ms between packets
+            
+            for (let offset = 0; offset < pcmaBuffer.length; offset += packetSize) {
+                const packetPayload = pcmaBuffer.slice(offset, Math.min(offset + packetSize, pcmaBuffer.length));
                 
                 // Create RTP packet for this 20ms chunk
                 const rtpPacket = this.createRtpPacket(packetPayload, callData);
                 
-                // Send to Telnyx WebSocket
+                // Send to Telnyx WebSocket with proper timing
                 const message = {
                     event: 'media',
                     stream_id: callData.streamId,
@@ -666,11 +669,18 @@ class TelnyxGPTGateway {
                     }
                 };
                 
-                callData.ws.send(JSON.stringify(message));
+                // Use setTimeout to pace packets at 20ms intervals instead of burst
+                setTimeout(() => {
+                    if (callData.ws && callData.ws.readyState === 1) {
+                        callData.ws.send(JSON.stringify(message));
+                        console.log(`📤 Sent RTP packet ${packetCount + 1} (${packetPayload.length} bytes) with 20ms pacing`);
+                    }
+                }, packetCount * packetInterval);
+                
                 packetCount++;
             }
             
-            console.log(`✅ Sent ${packetCount} RTP packets (${pcmuBuffer.length} PCMU bytes total) to Telnyx - A/B TEST`);
+            console.log(`✅ Scheduled ${packetCount} RTP packets (${pcmaBuffer.length} PCMA bytes total) with 20ms pacing`);
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
