@@ -498,17 +498,26 @@ class TelnyxGPTGateway {
     }
 
     downsampleAudio(pcm16Buffer, fromRate, toRate) {
-        const ratio = fromRate / toRate;
+        const ratio = fromRate / toRate; // 24000/8000 = 3
         const inputSamples = new Int16Array(pcm16Buffer);
         const outputLength = Math.floor(inputSamples.length / ratio);
         const outputSamples = new Int16Array(outputLength);
+        
+        console.log(`Downsampling: ${inputSamples.length} samples → ${outputLength} samples (ratio: ${ratio})`);
         
         for (let i = 0; i < outputLength; i++) {
             const srcIndex = Math.floor(i * ratio);
             outputSamples[i] = inputSamples[srcIndex] || 0;
         }
         
-        return outputSamples.buffer;
+        // Return properly sized buffer, not the full ArrayBuffer
+        const resultBuffer = Buffer.allocUnsafe(outputLength * 2); // 2 bytes per Int16
+        for (let i = 0; i < outputLength; i++) {
+            resultBuffer.writeInt16LE(outputSamples[i], i * 2);
+        }
+        
+        console.log(`Downsampling result: ${resultBuffer.length} bytes`);
+        return resultBuffer.buffer;
     }
 
     pcm16ToPcmu(pcm16Buffer) {
