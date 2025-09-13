@@ -119,9 +119,19 @@ class TelnyxGPTGateway {
                     
                     // Initialize GPT-Realtime session with error handling
                     try {
-                        console.log(`Starting GPT connection, buffering audio packets...`);
-                        
-                        await this.initializeGPTSession(callData);
+                        // SANITY TEST: Send 1kHz tone first if enabled
+                        if (process.env.TONE_TEST === 'true') {
+                            console.log('🎵 SANITY TEST: Sending 1kHz PCMA tone for 2 seconds');
+                            this.sendTestTone(callData);
+                            // Delay OpenAI initialization
+                            setTimeout(async () => {
+                                console.log(`Starting GPT connection after tone test...`);
+                                await this.initializeGPTSession(callData);
+                            }, 2500);
+                        } else {
+                            console.log(`Starting GPT connection, buffering audio packets...`);
+                            await this.initializeGPTSession(callData);
+                        }
                         
                         callData.gptConnecting = false;
                         this.activeCalls.set(callData.streamId, callData);
@@ -262,7 +272,7 @@ class TelnyxGPTGateway {
                         voice: callData.agent.voice,
                         instructions: callData.agent.prompt,
                         input_audio_format: 'pcm16',
-                        output_audio_format: 'pcm16',
+                        output_audio_format: 'g711_alaw',
                         input_audio_transcription: { model: 'whisper-1' },
                         turn_detection: {
                             type: 'server_vad',
@@ -397,6 +407,15 @@ class TelnyxGPTGateway {
                     output_format: event.session?.output_audio_format,
                     voice: event.session?.voice
                 }, null, 2));
+                
+                // CRITICAL: Verify if G.711 A-law was accepted
+                if (event.session?.output_audio_format === 'g711_alaw') {
+                    console.log('✅ OpenAI confirmed G.711 A-law output format');
+                    callData.isG711Output = true;
+                } else {
+                    console.log('⚠️ OpenAI is using PCM16, not G.711 A-law');
+                    callData.isG711Output = false;
+                }
                 break;
                 
             case 'response.audio.delta':
@@ -582,6 +601,71 @@ class TelnyxGPTGateway {
         return pcmuBuffer;
     }
 
+    simpleDownsample(pcm16Buffer, fromRate, toRate) {
+        // Simple downsampling - just pick every Nth sample
+        const ratio = fromRate / toRate; // 24000/8000 = 3
+        const inputBuffer = Buffer.from(pcm16Buffer);
+        const numSamples = inputBuffer.length / 2;
+        const inputSamples = new Int16Array(numSamples);
+        
+        for (let i = 0; i < numSamples; i++) {
+            inputSamples[i] = inputBuffer.readInt16LE(i * 2);
+        }
+        
+        const outputLength = Math.floor(inputSamples.length / ratio);
+        const outputSamples = new Int16Array(outputLength);
+        
+        for (let i = 0; i < outputLength; i++) {
+            outputSamples[i] = inputSamples[Math.floor(i * ratio)] || 0;
+        }
+        
+        const resultBuffer = Buffer.allocUnsafe(outputLength * 2);
+        for (let i = 0; i < outputLength; i++) {
+            resultBuffer.writeInt16LE(outputSamples[i], i * 2);
+        }
+        
+        return resultBuffer.buffer;
+    }
+    
+    pcm16ToPcmaSimple(pcm16Buffer) {
+        // Simple A-law encoding WITHOUT XOR 0xD5
+        const inputBuffer = Buffer.from(pcm16Buffer);
+        const numSamples = inputBuffer.length / 2;
+        const pcmaBuffer = Buffer.alloc(numSamples);
+        
+        for (let i = 0; i < numSamples; i++) {
+            let sample = inputBuffer.readInt16LE(i * 2);
+            let sign = 0x00;
+            
+            if (sample < 0) {
+                sample = -sample;
+                sign = 0x80;
+            }
+            
+            if (sample > 32635) sample = 32635;
+            
+            let exponent = 7;
+            let mantissa = 0;
+            
+            if (sample >= 256) {
+                for (exponent = 0; exponent < 7; exponent++) {
+                    if (sample <= (256 << exponent)) break;
+                }
+                mantissa = (sample >> (exponent + 4)) & 0x0F;
+            } else {
+                exponent = 0;
+                mantissa = sample >> 4;
+            }
+            
+            exponent ^= 0x07;
+            
+            // NO XOR 0xD5 - it made things worse
+            pcmaBuffer[i] = sign | (exponent << 4) | mantissa;
+        }
+        
+        return pcmaBuffer;
+    }
+    
     pcm16ToPcma(pcm16Buffer) {
         // A-law encoding for PCMA
         const inputBuffer = Buffer.from(pcm16Buffer);
@@ -628,57 +712,77 @@ class TelnyxGPTGateway {
     }
 
     createRtpPacket(g711Payload, callData) {
-        // Track sequence and timestamp per call  
-        callData.rtpSeq = (callData.rtpSeq + 1) % 65536;
-        // Increment timestamp by actual sample count (each G.711 byte = 1 sample at 8kHz)
-        callData.rtpTimestamp = (callData.rtpTimestamp + g711Payload.length) % 4294967296;
+        // Initialize RTP state for this call if needed
+        if (!callData.rtpSeq) {
+            callData.rtpSeq = 0;
+            callData.rtpTimestamp = 0;
+            // Generate random SSRC per call for proper RTP session identification
+            callData.rtpSSRC = Math.floor(Math.random() * 0xFFFFFFFF);
+            console.log(`🎲 Generated SSRC for call: 0x${callData.rtpSSRC.toString(16)}`);
+        }
         
+        // Increment sequence number (wraps at 65536)
+        callData.rtpSeq = (callData.rtpSeq + 1) % 65536;
+        
+        // Build RTP header (12 bytes)
         const header = Buffer.alloc(12);
-        header[0] = 0x80;  // Version 2
-        header[1] = 0x08;  // PCMA payload type (A-law) - direct from OpenAI
+        header[0] = 0x80;  // Version 2, no padding, no extension, no CSRC
+        header[1] = 0x08;  // Marker=0, PT=8 (PCMA)
         header.writeUInt16BE(callData.rtpSeq, 2);
         header.writeUInt32BE(callData.rtpTimestamp, 4);
-        header.writeUInt32BE(0x12345678, 8); // SSRC
+        header.writeUInt32BE(callData.rtpSSRC, 8);
         
-        console.log(`RTP packet: seq=${callData.rtpSeq}, ts=${callData.rtpTimestamp}, payload=${g711Payload.length}bytes G.711 A-law`);
+        // Increment timestamp by payload length AFTER creating packet
+        // Each G.711 byte = 1 sample at 8kHz
+        callData.rtpTimestamp = (callData.rtpTimestamp + g711Payload.length) % 0x100000000;
+        
+        console.log(`RTP: seq=${callData.rtpSeq}, ts=${callData.rtpTimestamp}, SSRC=0x${callData.rtpSSRC.toString(16)}, payload=${g711Payload.length}B`);
         
         return Buffer.concat([header, g711Payload]);
     }
 
     streamGPTAudioToTelnyx(callData, audioDelta) {
         try {
-            // audioDelta is base64-encoded PCM16 audio from GPT (24kHz, 1 channel)
             if (!audioDelta || !callData.ws) {
                 console.error('Missing audio data or WebSocket connection');
                 return;
             }
             
-            console.log('Processing GPT PCM16 chunk, base64 length:', audioDelta.length);
+            let pcmaBuffer;
             
-            // Decode GPT's PCM16 audio from base64
-            const pcm16Buffer = Buffer.from(audioDelta, 'base64');
-            console.log('Decoded PCM16 buffer size:', pcm16Buffer.length, 'bytes');
-            
-            // Downsample from 24kHz to 8kHz with PROPER anti-aliasing
-            const downsampledBuffer = this.downsampleAudio(pcm16Buffer, 24000, 8000);
-            console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
-            
-            // Convert PCM16 to PCMA (A-law) with fixed XOR 0xD5
-            const pcmaBuffer = this.pcm16ToPcma(downsampledBuffer);
-            console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
+            // Check if OpenAI is sending G.711 A-law directly
+            if (callData.isG711Output) {
+                // Direct G.711 A-law from OpenAI - NO TRANSCODING!
+                console.log('Processing GPT G.711 A-law chunk, base64 length:', audioDelta.length);
+                pcmaBuffer = Buffer.from(audioDelta, 'base64');
+                console.log('G.711 A-law buffer size:', pcmaBuffer.length, 'bytes (direct from OpenAI)');
+            } else {
+                // PCM16 from OpenAI - needs transcoding
+                console.log('Processing GPT PCM16 chunk, base64 length:', audioDelta.length);
+                const pcm16Buffer = Buffer.from(audioDelta, 'base64');
+                console.log('Decoded PCM16 buffer size:', pcm16Buffer.length, 'bytes');
+                
+                // Simple downsampling - no anti-aliasing (it made things worse)
+                const downsampledBuffer = this.simpleDownsample(pcm16Buffer, 24000, 8000);
+                console.log('Downsampled buffer size:', downsampledBuffer.byteLength, 'bytes');
+                
+                // Convert to PCMA without XOR (it also made things worse)
+                pcmaBuffer = this.pcm16ToPcmaSimple(downsampledBuffer);
+                console.log('PCMA buffer size:', pcmaBuffer.length, 'bytes');
+            }
             
             // Split into 20ms packets (160 bytes each at 8kHz)
-            const packetSize = 160; // 20ms at 8kHz = 160 PCMA samples
+            const packetSize = 160; // 20ms at 8kHz = 160 G.711 samples
             let packetCount = 0;
             
-            // Send all packets immediately - burst mode works fine
+            // Send all packets immediately - no pacing
             for (let offset = 0; offset < pcmaBuffer.length; offset += packetSize) {
                 const packetPayload = pcmaBuffer.slice(offset, Math.min(offset + packetSize, pcmaBuffer.length));
                 
-                // Create RTP packet for this 20ms chunk
+                // Create RTP packet with proper SSRC and timestamps
                 const rtpPacket = this.createRtpPacket(packetPayload, callData);
                 
-                // Send to Telnyx WebSocket immediately
+                // Send to Telnyx WebSocket
                 const message = {
                     event: 'media',
                     stream_id: callData.streamId,
@@ -691,7 +795,7 @@ class TelnyxGPTGateway {
                 packetCount++;
             }
             
-            console.log(`✅ Sent ${packetCount} RTP packets (${pcmaBuffer.length} PCMA bytes total) with proper transcoding`);
+            console.log(`✅ Sent ${packetCount} RTP packets (${pcmaBuffer.length} PCMA bytes total)`);
             
         } catch (error) {
             console.error('=== GPT AUDIO STREAMING ERROR ===');
@@ -703,6 +807,84 @@ class TelnyxGPTGateway {
     }
 
 
+    sendTestTone(callData) {
+        // Generate 1kHz tone at 8kHz sample rate for 2 seconds
+        const sampleRate = 8000;
+        const frequency = 1000; // 1kHz
+        const duration = 2; // seconds
+        const numSamples = sampleRate * duration;
+        
+        // Generate PCM16 sine wave
+        const pcm16Samples = new Int16Array(numSamples);
+        for (let i = 0; i < numSamples; i++) {
+            const angle = (2 * Math.PI * frequency * i) / sampleRate;
+            pcm16Samples[i] = Math.floor(Math.sin(angle) * 16383); // Half of max amplitude
+        }
+        
+        // Convert PCM16 to PCMA
+        const pcmaBuffer = Buffer.alloc(numSamples);
+        for (let i = 0; i < numSamples; i++) {
+            let sample = pcm16Samples[i];
+            let sign = 0x00;
+            
+            if (sample < 0) {
+                sample = -sample;
+                sign = 0x80;
+            }
+            
+            if (sample > 32635) sample = 32635;
+            
+            let exponent = 7;
+            let mantissa = 0;
+            
+            if (sample >= 256) {
+                for (exponent = 0; exponent < 7; exponent++) {
+                    if (sample <= (256 << exponent)) break;
+                }
+                mantissa = (sample >> (exponent + 4)) & 0x0F;
+            } else {
+                exponent = 0;
+                mantissa = sample >> 4;
+            }
+            
+            exponent ^= 0x07;
+            pcmaBuffer[i] = sign | (exponent << 4) | mantissa;
+        }
+        
+        console.log(`🎵 Generated ${pcmaBuffer.length} bytes of 1kHz PCMA tone`);
+        
+        // Split into 20ms packets and send
+        const packetSize = 160; // 20ms at 8kHz
+        let packetCount = 0;
+        
+        for (let offset = 0; offset < pcmaBuffer.length; offset += packetSize) {
+            const packetPayload = pcmaBuffer.slice(offset, Math.min(offset + packetSize, pcmaBuffer.length));
+            
+            // Create RTP packet
+            const rtpPacket = this.createRtpPacket(packetPayload, callData);
+            
+            // Send to Telnyx
+            const message = {
+                event: 'media',
+                stream_id: callData.streamId,
+                media: {
+                    payload: rtpPacket.toString('base64')
+                }
+            };
+            
+            // Send with 20ms pacing for tone test
+            setTimeout(() => {
+                if (callData.ws && callData.ws.readyState === 1) {
+                    callData.ws.send(JSON.stringify(message));
+                }
+            }, packetCount * 20);
+            
+            packetCount++;
+        }
+        
+        console.log(`🎵 Scheduled ${packetCount} tone packets (should hear clean 1kHz tone)`);
+    }
+    
     getGreeting(agent) {
         // Determine greeting based on agent locale/language
         if (agent.prompt.includes('svenska') || agent.prompt.includes('Swedish')) {

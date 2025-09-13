@@ -446,7 +446,7 @@ app.post('/api/telnyx/voice', async (req, res) => {
                     stream_url: `wss://${req.get('host')}/api/telnyx/stream`,
                     stream_track: 'both_tracks',
                     stream_bidirectional_mode: 'rtp',
-                    stream_bidirectional_codec: 'PCMU'
+                    stream_bidirectional_codec: 'PCMA'  // Explicitly set A-law codec
                 })
             });
 
