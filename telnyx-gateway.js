@@ -499,7 +499,17 @@ class TelnyxGPTGateway {
 
     downsampleAudio(pcm16Buffer, fromRate, toRate) {
         const ratio = fromRate / toRate; // 24000/8000 = 3
-        const inputSamples = new Int16Array(pcm16Buffer);
+        
+        // CRITICAL: Read PCM16 with explicit little-endian format
+        const inputBuffer = Buffer.from(pcm16Buffer);
+        const numSamples = inputBuffer.length / 2; // 2 bytes per sample
+        const inputSamples = new Int16Array(numSamples);
+        
+        // Read each sample as little-endian
+        for (let i = 0; i < numSamples; i++) {
+            inputSamples[i] = inputBuffer.readInt16LE(i * 2);
+        }
+        
         const outputLength = Math.floor(inputSamples.length / ratio);
         const outputSamples = new Int16Array(outputLength);
         
@@ -555,11 +565,15 @@ class TelnyxGPTGateway {
 
     pcm16ToPcma(pcm16Buffer) {
         // A-law encoding for PCMA
-        const pcmSamples = new Int16Array(pcm16Buffer);
-        const pcmaBuffer = Buffer.alloc(pcmSamples.length);
+        const inputBuffer = Buffer.from(pcm16Buffer);
+        const numSamples = inputBuffer.length / 2;
+        const pcmaBuffer = Buffer.alloc(numSamples);
         
-        for (let i = 0; i < pcmSamples.length; i++) {
-            let sample = pcmSamples[i];
+        console.log(`PCMA encoding: ${numSamples} samples from ${inputBuffer.length} bytes`);
+        
+        for (let i = 0; i < numSamples; i++) {
+            // Read sample as little-endian
+            let sample = inputBuffer.readInt16LE(i * 2);
             let sign = 0x00;
             
             if (sample < 0) {
